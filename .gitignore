@@ -1,0 +1,13 @@
+/.idea
+/.vscode
+/vendor
+*.log
+thinkphp
+.env
+.DS_Store
+public/template/adminView/Manager/manager_list_LOCAL_3656.html
+application/admin/model/managerModel.php
+public/template/adminView/Manager/manager_list_REMOTE_3656.html
+public/template/adminView/Manager/manager_list_BACKUP_3656.html
+public/template/adminView/Manager/manager_list_BASE_3656.html
+runtime/cache/think/de/8db499e95aab201f0f5f4fde50ad02.php

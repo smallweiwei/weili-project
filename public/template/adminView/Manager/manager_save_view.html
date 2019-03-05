@@ -1,0 +1,208 @@
+{extend name="public:head" /}
+{block name="title"}添加管理员{/block}
+{block name="css"}
+
+{/block}
+{block name="body"}
+<script>
+
+</script>
+<div class="col-sm-12" style="padding: 0">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <form method="post" class="form-horizontal addAjax" id="saveAjax">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        <span class="essential">*</span>
+                        &nbsp;&nbsp;管理员名称</label>
+                    <div class="col-sm-10">
+                        <input type="text" placeholder="请输入管理员名称" required="required" class="form-control"
+                               name="m_name" autocomplete="off">
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div id="password" style="display: none;">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">
+                            <span class="essential">*</span>
+                            &nbsp;&nbsp;管理员密码</label>
+                        <div class="col-sm-10">
+                            <input type="password" placeholder="请输入管理员初始密码"
+                                   required="required" class="form-control" name="m_password" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        <span class="essential">*</span>
+                        &nbsp;&nbsp;所属角色
+                    </label>
+                    <div class="col-sm-10">
+                        <select class="form-control m-b" name="ag_id" id="manager_role">
+                            <option value="0" selected>请选择角色</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态</label>
+                    <div class="formControls col-sm-10 skin-minimal">
+                        <div class="radio-box">
+                            <input type="radio" checked id="enable" name="m_state" value="1" />
+                            <label for="enable">启用</label>
+                        </div>
+                        <div class="radio-box">
+                            <input type="radio" id="prohibit" name="m_state" value="2" />
+                            <label for="prohibit">禁用</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</label>
+                    <div class="formControls col-sm-10 skin-minimal">
+                        <div class="radio-box">
+                            <input type="radio" checked id="secrecy" name="m_sex" value="0" />
+                            <label for="secrecy">保密</label>
+                        </div>
+                        <div class="radio-box">
+                            <input type="radio" id="male" name="m_sex" value="1" />
+                            <label for="male">男</label>
+                        </div>
+                        <div class="radio-box">
+                            <input type="radio" id="female" name="m_sex" value="2" />
+                            <label for="female">女</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <button class="btn btn-primary" type="submit">修改内容</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+    ajaxRole()
+
+    //获取角色列表
+    function ajaxRole() {
+        $.ajax({
+            type : 'get',
+            url : "api_role.html",
+            async : false,
+            dataType : 'json',
+            success : function(e){
+                if(e.code > 0){
+                    var option = ''
+                    $.each(e.data,function (key,value) {
+                        option += '<option value="'+value.ag_id+'">'+value.ag_title+'</option>'
+                    })
+                    $("#manager_role").append(option)
+                }
+            },error:function (xhr) {
+                if (!errorAjax(xhr.status)) {
+                    return false;
+                }
+            }
+        })
+    }
+
+    var array = parent.parent() //父页面数据
+    if(array.admin.m_id == array.data.m_id){
+        $('input[name="m_password"]').blur(function(){
+            if(this.value == ''){
+                this.value =  array.admin.m_password
+            }
+        });
+        $('input[name="m_password"]').focus(function(){
+            this.value =  ''
+            this.placeholder = '不输入密码，默认为不修改'
+        });
+
+
+        $('#password').css('display','block')
+        $('input[name="m_password"]').val(array.admin.m_password);
+        array.data.m_password = array.admin.m_password
+    }else{
+        $("#password").html('')
+    }
+    $('input[name="m_name"]').val(array.data.m_name);
+    $('#saveAjax').append('<input type="hidden" name="m_id" value="'+array.data.m_id+'">')
+    $(" select option[value='"+array.data.ag_id+"']").attr("selected","selected");
+
+    if(array.data.m_state == 1){
+        $("input[name=m_state]:eq(0)").attr("checked",'checked');
+    }else{
+        $("input[name=m_state]:eq(1)").attr("checked",'checked');
+    }
+
+    if(array.data.m_sex == 0){
+        $("input[name=m_sex]:eq(0)").attr("checked",'checked');
+    }else if(array.data.m_sex == 1){
+        $("input[name=m_sex]:eq(1)").attr("checked",'checked');
+    }else{
+        $("input[name=m_sex]:eq(2)").attr("checked",'checked');
+    }
+
+    var name = parent.layer.getFrameIndex(window.name);
+    var index = null
+
+    $('#saveAjax').on('submit',function (event) {
+        let new_data = formData();
+        let used_data = array.data;
+        let data = false;
+        let jsonData = {};
+        $.each(new_data,function (key,val) {
+            if(used_data[key] != val){
+                jsonData[key] = val
+                data = true
+            }
+        })
+        if(!data){
+            errorMsg('无修改字段，请修改后重新提交')
+            return false
+        }
+        $.ajax({
+            type : 'post',
+            url : "managerSave.html?m_id="+array.data.m_id,
+            async : false,
+            dataType : 'json',
+            data:jsonData,
+            success : function(e){
+                if(e.code < 0){
+                    errorMsg(e.msg)
+                }else{
+                    parent.layer.close(name);
+                    parent.managerAjax()
+                }
+            },error:function (xhr) {
+                if (!errorAjax(xhr.status)) {
+                    return false;
+                }
+            },beforeSend:function(){
+                index = layer.msg('管理员修改中。。。', {
+                    icon: 16,
+                    shade: 0.4,
+                    time:false //取消自动关闭
+                });
+            }
+        })
+        event.preventDefault();
+    })
+
+</script>
+
+{/block}

@@ -1,0 +1,156 @@
+{extend name="public:head" /}
+{block name="title"}添加管理员{/block}
+{block name="css"}
+
+{/block}
+{block name="body"}
+<div class="col-sm-12" style="padding: 0">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <form method="post" class="form-horizontal addAjax" id="addAjax">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        <span class="essential">*</span>
+                        &nbsp;&nbsp;管理员名称</label>
+                    <div class="col-sm-10">
+                        <input type="text" placeholder="请输入管理员名称" required="required" class="form-control" name="m_name" autocomplete="off">
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        <span class="essential">*</span>
+                        &nbsp;&nbsp;管理员密码</label>
+                    <div class="col-sm-10">
+                        <input type="text" placeholder="请输入管理员初始密码"
+                               required="required" class="form-control" onfocus="this.type='password'"  name="m_password" autocomplete="off">
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        <span class="essential">*</span>
+                        &nbsp;&nbsp;所属角色
+                    </label>
+                    <div class="col-sm-10">
+                        <select class="form-control m-b" name="ag_id" id="manager_role">
+                            <option value="0" selected>请选择角色</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态</label>
+                    <div class="formControls col-sm-10 skin-minimal">
+                        <div class="radio-box">
+                            <input type="radio" checked id="enable" name="m_state" value="1" />
+                            <label for="enable">启用</label>
+                        </div>
+                        <div class="radio-box">
+                            <input type="radio" id="prohibit" name="m_state" value="2" />
+                            <label for="prohibit">禁用</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别</label>
+                    <div class="formControls col-sm-10 skin-minimal">
+                        <div class="radio-box">
+                            <input type="radio" checked id="secrecy" name="m_sex" value="0" />
+                            <label for="secrecy">保密</label>
+                        </div>
+                        <div class="radio-box">
+                            <input type="radio" id="male" name="m_sex" value="1" />
+                            <label for="male">男</label>
+                        </div>
+                        <div class="radio-box">
+                            <input type="radio" id="female" name="m_sex" value="2" />
+                            <label for="female">女</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <button class="btn btn-primary" type="submit">保存内容</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+    ajaxRole()
+    function ajaxRole() {
+        $.ajax({
+            type : 'get',
+            url : "api_role.html",
+            async : true,
+            dataType : 'json',
+            success : function(e){
+                if(e.code > 0){
+                    var option = ''
+                    $.each(e.data,function (key,value) {
+                        option += '<option value="'+value.ag_id+'">'+value.ag_title+'</option>'
+                    })
+                    $("#manager_role").append(option)
+                }
+            },error:function (xhr) {
+                if (!errorAjax(xhr.status)) {
+                    return false;
+                }
+            }
+        })
+    }
+
+    var name = parent.layer.getFrameIndex(window.name);
+    var index = null
+
+    $('#addAjax').on('submit',function (event) {
+        var data = formData()
+        if(data.ag_id == 0){
+            layer.msg('请选择所属角色',{time: 2000, icon:5});
+            return false
+        }
+        $.ajax({
+            type : 'post',
+            url : "managerAdd.html",
+            async : true,
+            dataType : 'json',
+            data:formData(),
+            success : function(e){
+                if(e.code < 0){
+                    errorMsg(e.msg)
+                }else{
+                    parent.layer.close(name);
+                    parent.managerAjax()
+                }
+            },error:function (xhr) {
+                if(!errorAjax(xhr.status)){
+                    return false;
+                }
+            },beforeSend:function(){
+                index = layer.msg('管理员添加中。。。', {
+                    icon: 16,
+                    shade: 0.4,
+                    time:false //取消自动关闭
+                });
+            }
+        })
+        event.preventDefault();
+
+
+    })
+
+</script>
+
+{/block}

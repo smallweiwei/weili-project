@@ -1,0 +1,99 @@
+<!--左侧导航开始-->
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="nav-close"><i class="fa fa-times-circle"></i>
+    </div>
+    <div class="sidebar-collapse">
+        <ul class="nav" id="side-menu">
+            <li class="nav-header">
+                <div class="dropdown profile-element">
+                    <span>
+                        <img alt="image" class="img-circle" src="__IMAGES__/profile_small.jpg" />
+                    </span>
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <span class="clear">
+                            <span class="block m-t-xs">
+                                <strong class="font-bold" id="adminSessionName">{$Think.session.adminSession.m_name} </strong>
+                            </span>
+                            <span class="text-muted text-xs block" id="adminSessionTitle">{$Think.session.adminSession.ag_title}
+                                <b class="caret"></b>
+                            </span>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                        <li><a class="J_menuItem" href="form_avatar.html">修改头像</a>
+                        </li>
+                        <!--<li><a class="J_menuItem" href="profile.html">个人资料</a>-->
+                        <!--</li>-->
+                        <!--<li><a class="J_menuItem" href="mailbox.html">信箱</a>-->
+                        <!--</li>-->
+                        <li class="divider"></li>
+                        <li><a href="logout.html">安全退出</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="logo-element">微粒
+                </div>
+
+            </li>
+
+        </ul>
+    </div>
+</nav>
+
+<block name="js">
+    <script type="text/javascript">
+        $(function() {
+
+             $.ajax({
+                    type : 'post',
+                    url : "menu.html",
+                    async : false,
+                    dataType : 'json',
+                    success : function(e) {
+                        console.log(e)
+                        if(e.code>0){
+                            menu(e.data)
+                        }
+                    }
+                })
+        });
+        function menu(data) {
+            var html = '';
+            $.each(data,function (key,value) {
+                if(isArray(value.ar_pid) && !isUndefined(value.ar_pid)){
+                    html += '<li>'
+                    html +="<a href='javascript:;'>"
+                    html += "<i class='fa "+value.ar_icon+"'></i>"
+                    html += "<span class='nav-label'>"+value.ar_title+"</span>"
+                    html += "<span class='fa arrow'></span>"
+                    html += '</a>'
+                    html +="<ul class='nav nav-second-level'>"
+                    $.each(value.ar_pid,function (k,v) {
+                        html +='<li>'
+                        html += '<a class="J_menuItem" href="'+v.ar_name+'.html">'
+                        html += v.ar_title
+                        html +='</a>'
+                        html +='</li>'
+                    })
+                    html +='</ul>'
+                    html += '</li>'
+                }
+            })
+            $('#side-menu').append(html)
+        }
+
+        //判断是不是数组，是返回true 否返回false
+        function isArray(data) {
+            return $.isArray(data)
+        }
+
+        //判断数值是否为空
+        function isUndefined(value){
+            return value==undefined || $.trim(value).length==0;
+        }
+
+    </script>
+
+</block>
+
+

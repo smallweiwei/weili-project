@@ -1,0 +1,58 @@
+{extend name="public:head" /}
+{block name="title"}门店列表{/block}
+{block name="css"}
+<link href="__PUBLIC__/webuploader/webuploader.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/webuploader/webuploader-demo.min.css">
+{/block}
+{block name="body"}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <!--<div class="ibox-content">-->
+            <div class="page-container">
+                <div id="uploader" class="wu-example">
+                    <div class="queueList">
+                        <div id="dndArea" class="placeholder">
+                            <div id="filePicker"></div>
+                            <div>或将照片拖到这里，单次最多可选 <span id="upload_num"></span> 张</div>
+                            <!--<p>或将照片拖到这里，单次最多可选</p><p id="upload_num"></p><p>张</p>-->
+                        </div>
+                    </div>
+                    <div class="statusBar" style="display:none;">
+                        <div class="progress">
+                            <span class="text">0%</span>
+                            <span class="percentage"></span>
+                        </div>
+                        <div class="info"></div>
+                        <div class="btns">
+                            <div id="filePicker2"></div>
+                            <div class="uploadBtn">开始上传</div>
+                        </div>
+                    </div>
+                </div>
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+    var array = parent.parent()//父页面数据
+    var BASE_URL = 'js/plugins/webuploader';
+    var UPLOAD_URL = array.url;
+    var UPLOAD_NUM = array.num;
+    $('#upload_num').html(array.num)
+</script>
+<script src="__PUBLIC__/webuploader/webuploader.min.js"></script>
+<script src="__PUBLIC__/webuploader/webuploader-demo.min.js"></script>
+<script type="text/javascript">
+
+    var callbackdata = function () {
+        return $('#img_pic').val();
+    }
+
+</script>
+{/block}
