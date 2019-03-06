@@ -13,7 +13,7 @@ use think\facade\Request;
 use think\facade\Session;
 /**
  * 后端登录界面
- * Class Login
+ * Class login
  * @package app\admin\controller
  */
 class Login extends Controller
@@ -133,7 +133,7 @@ class Login extends Controller
     {
         if(!empty(Session::get('adminSession'))){
             Session::set('adminSession','');//清除缓存
-            return $this->error('退出成功！','/Login.html', 1,1);
+            return $this->error('退出成功！','/login.html', 1,1);
         }else{
             return $this->error('非法操作！','/', 1,1);
         }

@@ -10,7 +10,7 @@
 namespace app\admin\controller;
 /**
  * 系统设置控制器
- * Class System
+ * Class system
  * @package app\admin\controller
  */
 class System extends Basic

@@ -20,7 +20,7 @@ class UserCheck
         }
 
         if($uid == null || $uid == "" || $uid == "null" || $uid == 0){
-            return $this->error('您还未登录，请先登录！','/Login.html', 1,1);
+            return $this->error('您还未登录，请先登录！','/login.html', 1,1);
         }
     }
 }

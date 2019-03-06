@@ -2,7 +2,9 @@
 {block name="title"}门店列表{/block}
 {block name="css"}
 <style type="text/css">
-
+img{
+    width: 100px;
+}
 </style>
 {/block}
 {block name="body"}
@@ -80,52 +82,62 @@
             },
             columns: [
                 {
-                    field: 'm_id',
+                    field: 's_id',
                     align: 'center',
                     title: '编号',
                 },
                 {
-                    field: 'm_name',
+                    field: 's_name',
                     title: '门店名称',
                     align: 'center',
                 },
                 {
-                    field: 'ag_title',
+                    field: 's_address',
                     title: '门店地址',
                     align: 'center',
                 },
                 {
-                    field: 'ag_title',
+                    field: 's_phone',
                     title: '门店电话',
                     align: 'center',
                 },
                 {
-                    field: 'm_addTime',
+                    field: 's_pic',
+                    title: '门店图片',
+                    align: 'center',
+                    width:200,
+                    formatter:function (value,row) {
+                        let html = "<image src='"+value+"'></image>";
+                        return html
+                    }
+                },
+                {
+                    field: 's_addTime',
                     title: '添加时间',
                     align: 'center',
                 },
                 {
-                    field: 'm_id',
+                    field: 's_id',
                     title: '操作',
                     align: 'center',
                     formatter: function (value, row) {
                         var html = '';
-                        if(row.m_state == '2'){
-                            html += '<span style="margin-right: 5px"' +
-                                ' onclick="manager_state(\'启用\',\'1\',\''+value+'\',\''+row.m_name+'\',\''+row.ag_id+'\')">' +
-                                '<a href="javascript:;">启用</a></span>';
-                        }else{
-                            html += '<span style="margin-right: 5px"' +
-                                ' onclick="manager_state(\'停用\',\'2\',\''+value+'\',\''+row.m_name+'\',\''+row.ag_id+'\')">' +
-                                '<a href="javascript:;" >停用</a></span>';
-                        }
-                        html += '<span style="margin-right: 5px" ' +
-                            'onclick="manager_save(\'修改管理员[ '+row.m_name+' ]\',\'managerSaveView.html\',800,500,'+JSON.stringify(row).replace(/"/g, '&quot;')+')">' +
-                            '<a href="javascript:;" >修改</a></span>';
-
-                        html += '<span style="margin-right: 5px" ' +
-                            'onclick="manager_del(this,\''+value+'\',\''+row.m_name+'\')">' +
-                            '<a href="javascript:;" >删除</a></span>';
+                        // if(row.m_state == '2'){
+                        //     html += '<span style="margin-right: 5px"' +
+                        //         ' onclick="manager_state(\'启用\',\'1\',\''+value+'\',\''+row.m_name+'\',\''+row.ag_id+'\')">' +
+                        //         '<a href="javascript:;">启用</a></span>';
+                        // }else{
+                        //     html += '<span style="margin-right: 5px"' +
+                        //         ' onclick="manager_state(\'停用\',\'2\',\''+value+'\',\''+row.m_name+'\',\''+row.ag_id+'\')">' +
+                        //         '<a href="javascript:;" >停用</a></span>';
+                        // }
+                        // html += '<span style="margin-right: 5px" ' +
+                        //     'onclick="manager_save(\'修改管理员[ '+row.m_name+' ]\',\'managerSaveView.html\',800,500,'+JSON.stringify(row).replace(/"/g, '&quot;')+')">' +
+                        //     '<a href="javascript:;" >修改</a></span>';
+                        //
+                        // html += '<span style="margin-right: 5px" ' +
+                        //     'onclick="manager_del(this,\''+value+'\',\''+row.m_name+'\')">' +
+                        //     '<a href="javascript:;" >删除</a></span>';
                         return  html
                     }
                 }
@@ -141,7 +153,6 @@
      * @param h
      */
     function store_add(title,url,w,h) {
-        // layerShow(title,url,w,h);
         var index = layer.open({
             title:title,
             type: 2,

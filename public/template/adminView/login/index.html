@@ -1,4 +1,3 @@
-<?php /*a:1:{s:35:"template\adminView\login\index.html";i:1550500664;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +6,8 @@
     <meta http-equiv="Cache-Control" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>后台管理</title>
-    <link href="/static/adminView/css/admin-login.css" rel="stylesheet" type="text/css" />
+    <link href="__CSS__/admin-login.css" rel="stylesheet" type="text/css" />
+    <!--<script type="text/javascript" src="__PUBLIC__/jq/jquery-3.3.1.min.js"></script>-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
 
@@ -16,10 +16,10 @@
 <body>
 <div class="login_box">
     <div class="login_l_img">
-        <img src="/static/adminView/images/admin-login-img.png">
+        <img src="__IMAGES__/admin-login-img.png">
     </div>
     <div class="login">
-        <div class="login_logo"><img src="/static/adminView/images/admin-login_logo.png" /></div>
+        <div class="login_logo"><img src="__IMAGES__/admin-login_logo.png" /></div>
         <div class="login_name">
             <p>后台管理系统</p>
         </div>
@@ -46,8 +46,8 @@
 </div>
 
 
-<script type="text/javascript" src="/static/adminView/js/function.js"></script>
-<script type="text/javascript" src="/static/adminView/js/plugins/layer/layer.js"></script>
+<script type="text/javascript" src="__JS__/function.js"></script>
+<script type="text/javascript" src="__JS__/plugins/layer/layer.js"></script>
 <script type="text/javascript">
     var app = angular.module('myAg', []);
     app.controller('myCompany', function($scope) {

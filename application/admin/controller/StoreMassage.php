@@ -18,7 +18,6 @@ use think\facade\Session;
  */
 class StoreMassage extends Basic
 {
-    //显示门店列表
     /**
      * 显示推拿门店 门店列表
      * @return mixed
@@ -27,7 +26,13 @@ class StoreMassage extends Basic
         return $this->fetch();
     }
 
-    //获取推拿门店门店列表
+    /**
+     * 获取推拿门店列表
+     * @return string|\think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function StoreMassageList(){
         $data = Request::instance()->post();
         $list = Db::name('store_massage')
@@ -41,5 +46,12 @@ class StoreMassage extends Basic
         }
     }
 
+    /**
+     * 显示推拿门店添加门店页面
+     * @return mixed
+     */
+    public function StoreMassageAddView(){
+        return $this->fetch();
+    }
 
 }

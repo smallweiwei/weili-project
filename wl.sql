@@ -86,11 +86,11 @@ CREATE TABLE `wl_auth_rule` (
 -- ----------------------------
 -- Records of wl_auth_rule
 -- ----------------------------
-INSERT INTO `wl_auth_rule` VALUES ('1', '0', 'Manager', '管理员管理', '1', '1', '', 'fa-users', '1', '2019-01-25 17:56:16');
+INSERT INTO `wl_auth_rule` VALUES ('1', '0', 'manager', '管理员管理', '1', '1', '', 'fa-users', '1', '2019-01-25 17:56:16');
 INSERT INTO `wl_auth_rule` VALUES ('2', '1', 'managerView', '管理员列表', '1', '1', '', null, '1', '2019-01-26 12:22:10');
 INSERT INTO `wl_auth_rule` VALUES ('3', '1', 'roleView', '角色列表', '1', '1', '', null, '2', '2019-01-26 10:03:20');
 INSERT INTO `wl_auth_rule` VALUES ('4', '1', 'authView', '权限列表', '1', '1', '', null, '3', '2019-01-25 17:01:00');
-INSERT INTO `wl_auth_rule` VALUES ('5', '0', 'System', '系统管理', '1', '2', '', 'fa-gear', '2', '2019-01-25 17:50:44');
+INSERT INTO `wl_auth_rule` VALUES ('5', '0', 'system', '系统管理', '1', '2', '', 'fa-gear', '2', '2019-01-25 17:50:44');
 INSERT INTO `wl_auth_rule` VALUES ('6', '5', 'routeView', '路由列表', '1', '2', '', null, '1', '2019-01-26 14:03:35');
 
 -- ----------------------------

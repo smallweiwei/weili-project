@@ -12,7 +12,7 @@ use think\facade\Request;
 use think\Db;
 /**
  * 门店管理控制器
- * Class Store
+ * Class store
  * @package app\admin\controller
  */
 class Store extends Basic
@@ -32,7 +32,7 @@ class Store extends Basic
         $data = Request::instance()->post();
         $list = Db::name('store')
             ->order($data['sort'],$data['order'])
-            ->field('s_id,s_name,s_phone,s_address,s_addTime')
+            ->field('s_id,s_name,s_phone,s_address,s_pic,s_addTime')
             ->select();
         if(!empty($list)){
             return json('200','数据获取成功','',$list);
@@ -51,10 +51,13 @@ class Store extends Basic
     }
 
     public function storeAdd(){
-//        $data = Request::instance()->post();
-        $file = Request::file('s_pic');
-        dump($file->getInfo());
-        exit;
-//        dump($data);
+        $data = Request::instance()->post();
+        $list = Db::name('store')
+            ->insert($data);
+        if(!empty($list)){
+            return json('200','添加成功','','');
+        }else{
+            return json('-5100','门店添加失败','','');
+        }
     }
 }

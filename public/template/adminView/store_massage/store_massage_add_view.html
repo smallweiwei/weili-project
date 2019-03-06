@@ -1,5 +1,5 @@
 {extend name="public:head" /}
-{block name="title"}添加门店信息{/block}
+{block name="title"}添加推拿门店信息{/block}
 {block name="css"}
 
 {/block}
@@ -11,9 +11,9 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
                         <span class="essential">*</span>
-                        &nbsp;&nbsp;门店名称</label>
+                        &nbsp;&nbsp;推拿门店名称</label>
                     <div class="col-sm-10">
-                        <input type="text" placeholder="请输入门店名称" required="required" class="form-control" name="s_name" autocomplete="off">
+                        <input type="text" placeholder="请输入推拿门店名称" required="required" class="form-control" name="s_name" autocomplete="off">
                     </div>
                 </div>
                 <div class="hr-line-dashed"></div>
@@ -21,9 +21,9 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
                         <span class="essential">*</span>
-                        &nbsp;&nbsp;门店地址</label>
+                        &nbsp;&nbsp;推拿门店地址</label>
                     <div class="col-sm-10">
-                        <input type="text" placeholder="请输入门店地址"
+                        <input type="text" placeholder="请输入推拿门店地址"
                                required="required" class="form-control" name="s_address" autocomplete="off">
                     </div>
                 </div>
@@ -31,9 +31,9 @@
 
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                        门店电话</label>
+                        推拿门店电话</label>
                     <div class="col-sm-10">
-                        <input type="text" placeholder="请输入门店电话" class="form-control" name="s_phone"
+                        <input type="text" placeholder="请输入推拿门店电话" class="form-control" name="s_phone"
                                autocomplete="off">
                     </div>
                 </div>
@@ -41,10 +41,9 @@
 
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                       门店图片</label>
+                        推拿门店图片</label>
                     <div class="col-sm-10">
-                        <!--<input type="file" name="s_pic" id="s_pic">-->
-                        <input type="text" class="form-control" name="s_pic" onclick="clickUpload()">
+                        <input type="text" class="form-control" autocomplete="off" id="s_pic" name="s_pic" onclick="clickUpload()">
                     </div>
                 </div>
                 <div class="hr-line-dashed"></div>
@@ -63,11 +62,37 @@
 {block name="js"}
 <script type="text/javascript">
     $('#addAjax').on('submit',function (event) {
+        $.ajax({
+            type : 'post',
+            url : "storeAdd.html",
+            async : true,
+            dataType : 'json',
+            data:formData(),
+            success : function(e){
+                console.log(e)
+                if(e.code < 0){
+                    errorMsg(e.msg)
+                }else{
+                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    parent.layer.close(index); //再执行关闭
+                    parent.storeAjax(); //再执行关闭
+                }
+            },error:function (xhr) {
+                if(!errorAjax(xhr.status)){
+                    return false;
+                }
+            },beforeSend:function(){
+                index = layer.msg('添加门店提交中', {
+                    icon: 16,
+                    shade: 0.4,
+                    time:false //取消自动关闭
+                });
+            },
+        })
         event.preventDefault();
     })
-    
+
     function clickUpload() {
-        // layerShow('上传图片','upload_view.html','820','480');
         layer.open({
             type: 2,
             title: '上传图片',
@@ -75,12 +100,13 @@
             btn:['确定','取消'],
             shade: 0.8,
             closeBtn:0,
-            area: ['820px', '550px'],
+            area: ['820px', '400px'],
             content: 'upload_view.html',
-            yes:function(n){
-                var iframeWin1 = window["layui-layer-iframe" + n];
+            yes:function(index){
+                var iframeWin1 = window["layui-layer-iframe" + index];
                 var res = iframeWin1.callbackdata();
-                console.log(res)
+                $('#s_pic').val(res)
+                layer.close(index);
             },
         });
     }
@@ -89,9 +115,10 @@
      * 给子页面传值
      * @returns {Array}  返回数组给子页面
      */
-    function parent() {
+    function Subpage() {
         var data = [];
         data['url'] = 'upload.html?name=store';
+        data['name'] = 'store';
         data['num'] = '1';
         return data
     }

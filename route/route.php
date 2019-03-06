@@ -16,9 +16,9 @@ Route::domain('www.buymelots.com', function () {
 //api路由
 Route::domain('api.buymelots.com', function () {
     Route::rule('/', 'api/index/index');
-    Route::rule('Login', 'api/Login/Login');//登录页面路由
-    Route::rule('manager', 'api/Manager/managerList');
-    Route::rule('managerState','api/Manager/managerState','GET|POST');
+    Route::rule('login', 'api/login/login');//登录页面路由
+    Route::rule('manager', 'api/manager/managerList');
+    Route::rule('managerState','api/manager/managerState','GET|POST');
 });
 
 return [

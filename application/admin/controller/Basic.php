@@ -73,8 +73,7 @@ class Basic extends Controller
     public function upload(){
         $data_get = Request::instance()->get();
         $file = request() -> file('file');
-
-        $info = $file -> validate(['size' => 512000,'ext' => 'jpg,png,jpeg','type' => 'image/jpeg,image/png']) -> move('./static/uploads/'.$data_get['name']);
+        $info = $file -> validate(['size' => 5*1024*1024,'ext' => 'gif,jpg,jpeg,bmp,png','type' => 'image/jpeg,image/png']) -> move('./static/uploads/'.$data_get['name']);
         if($info){
             $mes = $info->getSaveName();         // 文件扩展名
             $ajaxJson['success'] = true;

@@ -14,7 +14,7 @@ use think\facade\Session;
 
 /**
  * 管理员管理控制器
- * Class Manager
+ * Class manager
  * @package app\admin\controller
  */
 class Manager extends Basic

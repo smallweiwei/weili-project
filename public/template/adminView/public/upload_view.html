@@ -15,7 +15,6 @@
                         <div id="dndArea" class="placeholder">
                             <div id="filePicker"></div>
                             <div>或将照片拖到这里，单次最多可选 <span id="upload_num"></span> 张</div>
-                            <!--<p>或将照片拖到这里，单次最多可选</p><p id="upload_num"></p><p>张</p>-->
                         </div>
                     </div>
                     <div class="statusBar" style="display:none;">
@@ -39,20 +38,24 @@
 {/block}
 
 {block name="js"}
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script src="__PUBLIC__/webuploader/webuploader.min.js"></script>
 <script type="text/javascript">
-    var array = parent.parent()//父页面数据
+    var array = parent.Subpage()//父页面数据
     var BASE_URL = 'js/plugins/webuploader';
     var UPLOAD_URL = array.url;
     var UPLOAD_NUM = array.num;
+    var UPLOAD_NAME = array.name;
     $('#upload_num').html(array.num)
+
 </script>
-<script src="__PUBLIC__/webuploader/webuploader.min.js"></script>
+
 <script src="__PUBLIC__/webuploader/webuploader-demo.min.js"></script>
 <script type="text/javascript">
+
 
     var callbackdata = function () {
         return $('#img_pic').val();
     }
-
 </script>
 {/block}
