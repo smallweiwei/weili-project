@@ -14,9 +14,8 @@ Route::domain('admin.buymelots.com', function () {
     Route::rule('api_login', 'admin/login/login');//登录验证路由
     Route::rule('logout', 'admin/login/logout');//退出登录路由
     Route::rule('api_admin_id', 'admin/Basic/adminId');//获取登录管理员id
-
     Route::rule('upload','admin/Basic/upload','GET|POST');//上传图片
-    Route::rule('upload_view','admin/Basic/uploadView');//上传图片
+    Route::rule('upload_view','admin/Basic/uploadView');//上传图片页面
 
 
 //管理员管理-管理员列表操作路由  start
@@ -63,7 +62,7 @@ Route::domain('admin.buymelots.com', function () {
 
 //门店管理 start
     Route::rule('storeListView','admin/store/storeListView');//门店列表页面
-    Route::rule('storeList','admin/store/storeList','POST'); //获取门店列表
+    Route::rule('storeList','admin/store/storeList'); //获取门店列表
     Route::rule('storeAddView','admin/store/storeAddView'); //添加门店页面
     Route::rule('storeAdd','admin/store/storeAdd'); //添加门店信息方法
 //门店管理 end
@@ -72,7 +71,9 @@ Route::domain('admin.buymelots.com', function () {
     Route::rule('store_massage_list_view','admin/StoreMassage/StoreMassageListView');//推拿门店 门店列表
     Route::rule('store_massage_list','admin/StoreMassage/StoreMassageList','POST');//推拿门店 门店列表
     Route::rule('store_massage_add_view','admin/StoreMassage/StoreMassageAddView');//推拿门店 添加推拿门店页面
+    Route::rule('store_massage_add','admin/StoreMassage/StoreMassageAdd');//推拿门店 添加推拿门店方法
 
+    Route::rule('staff_list_view','admin/StoreMassage/staffListView');//显示推拿门店 员工列表
 //推拿管理  end
 
 });

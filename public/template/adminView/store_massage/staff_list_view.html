@@ -1,17 +1,17 @@
 {extend name="public:head" /}
-{block name="title"}推拿门店列表{/block}
+{block name="title"}推拿员工列表{/block}
 {block name="css"}
 <style type="text/css">
-img{
-    width: 50px;
-}
+    img{
+        width: 50px;
+    }
 </style>
 {/block}
 {block name="body"}
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="ibox float-e-margins">
         <div class="ibox-title">
-            <h5>推拿门店列表</h5>
+            <h5>推拿员工列表</h5>
             <div class="ibox-tools">
                 <a class="collapse-link">
                     <i class="fa fa-chevron-up"></i>
@@ -24,9 +24,9 @@ img{
                     <div class="example-wrap">
                         <div class="example">
                             <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
-                                <button type="button" class="btn btn-outline btn-default" onclick="store_massage_add('添加推拿门店','store_massage_add_view.html','100%','100%')" >
+                                <button type="button" class="btn btn-outline btn-default" onclick="store_massage_add('添加推拿员工','store_massage_add_view.html','100%','100%')" >
                                     <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
-                                    添加推拿门店
+                                    添加推拿员工
                                 </button>
                             </div>
                             <table id="exampleTableEvents" data-mobile-responsive="true">
@@ -51,7 +51,7 @@ img{
     $(function () {
         storeMassageAjax()
     })
-    
+
     function storeMassageAjax() {
         $("#exampleTableEvents").bootstrapTable('destroy');//清除table
         $("#exampleTableEvents").bootstrapTable({
@@ -146,15 +146,15 @@ img{
      * @param w 宽度
      * @param h  高度
      */
-    function store_massage_add(title,url,w,h) {
-        var index = layer.open({
-            title:title,
-            type: 2,
-            content: url,
-            area: [w, h],
-            maxmin: true
-        });
-        layer.full(index);
-    }
+    // function store_massage_add(title,url,w,h) {
+    //     var index = layer.open({
+    //         title:title,
+    //         type: 2,
+    //         content: url,
+    //         area: [w, h],
+    //         maxmin: true
+    //     });
+    //     layer.full(index);
+    // }
 </script>
 {/block}

@@ -18,6 +18,8 @@ use think\facade\Session;
  */
 class StoreMassage extends Basic
 {
+
+//推拿门店   门店列表  start
     /**
      * 显示推拿门店 门店列表
      * @return mixed
@@ -35,9 +37,9 @@ class StoreMassage extends Basic
      */
     public function StoreMassageList(){
         $data = Request::instance()->post();
-        $list = Db::name('store_massage')
+        $list = Db::name('massage_store')
             ->order($data['sort'],$data['order'])
-            ->field('sm_id,sm_name,sm_phone,sm_address,sm_pic,sm_time')
+            ->field('ms_id,ms_name,ms_phone,ms_address,ms_pic,ms_time')
             ->select();
         if(!empty($list)){
             return json('200','数据获取成功','',$list);
@@ -53,5 +55,32 @@ class StoreMassage extends Basic
     public function StoreMassageAddView(){
         return $this->fetch();
     }
+
+    /**
+     * 添加推拿门店方法
+     * @return string|\think\response\Json
+     */
+    public function StoreMassageAdd(){
+        $data = Request::instance()->post();
+        $list = Db::name('massage_store')
+            ->insert($data);
+        if(!empty($list)){
+            return json('200','添加成功','','');
+        }else{
+            return json('-9001','添加推拿门店方法','','');
+        }
+    }
+//推拿门店   门店列表  end
+
+//推拿门店  员工列表  start
+
+    /**
+     * 显示推拿门店 员工列表页面
+     * @return mixed
+     */
+    public function staffListView(){
+        return $this->fetch();
+    }
+//推拿门店  员工列表  end
 
 }

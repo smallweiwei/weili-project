@@ -8,8 +8,8 @@
  */
 
 namespace app\admin\controller;
-use think\facade\Request;
 use think\Db;
+use think\facade\Request;
 /**
  * 门店管理控制器
  * Class store
@@ -17,6 +17,8 @@ use think\Db;
  */
 class Store extends Basic
 {
+    protected $order = 'asc';
+
     /**
      * 显示门店列表页面
      * @return mixed
@@ -30,9 +32,10 @@ class Store extends Basic
     public function storeList()
     {
         $data = Request::instance()->post();
+
         $list = Db::name('store')
             ->order($data['sort'],$data['order'])
-            ->field('s_id,s_name,s_phone,s_address,s_pic,s_addTime')
+            ->field('s_id,s_name,s_phone,s_address,s_pic,s_time')
             ->select();
         if(!empty($list)){
             return json('200','数据获取成功','',$list);
@@ -50,6 +53,10 @@ class Store extends Basic
         return $this->fetch();
     }
 
+    /**
+     * 添加门店信息 方法
+     * @return string|\think\response\Json
+     */
     public function storeAdd(){
         $data = Request::instance()->post();
         $list = Db::name('store')
