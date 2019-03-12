@@ -24,7 +24,8 @@
                     <div class="example-wrap">
                         <div class="example">
                             <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
-                                <button type="button" class="btn btn-outline btn-default" onclick="store_massage_add('添加推拿员工','store_massage_add_view.html','100%','100%')" >
+                                <button type="button" class="btn btn-outline btn-default"
+                                        onclick="massage_personnel_add('添加推拿员工','massage_personnel_add_view.html','850','550')" >
                                     <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
                                     添加推拿员工
                                 </button>
@@ -48,6 +49,9 @@
 <script src="__JS__/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
 <script src="__JS__/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
 <script type="text/javascript">
+    let operation = ''
+    let array = [];
+
     $(function () {
         storeMassageAjax()
     })
@@ -55,7 +59,7 @@
     function storeMassageAjax() {
         $("#exampleTableEvents").bootstrapTable('destroy');//清除table
         $("#exampleTableEvents").bootstrapTable({
-            url: "store_massage_list.html",
+            url: "staff_list.html",
             method : 'post',
             search: !0,
             pagination: !0,
@@ -76,42 +80,27 @@
             },
             columns: [
                 {
-                    field: 'ms_id',
+                    field: 'mp_id',
                     align: 'center',
                     title: '编号',
                 },
                 {
+                    field: 'mp_name',
+                    title: '推拿员工名称',
+                    align: 'center',
+                },
+                {
                     field: 'ms_name',
-                    title: '推拿门店名称',
+                    title: '所属推拿门店',
                     align: 'center',
                 },
                 {
-                    field: 'ms_address',
-                    title: '推拿门店地址',
-                    align: 'center',
-                },
-                {
-                    field: 'ms_phone',
-                    title: '推拿门店电话',
-                    align: 'center',
-                },
-                {
-                    field: 'ms_pic',
-                    title: '门店图片',
-                    align: 'center',
-                    width:200,
-                    formatter:function (value,row) {
-                        let html = "<image src='"+value+"'></image>";
-                        return html
-                    }
-                },
-                {
-                    field: 'ms_time',
+                    field: 'mp_time',
                     title: '添加时间',
                     align: 'center',
                 },
                 {
-                    field: 'ms_id',
+                    field: 'mp_id',
                     title: '操作',
                     align: 'center',
                     formatter: function (value, row) {
@@ -125,13 +114,13 @@
                         //         ' onclick="manager_state(\'停用\',\'2\',\''+value+'\',\''+row.m_name+'\',\''+row.ag_id+'\')">' +
                         //         '<a href="javascript:;" >停用</a></span>';
                         // }
-                        // html += '<span style="margin-right: 5px" ' +
-                        //     'onclick="manager_save(\'修改管理员[ '+row.m_name+' ]\',\'managerSaveView.html\',800,500,'+JSON.stringify(row).replace(/"/g, '&quot;')+')">' +
-                        //     '<a href="javascript:;" >修改</a></span>';
-                        //
-                        // html += '<span style="margin-right: 5px" ' +
-                        //     'onclick="manager_del(this,\''+value+'\',\''+row.m_name+'\')">' +
-                        //     '<a href="javascript:;" >删除</a></span>';
+                        html += '<span style="margin-right: 5px" ' +
+                            'onclick="massage_personnel_save(\'修改推拿员工[ '+row.mp_name+' ]\',\'massage_personnel_add_view.html\',800,500,'+JSON.stringify(row).replace(/"/g, '&quot;')+')">' +
+                            '<a href="javascript:;" >修改</a></span>';
+
+                        html += '<span style="margin-right: 5px" ' +
+                            'onclick="manager_del(this,\''+value+'\',\''+row.mp_name+'\')">' +
+                            '<a href="javascript:;" >删除</a></span>';
                         return  html
                     }
                 }
@@ -140,21 +129,34 @@
     }
 
     /**
-     * 显示推拿门店页面
+     * 显示推拿门店员工页面
      * @param title 标题
      * @param url 添加地址
      * @param w 宽度
      * @param h  高度
      */
-    // function store_massage_add(title,url,w,h) {
-    //     var index = layer.open({
-    //         title:title,
-    //         type: 2,
-    //         content: url,
-    //         area: [w, h],
-    //         maxmin: true
-    //     });
-    //     layer.full(index);
-    // }
+    function massage_personnel_add(title,url,w,h) {
+        operation = 'add'
+        array = []
+        layerShow(title,url,w,h);
+    }
+    
+    function massage_personnel_save(title,url,w,h,data) {
+        operation = 'save'
+        array = data
+        layerShow(title,url,w,h);
+    }
+
+    /**
+     * 给子页面传值
+     * @returns {Array}  返回数组给子页面
+     */
+    function parentData() {
+        var data = [];
+        data['operation'] = operation
+        data['data'] = array
+        return data
+    }
+
 </script>
 {/block}

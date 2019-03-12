@@ -97,7 +97,6 @@ function formData()
 {
     var d = {};
     var t = $('form').serializeArray();
-
     var fields = $(":checkbox").serializeArray();//获取多选
     var data = new Array();
     var data_key = ''
@@ -106,6 +105,12 @@ function formData()
     $.each(fields,function () {
         data.push(this.value)
         data_key = this.name
+    })
+
+    let select = $("#massage_time option:selected");
+    $.each(select,function () {
+        data.push(this.value)
+        data_key = 'ms_workShift'
     })
 
     $.each(t, function () {
@@ -197,3 +202,4 @@ function getAdminID()
     })
     return id
 }
+

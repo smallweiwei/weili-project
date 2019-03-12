@@ -8,14 +8,16 @@
  */
 
 namespace app\admin\controller;
-use think\App;
 use think\Controller;
 use think\facade\Session;
 use think\Db;
 use think\facade\Request;
+use \Yurun\Util\Chinese;
+use \Yurun\Util\Chinese\Pinyin;
 
 class Basic extends Controller
 {
+
     public function initialize(){
         //判断有无adminId这个sessnion，如果没有，跳转到登陆界面
         if(!Session::get('adminSession')){
@@ -39,7 +41,7 @@ class Basic extends Controller
             return json('200','菜单获取成功','',classify(array_accord_string($list,'ar_id',Session::get('adminSession.ag_rules'),','),0));
             exit;
         }else{
-            return json('-200','菜单获取失败','','');
+            return json('-10000','菜单获取失败','','');
         }
     }
 
@@ -86,5 +88,15 @@ class Basic extends Controller
         return json_encode($ajaxJson);
     }
 
+    /**
+     * 中文转拼音
+     * @param $name 中文
+     * @return mixed
+     */
+    public function toPinyin($name){
+        $spell = Chinese::toPinyin($name,Pinyin::CONVERT_MODE_PINYIN,false);
+        $array = $spell['pinyin'][0];
+        return !empty($array) ? json('200', '数据获取成功', '', $array ) : json('-10001', '中文转换拼音失败,请重新输入', '', '');
+    }
 
 }

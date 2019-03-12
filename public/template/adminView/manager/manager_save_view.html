@@ -141,7 +141,7 @@
     }
     $('input[name="m_name"]').val(array.data.m_name);
     $('#saveAjax').append('<input type="hidden" name="m_id" value="'+array.data.m_id+'">')
-    $(" select option[value='"+array.data.ag_id+"']").attr("selected","selected");
+    $("select option[value='"+array.data.ag_id+"']").attr("selected","selected");
 
     if(array.data.m_state == 1){
         $("input[name=m_state]:eq(0)").attr("checked",'checked');
