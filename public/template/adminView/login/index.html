@@ -77,14 +77,15 @@
                     if (!errorAjax(xhr.status)) {
                         return false;
                     }
-                } ,beforeSend:function(){
-                    index = layer.msg('登录提交中', {
-                        icon: 16,
-                        shade: 0.4,
-                        time:false //取消自动关闭
-                    });
-                    // return false;
-                },
+                }
+                // ,beforeSend:function(){
+                //     index = layer.msg('登录提交中', {
+                //         icon: 16,
+                //         shade: 0.4,
+                //         time:false //取消自动关闭
+                //     });
+                //     // return false;
+                // },
             })
         }
 

@@ -1,0 +1,160 @@
+{extend name="public:head" /}
+{block name="title"}排班设置{/block}
+{block name="css"}
+<link href="__CSS__/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="__CSS__/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
+<link href="__CSS__/plugins/fullcalendar/fullcalendar.print.css" rel="stylesheet">
+<link href="__CSS__/style.min.css" rel="stylesheet"><base target="_blank">
+{/block}
+{block name="body"}
+<div class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="wrapper wrapper-content">
+            <div class="row animated fadeInDown">
+                <div class="col-sm-3">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>门店 / 员工</h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div id='external-events'></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-9">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>休息时间 </h5>
+                            <div class="ibox-tools" style="color: red">
+                                (点击错误的时间和名称可以删除)
+                            </div>
+                        </div>
+
+                        <div class="ibox-content">
+                            <div id="calendar"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script src="__JS__/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+<script src="__JS__/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
+<script src="__JS__/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="__JS__/jquery-ui.custom.min.js"></script>
+<script src="__JS__/plugins/iCheck/icheck.min.js"></script>
+<script src="__JS__/plugins/fullcalendar/fullcalendar.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        massagePersonnelAjax()
+        //获取推拿门店员工和门店
+        function massagePersonnelAjax() {
+            $.ajax({
+                type : 'get',
+                url : "massage_store_list.html",
+                async : false,
+                dataType : 'json',
+                success : function(e){
+                    if(e.code < 0){
+                        errorMsg(e.msg)
+                    }else{
+                        let html = '';
+                        $.each(e.data,function (key,value) {
+                            html += "<p>"+value.ms_name+"</p>"
+                            $.each(value.store,function (k,v) {
+                                html += "<div class='external-event navy-bg' data-id='"+v.mp_id+"'>"+v.mp_name+"</div>"
+                            })
+                        })
+                        $("#external-events").html(html)
+                    }
+                },error:function (xhr) {
+                    if(!errorAjax(xhr.status)){
+                        return false;
+                    }
+                }
+            })
+        }
+
+        $("#external-events div.external-event").each(function(){
+            var d={title:$.trim($(this).text())};
+            $(this).data("eventObject",d);
+            $(this).draggable({
+                zIndex:999,
+                revert:true,
+                revertDuration:0
+            })
+        });
+
+        $("#calendar").fullCalendar({
+            header:{
+                left:"prev,next",
+                center:"title",
+                right:"month"
+            },
+            editable:true,
+            droppable:true,
+            drop:function(g,h){
+                //拖动到日历 传值给后端
+                // console.log($(this).data())
+                // return false
+                // console.log($(this).data('id'))
+                // return false
+                var f=$(this).data("eventObject");
+                var d=$.extend({},f);
+
+                d.start=g;
+                d.allDay=h;
+                d.id = $(this).data('id')
+                f.h = h;
+                $("#calendar").fullCalendar("renderEvent",d,true);
+                // if($("#drop-remove").is(":checked")){
+                //     $(this).remove()
+                // }
+                // var time = d.start
+                // var day = time.getFullYear() + "-" +((time.getMonth()+1)<10?"0":"")+(time.getMonth()+1)+"-"+(time.getDate()<10?"0":"")+time.getDate();
+                // console.log(day)
+            },
+            dayClick: function(time) {
+
+
+            },
+            eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
+                //日历拖动传值给后端
+
+                // $.post("do.php?action=drag",{
+                //     id:event.id,daydiff:dayDelta,
+                //     minudiff:minuteDelta,allday:allDay},function(msg){
+                //     if(msg!=1){
+                //         alert(msg);
+                //         revertFunc(); //恢复原状
+                //     }
+                // });
+            },
+            events: function(start,end) {
+                // console.log('获取排班数据')
+                // var start = start.getFullYear() + "-" +((start.getMonth()+1)<10?"0":"")+(start.getMonth()+1)+"-"+(start.getDate()<10?"0":"")+start.getDate();
+                // var end = end.getFullYear() + "-" +((end.getMonth()+1)<10?"0":"")+(end.getMonth()+1)+"-"+(end.getDate()<10?"0":"")+end.getDate();
+                // console.log('开始时间',start)
+                // console.log('结束时间',end)
+            },
+            eventClick:function (event, jsEvent, view) {
+                //点击选择
+                console.log(event);
+            }
+        })
+    })
+
+
+
+
+
+
+</script>
+{/block}

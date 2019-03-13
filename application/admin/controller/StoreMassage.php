@@ -186,14 +186,48 @@ class StoreMassage extends Basic
         }
     }
 
+    /**
+     * 修改推拿员工信息
+     * @param $mp_id  员工信息
+     * @return string|\think\response\Json
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
+     */
     public function staffSave($mp_id){
         $data = Request::instance()->post();
         if(array_check_data($this->staffFind(array('mp_id'=>$mp_id)),$data)){
             return json('-9102','无修改信息,请修改推拿员工信息','');
             exit;
         }
+        $list = Db::name('massage_personnel')
+            ->where('mp_id='.$mp_id)
+            ->update($data);
+        if(!empty($list)){
+            return json('200','修改成功','','');
+        }else{
+            return json('-9103','推拿员工信息修改失败','','');
+        }
+    }
 
-
+    /**
+     * 删除推拿员工信息
+     * @param $mp_id 推拿员工id
+     * @return string|\think\response\Json
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public function staffDel($mp_id){
+        $list = Db::name('massage_personnel')
+            ->where('mp_id='.$mp_id)
+            ->delete();
+        if(!empty($list)){
+            return json('200','推拿员工删除成功','','');
+        }else{
+            return json('-9104','推拿员工删除失败','','');
+        }
     }
 
     /**
@@ -204,12 +238,47 @@ class StoreMassage extends Basic
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function staffFind($where){
+    private function staffFind($where){
         return Db::name('massage_personnel')
             ->where($where)
             ->select();
     }
 
+    /**
+     * 获取推拿门店和员工
+     * @return string|\think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function massageStoreList(){
+        $data = array();
+        $massage_store = Db::name('massage_store')
+            ->field('ms_id,ms_name')
+            ->select();
+        foreach ($massage_store as $key=>$value){
+            $massage_personnel = Db::name('massage_personnel')
+                ->where('mp_msId',$value['ms_id'])
+                ->field('mp_id,mp_name')
+                ->select();
+            $data[$key]['store'] = $massage_personnel;
+            $data[$key]['ms_name'] = $value['ms_name'];
+        }
+        return !empty($data) ? json('200', '数据获取成功', '', $data) : json('-9100', '推拿门店员工获取失败', '', '');
+    }
+
 //推拿门店  员工列表  end
+
+//推拿门店  排班设置 start
+
+    /**
+     * 显示推拿门店排班设置
+     * @return mixed
+     */
+    public function schedulingView(){
+        return $this->fetch();
+    }
+
+//推拿门店  排班设置 end
 
 }

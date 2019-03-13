@@ -56,6 +56,7 @@
         storeMassageAjax()
     })
 
+    //更新推拿员工列表
     function storeMassageAjax() {
         $("#exampleTableEvents").bootstrapTable('destroy');//清除table
         $("#exampleTableEvents").bootstrapTable({
@@ -71,7 +72,7 @@
             pageSize: 20,//每页显示多少条数据
             sidePagination: "client",
             pageList: [20, 25, 50, 100],
-            sortName : 'ms_id',
+            sortName : 'mp_id',
             sortOrder : 'asc',
             icons: {
                 refresh: "glyphicon-repeat",
@@ -90,9 +91,28 @@
                     align: 'center',
                 },
                 {
+                    field: 'mp_spell',
+                    title: '推拿员工名称拼音',
+                    align: 'center',
+                },
+                {
                     field: 'ms_name',
                     title: '所属推拿门店',
                     align: 'center',
+                },
+                {
+                    field: 'mp_workShift',
+                    title: '员工上班时间',
+                    align: 'center',
+                    formatter:function (value) {
+                        if(value == 1){
+                            return '全天';
+                        }else if(value == 2){
+                            return '上午'
+                        }else{
+                            return '下午';
+                        }
+                    }
                 },
                 {
                     field: 'mp_time',
@@ -105,21 +125,12 @@
                     align: 'center',
                     formatter: function (value, row) {
                         var html = '';
-                        // if(row.m_state == '2'){
-                        //     html += '<span style="margin-right: 5px"' +
-                        //         ' onclick="manager_state(\'启用\',\'1\',\''+value+'\',\''+row.m_name+'\',\''+row.ag_id+'\')">' +
-                        //         '<a href="javascript:;">启用</a></span>';
-                        // }else{
-                        //     html += '<span style="margin-right: 5px"' +
-                        //         ' onclick="manager_state(\'停用\',\'2\',\''+value+'\',\''+row.m_name+'\',\''+row.ag_id+'\')">' +
-                        //         '<a href="javascript:;" >停用</a></span>';
-                        // }
                         html += '<span style="margin-right: 5px" ' +
                             'onclick="massage_personnel_save(\'修改推拿员工[ '+row.mp_name+' ]\',\'massage_personnel_add_view.html\',800,500,'+JSON.stringify(row).replace(/"/g, '&quot;')+')">' +
                             '<a href="javascript:;" >修改</a></span>';
 
                         html += '<span style="margin-right: 5px" ' +
-                            'onclick="manager_del(this,\''+value+'\',\''+row.mp_name+'\')">' +
+                            'onclick="massage_personnel_del(this,\''+value+'\',\''+row.mp_name+'\')">' +
                             '<a href="javascript:;" >删除</a></span>';
                         return  html
                     }
@@ -140,11 +151,38 @@
         array = []
         layerShow(title,url,w,h);
     }
-    
+
+    /**
+     * 显示推拿员工页面
+     * @param title
+     * @param url
+     * @param w
+     * @param h
+     * @param data
+     */
     function massage_personnel_save(title,url,w,h,data) {
         operation = 'save'
         array = data
         layerShow(title,url,w,h);
+    }
+
+    function massage_personnel_del(obj,id,mp_name) {
+        layer.confirm('确认要删除['+mp_name+']员工吗？',function(){
+            $.ajax({
+                type: "get",
+                url: "massage_personnel_del.html?mp_id="+id,
+                dataType: "json",
+                crossDomain: true,
+                success: function (data) {
+                    if(data.code < 0){
+                        errorMsg(data.msg)
+                    }else{
+                        storeMassageAjax()
+                    }
+                }
+            })
+            layer.closeAll('dialog');
+        })
     }
 
     /**
@@ -157,6 +195,7 @@
         data['data'] = array
         return data
     }
+
 
 </script>
 {/block}
