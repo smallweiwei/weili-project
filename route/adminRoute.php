@@ -86,6 +86,8 @@ Route::domain('admin.buymelots.com', function () {
     Route::rule('massage_store_list','admin/StoreMassage/massageStoreList');//获取推拿门店员工
 
     Route::rule('scheduling_view','admin/StoreMassage/schedulingView');//显示排班设置页面
+    Route::rule('scheduling_list','admin/StoreMassage/schedulingList','POST');//获取排班设置页面
+    Route::rule('scheduling_add','admin/StoreMassage/schedulingAdd','POST');//显示排班设置页面
 
 //推拿管理  end
 

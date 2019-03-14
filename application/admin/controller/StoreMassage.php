@@ -279,6 +279,54 @@ class StoreMassage extends Basic
         return $this->fetch();
     }
 
+    /**
+     * 获取推拿门店排班设置
+     * @return string|\think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function schedulingList(){
+        $data = Request::instance()->post();
+        $list = Db::name('massage_rest')
+            ->alias('mr')
+            ->join('massage_personnel mp','mr.mr_mpId = mp.mp_id')
+            ->where('mr.mr_date','>=',$data['start'])
+            ->where('mr.mr_date','<',$data['end'])
+            ->field('mp.mp_name,mr.mr_date,mr.mr_id')
+            ->select();
+        if(!empty($list)){
+            return json('200','排班数据获取成功','',$list);
+        }else{
+            return json('-9200','排班设置获取失败','','');
+        }
+    }
+
+    /**
+     * 添加推拿门店排班设置
+     * @return string|\think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function schedulingAdd(){
+        $data = Request::instance()->post();
+        $find = Db::name('massage_rest')
+            ->where($data)
+            ->find();
+        if(!empty($find)){
+            return json('-9204','数据重复，请刷新后重试','','');
+            exit;
+        }
+        $list = Db::name('massage_rest')
+            ->insert($data);
+        if(!empty($list)){
+            return json('200','添加成功','',$list);
+        }else{
+            return json('-9201','排班设置添加失败,请刷新后重新拉取','','');
+        }
+    }
+
 //推拿门店  排班设置 end
 
 }

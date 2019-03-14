@@ -203,3 +203,12 @@ function getAdminID()
     return id
 }
 
+/**
+ * 时间戳转换成时间
+ * @param time 时间戳
+ * @returns {string} 返回时间 年-月-日
+ */
+function getLocalTime(time) {
+    let t = new Date(parseInt(time));
+    return t.getFullYear() + "-" +((t.getMonth()+1)<10?"0":"")+(t.getMonth()+1)+"-"+(t.getDate()<10?"0":"")+ (t.getDate());
+}

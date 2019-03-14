@@ -53,7 +53,7 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-        massagePersonnelAjax()
+        massagePersonnelAjax();
         //获取推拿门店员工和门店
         function massagePersonnelAjax() {
             $.ajax({
@@ -67,11 +67,11 @@
                     }else{
                         let html = '';
                         $.each(e.data,function (key,value) {
-                            html += "<p>"+value.ms_name+"</p>"
+                            html += "<p>"+value.ms_name+"</p>";
                             $.each(value.store,function (k,v) {
-                                html += "<div class='external-event navy-bg' data-id='"+v.mp_id+"'>"+v.mp_name+"</div>"
+                                html += "<div class='external-event navy-bg' data-name='"+v.mp_name+"' data-id='"+v.mp_id+"'>"+v.mp_name+"</div>"
                             })
-                        })
+                        });
                         $("#external-events").html(html)
                     }
                 },error:function (xhr) {
@@ -101,48 +101,83 @@
             editable:true,
             droppable:true,
             drop:function(g,h){
+                //左边拖动到右边写进数据库
+                var time = g.getFullYear() + "-" +((g.getMonth()+1)<10?"0":"")+(g.getMonth()+1)+"-"+(g.getDate()<10?"0":"")+g.getDate();
                 //拖动到日历 传值给后端
-                // console.log($(this).data())
-                // return false
-                // console.log($(this).data('id'))
-                // return false
-                var f=$(this).data("eventObject");
-                var d=$.extend({},f);
-
-                d.start=g;
-                d.allDay=h;
+                let mr_mpId = $(this).data('id')
+                let name = $(this).data('name')
+                var f = $(this).data("eventObject");
+                var d = $.extend({},f);
+                d.start = g;
+                d.end = g;
+                d.allDay = h;
                 d.id = $(this).data('id')
-                f.h = h;
-                $("#calendar").fullCalendar("renderEvent",d,true);
-                // if($("#drop-remove").is(":checked")){
-                //     $(this).remove()
-                // }
-                // var time = d.start
-                // var day = time.getFullYear() + "-" +((time.getMonth()+1)<10?"0":"")+(time.getMonth()+1)+"-"+(time.getDate()<10?"0":"")+time.getDate();
-                // console.log(day)
-            },
-            dayClick: function(time) {
+                layer.confirm(name+' ('+time+')为休息时间',{title:'提示信息'},function(){
+                    $.post("scheduling_add.html",{
+                        mr_mpId:mr_mpId,
+                        mr_date:time
+                    },function(e){
+                        let array = JSON.parse(e)
+                        if(array.code < 0){
+                            errorMsg(array.msg)
+                        }else{
+                            layer.closeAll('dialog');
+                            $("#calendar").fullCalendar("renderEvent",d,true);
+                        }
+                    });
 
-
+                })
             },
             eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
                 //日历拖动传值给后端
+                let t = event.start
+                // $("#calendar").fullCalendar( 'refetchEvents' );//加载数据
+                // console.log('拖动')
+                let time = new Date(t).getTime();
+                let start = getLocalTime(time - (dayDelta*(24*60*60*1000)))
+                var end = t.getFullYear() + "-" +((t.getMonth()+1)<10?"0":"")+(t.getMonth()+1)+"-"+(t.getDate()<10?"0":"")+t.getDate();
+                console.log('拖动前的时间：',start)
+                console.log('拖动后的时间：',end)
+                console.log(event)
 
-                // $.post("do.php?action=drag",{
-                //     id:event.id,daydiff:dayDelta,
-                //     minudiff:minuteDelta,allday:allDay},function(msg){
-                //     if(msg!=1){
-                //         alert(msg);
-                //         revertFunc(); //恢复原状
-                //     }
-                // });
+                // console.log(t - (dayDelta))
+                // console.log(dayDelta)
+                // console.log(t.getDate() - dayDelta)
+                // var start = t.getFullYear() + "-" +((t.getMonth()+1)<10?"0":"")+(t.getMonth()+1)+"-"+(t.getDate()<10?"0":"")+ (t.getDate() - dayDelta);
+                // console.log('拖动后的时间:',end)
+                // console.log('拖动前的时间:',start)
+                // console.log(allDay)
+                // console.log(revertFunc)
+
+                $.post("scheduling_save.php?mr_id="+event.id+'&mr_date='+start,{
+                    mr_date:end
+                },function(e){
+                    console.log(e)
+                });
             },
-            events: function(start,end) {
-                // console.log('获取排班数据')
-                // var start = start.getFullYear() + "-" +((start.getMonth()+1)<10?"0":"")+(start.getMonth()+1)+"-"+(start.getDate()<10?"0":"")+start.getDate();
-                // var end = end.getFullYear() + "-" +((end.getMonth()+1)<10?"0":"")+(end.getMonth()+1)+"-"+(end.getDate()<10?"0":"")+end.getDate();
-                // console.log('开始时间',start)
-                // console.log('结束时间',end)
+            events: function(start,end,timezone) {
+                // console.log('加载数据')
+                //加载排班数据  start 开始时间  end  结束时间
+                var start = start.getFullYear() + "-" +((start.getMonth()+1)<10?"0":"")+(start.getMonth()+1)+"-"+(start.getDate()<10?"0":"")+start.getDate();
+                var end = end.getFullYear() + "-" +((end.getMonth()+1)<10?"0":"")+(end.getMonth()+1)+"-"+(end.getDate()<10?"0":"")+end.getDate();
+
+                $.post("scheduling_list.html",{
+                    start:start,
+                    end:end
+                },function(e){
+                    let array = JSON.parse(e)
+                    var events = [];
+                    $.each(array.data,function(i,c) {
+                        events.push({
+                            id: c.mr_id ,
+                            title: c.mp_name,
+                            start: c.mr_date ,
+                            className:'bg-color',
+                        });
+                    })
+                    timezone(events);
+                });
+
             },
             eventClick:function (event, jsEvent, view) {
                 //点击选择
