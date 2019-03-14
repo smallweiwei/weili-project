@@ -293,7 +293,7 @@ class StoreMassage extends Basic
             ->join('massage_personnel mp','mr.mr_mpId = mp.mp_id')
             ->where('mr.mr_date','>=',$data['start'])
             ->where('mr.mr_date','<',$data['end'])
-            ->field('mp.mp_name,mr.mr_date,mr.mr_id')
+            ->field('mp.mp_name,mr.mr_date,mr.mr_id,mr.mr_mpId')
             ->select();
         if(!empty($list)){
             return json('200','排班数据获取成功','',$list);
@@ -324,6 +324,29 @@ class StoreMassage extends Basic
             return json('200','添加成功','',$list);
         }else{
             return json('-9201','排班设置添加失败,请刷新后重新拉取','','');
+        }
+    }
+
+    public function schedulingSave($id,$date,$mp_id){
+        //一,修改前判断修改后的时间有没有用户预约服务
+        $data = Request::instance()->post();
+        $find = Db::name('massage_rest')
+            ->where($data)
+            ->where('mr_mpId',$mp_id)
+            ->find();
+        if(!empty($find)){
+            return json('-9205','修改的日期已存在,请重新选择日期','','');
+            exit;
+        }
+
+        $list = Db::name('massage_rest')
+            ->where('mr_id',$id)
+            ->update($data);
+
+        if(!empty($list)){
+            return json('200','排班修改成功','',$list);
+        }else{
+            return json('-9206','排班修改失败','','');
         }
     }
 

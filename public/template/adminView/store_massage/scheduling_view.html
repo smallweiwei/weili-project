@@ -132,27 +132,21 @@
                 //日历拖动传值给后端
                 let t = event.start
                 // $("#calendar").fullCalendar( 'refetchEvents' );//加载数据
-                // console.log('拖动')
+
                 let time = new Date(t).getTime();
                 let start = getLocalTime(time - (dayDelta*(24*60*60*1000)))
-                var end = t.getFullYear() + "-" +((t.getMonth()+1)<10?"0":"")+(t.getMonth()+1)+"-"+(t.getDate()<10?"0":"")+t.getDate();
-                console.log('拖动前的时间：',start)
-                console.log('拖动后的时间：',end)
-                console.log(event)
+                let end = t.getFullYear() + "-" +((t.getMonth()+1)<10?"0":"")+(t.getMonth()+1)+"-"+(t.getDate()<10?"0":"")+t.getDate();
 
-                // console.log(t - (dayDelta))
-                // console.log(dayDelta)
-                // console.log(t.getDate() - dayDelta)
-                // var start = t.getFullYear() + "-" +((t.getMonth()+1)<10?"0":"")+(t.getMonth()+1)+"-"+(t.getDate()<10?"0":"")+ (t.getDate() - dayDelta);
-                // console.log('拖动后的时间:',end)
-                // console.log('拖动前的时间:',start)
-                // console.log(allDay)
-                // console.log(revertFunc)
 
-                $.post("scheduling_save.php?mr_id="+event.id+'&mr_date='+start,{
+                $.post("scheduling_save.html?id="+event.mr_id+'&date='+start+'&mp_id='+event.mp_id,{
                     mr_date:end
                 },function(e){
-                    console.log(e)
+                    let array = JSON.parse(e)
+                    if(array.code < 0){
+                        errorMsg(array.msg)
+
+                    }
+                    $("#calendar").fullCalendar( 'refetchEvents' );
                 });
             },
             events: function(start,end,timezone) {
@@ -169,7 +163,8 @@
                     var events = [];
                     $.each(array.data,function(i,c) {
                         events.push({
-                            id: c.mr_id ,
+                            mr_id: c.mr_id ,
+                            mp_id:c.mr_mpId,
                             title: c.mp_name,
                             start: c.mr_date ,
                             className:'bg-color',
