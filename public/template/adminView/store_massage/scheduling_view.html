@@ -102,12 +102,12 @@
             droppable:true,
             drop:function(g,h){
                 //左边拖动到右边写进数据库
-                var time = g.getFullYear() + "-" +((g.getMonth()+1)<10?"0":"")+(g.getMonth()+1)+"-"+(g.getDate()<10?"0":"")+g.getDate();
+                let time = g.getFullYear() + "-" +((g.getMonth()+1)<10?"0":"")+(g.getMonth()+1)+"-"+(g.getDate()<10?"0":"")+g.getDate();
                 //拖动到日历 传值给后端
                 let mr_mpId = $(this).data('id')
                 let name = $(this).data('name')
-                var f = $(this).data("eventObject");
-                var d = $.extend({},f);
+                let f = $(this).data("eventObject");
+                let d = $.extend({},f);
                 d.start = g;
                 d.end = g;
                 d.allDay = h;
@@ -136,7 +136,6 @@
                 let time = new Date(t).getTime();
                 let start = getLocalTime(time - (dayDelta*(24*60*60*1000)))
                 let end = t.getFullYear() + "-" +((t.getMonth()+1)<10?"0":"")+(t.getMonth()+1)+"-"+(t.getDate()<10?"0":"")+t.getDate();
-
 
                 $.post("scheduling_save.html?id="+event.mr_id+'&date='+start+'&mp_id='+event.mp_id,{
                     mr_date:end
@@ -176,7 +175,27 @@
             },
             eventClick:function (event, jsEvent, view) {
                 //点击选择
-                console.log(event);
+                let g = event.start
+                let time = g.getFullYear() + "-" +((g.getMonth()+1)<10?"0":"")+(g.getMonth()+1)+"-"+(g.getDate()<10?"0":"")+g.getDate();
+                console.log(event)
+                layer.confirm('是否删除'+event.title+'['+time+']休息时间',{title:'提示信息'},function(){
+                    $.ajax({
+                        type: "delete",
+                        url: "scheduling_del.html?mr_id="+event.mr_id,
+                        dataType: "json",
+                        crossDomain: true,
+                        success: function (data) {
+                            if(data.code < 0){
+                                errorMsg(data.msg)
+                            }else{
+                                $("#calendar").fullCalendar( 'refetchEvents' );
+                            }
+                        },error:function (e) {
+                            errorAjax(e.status)
+                        }
+                    })
+                    layer.closeAll('dialog');
+                })
             }
         })
     })

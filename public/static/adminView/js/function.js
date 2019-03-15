@@ -141,7 +141,10 @@ function strReplace(str)
  */
 function errorAjax(data)
 {
-    if(data != '200'){
+    if(data == '404'){
+        layer.msg('服务器异常',{time: 2000, icon:5});
+        return false;
+    }else if(data != '200'){
         layer.msg('数据提交失败',{time: 2000, icon:5});
         return false;
     }else{

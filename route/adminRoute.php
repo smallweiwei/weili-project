@@ -89,6 +89,8 @@ Route::domain('admin.buymelots.com', function () {
     Route::rule('scheduling_list','admin/StoreMassage/schedulingList','POST');//获取排班设置页面
     Route::rule('scheduling_add','admin/StoreMassage/schedulingAdd','POST');//添加排班时间方法
     Route::rule('scheduling_save','admin/StoreMassage/schedulingSave','POST');//修改排班时间
+    Route::rule('scheduling_del','admin/StoreMassage/schedulingDel','DELETE');//删除指定排班时间
+
 
 
 //推拿管理  end

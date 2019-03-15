@@ -327,6 +327,18 @@ class StoreMassage extends Basic
         }
     }
 
+    /**
+     * 修改推拿员工休息时间
+     * @param $id  推拿员工休息表id
+     * @param $date 修改前的时间
+     * @param $mp_id  推拿员工id
+     * @return string|\think\response\Json
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws \think\exception\PDOException
+     */
     public function schedulingSave($id,$date,$mp_id){
         //一,修改前判断修改后的时间有没有用户预约服务
         $data = Request::instance()->post();
@@ -347,6 +359,24 @@ class StoreMassage extends Basic
             return json('200','排班修改成功','',$list);
         }else{
             return json('-9206','排班修改失败','','');
+        }
+    }
+
+    /**
+     * 删除排班休息时间
+     * @param $mr_id 排班休息时间表id
+     * @return string|\think\response\Json
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public function schedulingDel($mr_id){
+        $list = Db::name('massage_rest')
+            ->where('mr_id',$mr_id)
+            ->delete();
+        if(!empty($list)){
+            return json('200','删除成功','',$list);
+        }else{
+            return json('-9203','排班设置删除失败','','');
         }
     }
 
