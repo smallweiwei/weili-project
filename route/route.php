@@ -14,7 +14,8 @@ Route::domain('www.buymelots.com', function () {
 });
 
 Route::domain('massage.buymelots.com', function () {
-    Route::rule('/', 'massage/index/index');
+    Route::rule('index', 'massage/index/weixin');
+    Route::rule('weixinApi', 'massage/index/weixin');
 });
 
 //api路由

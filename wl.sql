@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
--- Host: localhost    Database: wl
+-- Host: localhost    Database: weimeiyi
 -- ------------------------------------------------------
 -- Server version	5.7.17
 
@@ -16,12 +16,12 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Current Database: `wl`
+-- Current Database: `weimeiyi`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `wl` /*!40100 DEFAULT CHARACTER SET latin1 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `weimeiyi` /*!40100 DEFAULT CHARACTER SET latin1 */;
 
-USE `wl`;
+USE `weimeiyi`;
 
 --
 -- Table structure for table `wl_auth_group`
