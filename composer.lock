@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0db13db85050b05deb2c5f59fcffac2b",
+    "content-hash": "3b311609c3a425a82a0ac80cdcb8c212",
     "packages": [
         {
             "name": "easywechat-composer/easywechat-composer",
@@ -310,59 +310,6 @@
                 "psr-3"
             ],
             "time": "2018-11-05T09:00:11+00:00"
-        },
-        {
-            "name": "naixiaoxin/think-wechat",
-            "version": "1.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/qiqizjl/think-wechat.git",
-                "reference": "ef37f42de632fe0c2e5ef0a8e23960241d41139b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/qiqizjl/think-wechat/zipball/ef37f42de632fe0c2e5ef0a8e23960241d41139b",
-                "reference": "ef37f42de632fe0c2e5ef0a8e23960241d41139b",
-                "shasum": ""
-            },
-            "require": {
-                "overtrue/wechat": "~4.0",
-                "topthink/framework": "~5.1"
-            },
-            "type": "think-extend",
-            "extra": {
-                "think-config": {
-                    "wechat": "src/config.php"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Naixiaoxin\\ThinkWechat\\": "src/"
-                },
-                "files": [
-                    "src/helper.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "耐小心",
-                    "email": "qiqizjl@qq.com"
-                }
-            ],
-            "description": "EasyWechat For Thnkphp5.1+",
-            "keywords": [
-                "easywechat",
-                "sdk",
-                "think",
-                "thinkphp",
-                "wechat",
-                "weixin"
-            ],
-            "time": "2019-02-12T16:40:49+00:00"
         },
         {
             "name": "overtrue/socialite",

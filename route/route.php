@@ -13,11 +13,6 @@ Route::domain('www.buymelots.com', function () {
     Route::rule('/', 'home/index/index');
 });
 
-Route::domain('massage.buymelots.com', function () {
-    Route::rule('index', 'massage/index/weixin');
-    Route::rule('weixinApi', 'massage/index/weixin');
-});
-
 //api路由
 Route::domain('api.buymelots.com', function () {
     Route::rule('/', 'api/index/index');
