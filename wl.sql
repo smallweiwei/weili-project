@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-03-19 18:37:21
+Date: 2019-03-20 18:40:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -283,3 +283,29 @@ CREATE TABLE `wl_store` (
 -- ----------------------------
 INSERT INTO `wl_store` VALUES ('1', '金沙店乐婴岛', '18927543087', './static/uploads/store/20190306\\f415ff7ce750cb5c01175db33222ec90.png', '广东省广州市海珠区金沙路16至20号首层商铺自编之十二', '2019-03-06 10:34:43');
 INSERT INTO `wl_store` VALUES ('2', '万达店乐婴岛', '17728026810', './static/uploads/store/20190306\\312193fdfcf570fa778aff40bae550ac.jpg', '桂城街道桂澜北路28号南海万达广场南7栋235号铺', '2019-03-06 10:37:28');
+
+-- ----------------------------
+-- Table structure for wl_users
+-- ----------------------------
+DROP TABLE IF EXISTS `wl_users`;
+CREATE TABLE `wl_users` (
+  `u_user_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '表id',
+  `u_password` varchar(32) NOT NULL DEFAULT '' COMMENT '密码',
+  `u_sex` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0 保密 1 男 2 女',
+  `u_mobile` varchar(20) DEFAULT NULL COMMENT '手机号码',
+  `u_oauth` varchar(10) DEFAULT '' COMMENT '第三方来源 wx weibo alipay',
+  `u_openid` varchar(100) DEFAULT NULL COMMENT '第三方唯一标示',
+  `u_unionId` varchar(100) DEFAULT NULL COMMENT '公众号和小程序共有的id',
+  `u_head_pic` varchar(255) DEFAULT NULL COMMENT '头像',
+  `u_country` char(50) DEFAULT '0' COMMENT '国家',
+  `u_province` char(50) DEFAULT '0' COMMENT '省份',
+  `u_city` char(50) DEFAULT '0' COMMENT '市区',
+  `u_nickname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '第三方返回昵称',
+  `u_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP COMMENT '注册时间',
+  PRIMARY KEY (`u_user_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of wl_users
+-- ----------------------------
+INSERT INTO `wl_users` VALUES ('1', '', '1', null, 'weixin', 'o_Aqa1OK0wuGazh3vhFyNfCcuUak', null, 'http://thirdwx.qlogo.cn/mmopen/vi_32/k3r9YIaWdlkax86PLglXP0bKnMEn3d9lHgyQJXfErQ7LnzrVrWQLxdxia0KStY0U4cjXngK241ck8PUFzAGVic4Q/132', '中国', '广东', '揭阳', 'Serena', '0000-00-00 00:00:00');

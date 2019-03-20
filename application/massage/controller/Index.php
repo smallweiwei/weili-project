@@ -7,8 +7,4 @@ class Index extends Basic
     {
         return $this->fetch();
     }
-
-
-
-
 }
