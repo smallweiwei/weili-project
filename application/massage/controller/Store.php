@@ -17,6 +17,11 @@ class Store extends Basic
     {
         if(!parent::initialize()){
             Header("Location: error.html");
+            exit;
+        }
+
+        if(empty(Cookie::get('u_mobile'))){
+            Header("Location: register.html");
         }
     }
 
@@ -26,7 +31,6 @@ class Store extends Basic
 
     //显示推拿门店列表
     public function massageList(){
-        dump(Cookie::get('u_nickname'));
         return $this->fetch();
     }
 

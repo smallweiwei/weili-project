@@ -32,15 +32,16 @@ class Weixin extends Controller
     }
 
     public function weixinApi(){
+//        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $app = Factory::officialAccount($this->config);
         $app->server->push(function ($message) {
-            return "您好！欢迎关注测试号";
+            return "您好！欢迎关注公众号";
         });
         $buttons = [
             [
                 "type"      => "view",
                 "name"       => "推拿预约",
-                "url"       => "https://massage.buymelots.com/massage.html",
+                "url"       => "https://wx.94vessel.cn",
             ],
         ];
         $app->menu->create($buttons);

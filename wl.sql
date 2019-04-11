@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-03-20 18:40:36
+Date: 2019-04-11 18:31:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -98,7 +98,7 @@ INSERT INTO `wl_auth_rule` VALUES ('9', '0', 'WeChat', '微信管理', '1', '1',
 INSERT INTO `wl_auth_rule` VALUES ('10', '9', 'weChatView', '微信基础设置', '1', '1', '', '', '1', '2019-02-19 17:07:59');
 INSERT INTO `wl_auth_rule` VALUES ('11', '0', 'Store', '门店管理', '1', '1', '', 'fa-university', '3', '2019-03-18 10:18:55');
 INSERT INTO `wl_auth_rule` VALUES ('12', '11', 'storeListView', '门店列表', '1', '1', '', '', '1', '2019-02-20 10:30:55');
-INSERT INTO `wl_auth_rule` VALUES ('13', '0', 'StoreMassage', '门店推拿管理', '1', '2', '', 'fa-university', '4', '2019-03-18 10:25:22');
+INSERT INTO `wl_auth_rule` VALUES ('13', '0', 'StoreMassage', '门店推拿管理', '1', '1', '', 'fa-university', '4', '2019-04-09 10:07:09');
 INSERT INTO `wl_auth_rule` VALUES ('14', '13', 'staff_list_view', '员工列表', '1', '1', '', '', '2', '2019-03-07 16:58:26');
 INSERT INTO `wl_auth_rule` VALUES ('15', '13', 'store_massage_list_view', '推拿门店列表', '1', '1', '', '', '1', '2019-03-07 16:24:05');
 INSERT INTO `wl_auth_rule` VALUES ('16', '13', 'scheduling_view', '排班设置', '1', '1', '', '', '3', '2019-03-13 11:40:34');
@@ -160,7 +160,7 @@ INSERT INTO `wl_manager` VALUES ('5', 'admin5', '$2y$10$xIONNGE2jWEvtlpGTspC8.FA
 INSERT INTO `wl_manager` VALUES ('6', 'admin6', '$2y$10$xIONNGE2jWEvtlpGTspC8.FA.8W3mcZ1T5Rol.hBYeMbaO1aiv5oO', '0', '2018-12-14 17:51:46', '1', '1');
 INSERT INTO `wl_manager` VALUES ('7', 'admin7', '$2y$10$xIONNGE2jWEvtlpGTspC8.FA.8W3mcZ1T5Rol.hBYeMbaO1aiv5oO', '2', '2018-12-14 17:51:46', '1', '1');
 INSERT INTO `wl_manager` VALUES ('8', 'admin8', '$2y$10$xIONNGE2jWEvtlpGTspC8.FA.8W3mcZ1T5Rol.hBYeMbaO1aiv5oO', '0', '2018-12-14 17:51:46', '1', '1');
-INSERT INTO `wl_manager` VALUES ('9', 'admin9', '$2y$10$xIONNGE2jWEvtlpGTspC8.FA.8W3mcZ1T5Rol.hBYeMbaO1aiv5oO', '2', '2018-12-14 17:51:46', '1', '1');
+INSERT INTO `wl_manager` VALUES ('9', 'admin9', '$2y$10$xIONNGE2jWEvtlpGTspC8.FA.8W3mcZ1T5Rol.hBYeMbaO1aiv5oO', '2', '2019-04-08 17:19:52', '2', '1');
 INSERT INTO `wl_manager` VALUES ('10', 'admin10', '$2y$10$xIONNGE2jWEvtlpGTspC8.FA.8W3mcZ1T5Rol.hBYeMbaO1aiv5oO', '0', '2018-12-14 17:51:46', '1', '1');
 INSERT INTO `wl_manager` VALUES ('13', 'admin', '$2y$10$1GaSULRb.ql0liqiJ875teHUaQVPFNl2l0w9hM5Bv0e4bG30eBlay', '0', '2019-02-14 23:13:48', '2', '2');
 INSERT INTO `wl_manager` VALUES ('14', 'admin1', '$2y$10$TrDJ0MUR42ZS4.hfkx9Y8.3c6XYkd9S9FlszNjVSdV0zvBUlAU7Iq', '0', '2019-02-14 23:14:49', '2', '2');
@@ -262,7 +262,7 @@ CREATE TABLE `wl_massage_store` (
 -- Records of wl_massage_store
 -- ----------------------------
 INSERT INTO `wl_massage_store` VALUES ('1', '金沙店乐婴岛', '18927543087', '广东省广州市海珠区金沙路16至20号首层商铺自编之十二', '0,1,2,3,4,5,6,10,11,12,13,14,15,16,17,18,19', './static/uploads/store_massage/20190307\\e931a095c4a16e5422d96fed044ec2b7.png', '2019-03-18 10:22:12');
-INSERT INTO `wl_massage_store` VALUES ('2', '万达店乐婴岛', '17728026810', '桂城街道桂澜北路28号南海万达广场南7栋235号铺', '0,1,2,3,4,5,6,9,10,11,12,13,14,15,16,17,18,19,20,21', './static/uploads/store_massage/20190307\\6e24f8e6c608b8fd3ac6fd63d0650a97.jpg', '2019-03-18 10:22:14');
+INSERT INTO `wl_massage_store` VALUES ('2', '万达店乐婴岛', '17728026810', '桂城街道桂澜北路28号南海万达广场南7栋235号铺', '0,1,2,3,4,5,6,9,10,11,12,13,14,15,16,17,18,19,20,21', './static/uploads/store_massage/20190307\\312193fdfcf570fa778aff40bae550ac.jpg', '2019-04-09 16:30:16');
 
 -- ----------------------------
 -- Table structure for wl_store
@@ -290,7 +290,7 @@ INSERT INTO `wl_store` VALUES ('2', '万达店乐婴岛', '17728026810', './stat
 DROP TABLE IF EXISTS `wl_users`;
 CREATE TABLE `wl_users` (
   `u_user_id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '表id',
-  `u_password` varchar(32) NOT NULL DEFAULT '' COMMENT '密码',
+  `u_password` varchar(255) NOT NULL DEFAULT '' COMMENT '密码',
   `u_sex` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0 保密 1 男 2 女',
   `u_mobile` varchar(20) DEFAULT NULL COMMENT '手机号码',
   `u_oauth` varchar(10) DEFAULT '' COMMENT '第三方来源 wx weibo alipay',
@@ -301,11 +301,11 @@ CREATE TABLE `wl_users` (
   `u_province` char(50) DEFAULT '0' COMMENT '省份',
   `u_city` char(50) DEFAULT '0' COMMENT '市区',
   `u_nickname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '第三方返回昵称',
-  `u_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP COMMENT '注册时间',
+  `u_time` timestamp NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP COMMENT '注册时间',
   PRIMARY KEY (`u_user_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of wl_users
 -- ----------------------------
-INSERT INTO `wl_users` VALUES ('1', '', '1', null, 'weixin', 'o_Aqa1OK0wuGazh3vhFyNfCcuUak', null, 'http://thirdwx.qlogo.cn/mmopen/vi_32/k3r9YIaWdlkax86PLglXP0bKnMEn3d9lHgyQJXfErQ7LnzrVrWQLxdxia0KStY0U4cjXngK241ck8PUFzAGVic4Q/132', '中国', '广东', '揭阳', 'Serena', '0000-00-00 00:00:00');
+INSERT INTO `wl_users` VALUES ('1', '$2y$10$wjWqgnsW3IJD1oX7oWOKR.E/MjGLoBXw4S3d5LWb1eJ/oEM3C9HC.', '1', '13800138000', 'weixin', 'o_Aqa1OK0wuGazh3vhFyNfCcuUak', null, 'http://thirdwx.qlogo.cn/mmopen/vi_32/k3r9YIaWdlkax86PLglXP0bKnMEn3d9lHgyQJXfErQ7LnzrVrWQLxdxia0KStY0U4cjXngK241ck8PUFzAGVic4Q/132', '中国', '广东', '揭阳', 'Serena', '2019-04-11 12:21:39');

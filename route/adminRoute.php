@@ -73,6 +73,10 @@ Route::domain('admin.buymelots.com', function () {
     Route::rule('store_massage_list','admin/StoreMassage/StoreMassageList','POST');//推拿门店 门店列表
     Route::rule('store_massage_add_view','admin/StoreMassage/StoreMassageAddView');//推拿门店 添加推拿门店页面
     Route::rule('store_massage_add','admin/StoreMassage/StoreMassageAdd');//推拿门店 添加推拿门店方法
+
+    Route::rule('store_massage_save_view','admin/StoreMassage/StoreMassageSaveView');//推拿门店 添加推拿门店页面
+    Route::rule('store_massage_save','admin/StoreMassage/StoreMassageSave','GET|POST');//推拿门店 添加推拿门店方法
+
     Route::rule('massage_store_del','admin/StoreMassage/StoreMassageDel');//推拿门店 删除推拿门店方法
     Route::rule('massage_store','admin/StoreMassage/MassageStore');//获取全部推拿门店列表
 

@@ -33,4 +33,10 @@ return [
     // 标签库标签结束标记
     'taglib_end'   => '}',
 
+    'tpl_replace_string'  =>  [
+        '__JS__' => '/static/adminView/js',
+        '__CSS__' => '/static/adminView/css',
+        '__IMAGES__' => '/static/adminView/images',
+        '__PUBLIC__' => '/static/adminView/plugins'
+    ]
 ];

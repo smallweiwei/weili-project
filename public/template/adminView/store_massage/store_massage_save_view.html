@@ -7,7 +7,7 @@
 <div class="col-sm-12" style="padding: 0">
     <div class="ibox float-e-margins">
         <div class="ibox-content">
-            <form method="post" class="form-horizontal" id="addAjax" enctype="multipart/form-data">
+            <form method="post" class="form-horizontal" id="saveAjax" enctype="multipart/form-data">
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
                         <span class="essential">*</span>
@@ -58,9 +58,6 @@
                     </div>
                 </div>
                 <div class="hr-line-dashed"></div>
-
-
-
                 <div class="form-group">
                     <div class="col-sm-4 col-sm-offset-2">
                         <button class="btn btn-primary" type="submit">保存内容</button>
@@ -74,11 +71,17 @@
 
 {block name="js"}
 <script type="text/javascript">
+    var array = parent.arrayData() //父页面数据
+    // console.log(array)
+    $('input[name="ms_name"]').val(array.data.ms_name);
+    $('input[name="ms_address"]').val(array.data.ms_address);
+    $('input[name="ms_phone"]').val(array.data.ms_phone);
+    $('input[name="ms_pic"]').val(array.data.ms_pic);
 
-    $('#addAjax').on('submit',function (event) {
+    $('#saveAjax').on('submit',function (event) {
         $.ajax({
             type : 'post',
-            url : "store_massage_add.html",
+            url : "store_massage_save.html?ms_id="+array.data.ms_id,
             async : true,
             dataType : 'json',
             data:formData(),
@@ -107,12 +110,32 @@
     })
 
     let html = ''
-    $.each(massage_time,function (k,v) {
-        html += "<option value='"+k+"' hassubinfo='true'>"+v+"</option>"
+    let ms_workShift = array.data.ms_workShift
+    // console.log(ms_workShift.split(','))
+    $.each(massage_time,function (key,val) {
+        if(isInArray(ms_workShift.split(','),key)){
+            html += "<option value='"+key+"' hassubinfo='true' selected>"+val+"</option>"
+        }else{
+            html += "<option value='"+key+"' hassubinfo='true'>"+val+"</option>"
+        }
     })
     $('#massage_time').html(html)
 
     $(".chosen-select").chosen({rtl: true});
+
+    /**
+     * 使用循环的方式判断一个元素是否存在于一个数组中
+     * @param {Object} arr 数组
+     * @param {Object} value 元素值
+     */
+    function isInArray(arr,value){
+        for(var i = 0; i < arr.length; i++){
+            if(value == arr[i]){
+                return true;
+            }
+        }
+        return false;
+    }
 
     //上传图片
     function clickUpload() {
@@ -123,7 +146,7 @@
             btn:['确定','取消'],
             shade: 0.8,
             closeBtn:0,
-            area: ['820px', '400px'],
+            area: ['820px', '550px'],
             content: 'upload_view.html',
             yes:function(index){
                 var iframeWin1 = window["layui-layer-iframe" + index];

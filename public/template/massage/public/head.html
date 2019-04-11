@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp" />
-    <title>微粒后台管理系统 - {block name="title"}{/block}
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>乐婴岛小儿推拿 - {block name="title"}{/block}
     </title>
     <link href="__PUBLIC__/bootstrap/bootstrap.min.css" rel="stylesheet">
     <link href="__CSS__/font-awesome.min.css" rel="stylesheet">
@@ -32,14 +33,16 @@
     </style>
     {block name="css"}{/block}
 </head>
-<body class="gray-bg">
+<body class="gray-bg" style="background-color: #EDEDED">
 {block name="body"}{/block}
+
+
+
 <script type="text/javascript" src="__JS__/function.js"></script>
 <script type="text/javascript" src="__JS__/plugins/layer/layer.js"></script>
 <script src="__JS__/plugins/chosen/chosen.jquery.js"></script>
 <script type="text/javascript" src="__PUBLIC__/bootstrap/bootstrap.min.js"></script>
-<script type="text/javascript" src="__JS__/config.js"></script>
-
+{include file="Public/footer_nav" /}
 {block name="js"}{/block}
 </body>
 </html>

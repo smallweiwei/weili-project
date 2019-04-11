@@ -1,7 +1,7 @@
 /**
  * 前端自定义函数库
  */
-document.write("<script type='text/javascript' src='static/adminView/js/config.js'></script>");//引入域名配置文件
+// document.write("<script type='text/javascript' src='static/adminView/js/config.js'></script>");//引入域名配置文件
 
 //权限勾选效果
 $(function(){
@@ -17,6 +17,7 @@ $(function(){
         }
     });
 });
+
 /**
  * 判断string是否为空
  * @param n 输入的值
@@ -211,7 +212,40 @@ function getAdminID()
  * @param time 时间戳
  * @returns {string} 返回时间 年-月-日
  */
-function getLocalTime(time) {
+function getLocalTime(time)
+{
     let t = new Date(parseInt(time));
     return t.getFullYear() + "-" +((t.getMonth()+1)<10?"0":"")+(t.getMonth()+1)+"-"+(t.getDate()<10?"0":"")+ (t.getDate());
+}
+
+/**
+ * 手机号码正则验证
+ * @param data 手机号码
+ * @returns {boolean}
+ */
+function isPhone(data) {
+    var phone = /^[1][3,4,5,7,8][0-9]{9}$/;
+    if (!phone.test(data)) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+/**
+ * 获取相对路径
+ * @returns {string}
+ * @constructor
+ */
+function GetUrlRelativePath()
+{
+    var url = document.location.toString();
+    var arrUrl = url.split("//");
+
+    var start = arrUrl[1].indexOf("/");
+    var relUrl = arrUrl[1].substring(start+1);//stop省略，截取从start开始到结尾的所有字符
+    if(relUrl.indexOf("?") != -1){
+        relUrl = relUrl.split("?")[0];
+    }
+    return relUrl;
 }

@@ -1,0 +1,111 @@
+{extend name="public:head" /}
+{block name="title"}用户绑定{/block}
+{block name="css"}
+<style type="text/css">
+.am-text-center{
+    text-align: center;
+    padding-top: 2rem;
+}
+.input-height{
+    border-radius: 30px!important;
+    height: 45px;
+}
+button{
+    border-radius: 30px!important;
+}
+    .padding-div{
+        padding:0px;
+    }
+</style>
+{/block}
+{block name="body"}
+<div class="col-xs-12 am-text-center">
+    <img src="__IMAGES__/wx-logo.png" width="50%">
+</div>
+
+<div class="col-xs-12" style="padding: 5px;">
+    <form class="form-inline am-text-center" id="addAjax">
+        <div class="col-xs-12 padding-div">
+            <div class="form-group col-xs-12">
+                <input type="text" name="phone" maxlength="11" onkeyup="this.value=this.value.replace(/[^0-9-]+/,'');"
+                       class="form-control input-height" onblur="input_blur(this.value)" placeholder="绑定手机号码">
+            </div>
+        </div>
+        <div class="col-xs-12 padding-div">
+            <div class="form-group col-xs-12">
+                <input type="password" name="password" class="form-control input-height" placeholder="初始登录密码">
+            </div>
+        </div>
+        <div class="col-xs-12 padding-div">
+            <div class="form-group col-xs-12">
+                <button type="submit" class="btn btn-primary btn-lg btn-block btn-danger">绑定信息</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{/block}
+{block name="js"}
+<script type="text/javascript">
+
+    var name = false
+    $("#addAjax").on('submit',function (ev) {
+        let data = formData();
+        if(data.phone  == ''){
+            layer.msg('手机号码不能为空',{time: 2000, icon:5});
+            return false;
+        }
+
+        if(!isPhone(data.phone)){
+            layer.msg('请输入正确的手机号码',{time: 2000, icon:5});
+            return false;
+        }
+
+        if(data.password == ''){
+            layer.msg('初始密码不能为空',{time: 2000, icon:5});
+            return false;
+        }
+
+        if(name == 'false'){
+            console.log('name为：',name)
+            layer.msg('手机号码已存在，请换个手机号码后重试',{time: 2000, icon:5});
+            return false
+        }
+
+        $.post("registerApi.html",data, function(data) {
+            let array = JSON.parse(data)
+            if(array.code < 0){
+                layer.msg(array.msg,{time: 2000, icon:5});
+                return false
+            }else{
+                window.location.href= 'index.html'
+            }
+        });
+        ev.preventDefault();
+
+    })
+    
+    function input_blur(value) {
+        if(!isInputNull(value)){
+            layer.msg('手机号码不能为空',{time: 2000, icon:5});
+            return false;
+        }
+        if(!isPhone(value)){
+            layer.msg('请输入正确的手机号码',{time: 2000, icon:5});
+            return false;
+        }
+        $.post("verifyName.html",{'phone':value}, function(data) {
+            let array = JSON.parse(data)
+            if(array.code == 'error'){
+                layer.msg('手机号码已存在，请换个手机号码后重试',{time: 2000, icon:5});
+                name = false
+                return false;
+            }else{
+                name = true
+                return true;
+            }
+        });
+        return true;
+    }
+</script>
+{/block}

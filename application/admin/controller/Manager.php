@@ -256,7 +256,7 @@ class Manager extends Basic
      */
     public function roleList()
     {
-        $data = Request::instance()->get();
+        $data = Request::instance()->post();
         $list = Db::name('auth_group')
             ->order($data['sort'],$data['order'])
             ->where($this->roleWhere)

@@ -75,6 +75,34 @@ class StoreMassage extends Basic
     }
 
     /**
+     * 显示推拿门店修改页面
+     * @return mixed
+     */
+    public function StoreMassageSaveView(){
+        return $this->fetch();
+    }
+
+    /**
+     * 修改推拿门店信息
+     * @param $ms_id 推拿门店id
+     * @return string|\think\response\Json
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public function StoreMassageSave($ms_id){
+        $where['ms_id'] = $ms_id;
+        $data = Request::instance()->post();
+        $list = Db::name('massage_store')
+            ->where($where)
+            ->update($data);
+        if(!empty($list)){
+            return json('200','添加成功','','');
+        }else{
+            return json('-9003','推拿门店修改失败','','');
+        }
+    }
+
+    /**
      * 删除推拿门店信息
      * @param $ms_id
      * @return string|\think\response\Json
@@ -108,7 +136,7 @@ class StoreMassage extends Basic
         if(!empty($list)){
             return $list;
         }else{
-            return json('-9003','推拿门店获取失败','','');
+            return json('-9000','推拿门店获取失败','','');
         }
     }
 

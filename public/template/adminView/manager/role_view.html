@@ -68,6 +68,7 @@
         $("#exampleTableEvents").bootstrapTable('destroy');//清除table
         $("#exampleTableEvents").bootstrapTable({
             url: "roleList.html",
+            method:'post',
             ajaxOptions: {async:true,timeout:5000},
             search: !0,
             pagination: !0,

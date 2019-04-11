@@ -46,7 +46,7 @@ img{
     $(function () {
         storeMassageAjax()
     })
-
+    var array = [];
     //获取推拿门店列表
     function storeMassageAjax() {
         $("#exampleTableEvents").bootstrapTable('destroy');//清除table
@@ -97,6 +97,7 @@ img{
                     align: 'center',
                     width:400,
                     formatter:function (val) {
+
                         let html = '';
                         $.each(val.split(','),function (k,v) {
                             html += massage_time[v]+'，';
@@ -134,9 +135,9 @@ img{
                         //         ' onclick="manager_state(\'停用\',\'2\',\''+value+'\',\''+row.m_name+'\',\''+row.ag_id+'\')">' +
                         //         '<a href="javascript:;" >停用</a></span>';
                         // }
-                        // html += '<span style="margin-right: 5px" ' +
-                        //     'onclick="manager_save(\'修改管理员[ '+row.m_name+' ]\',\'managerSaveView.html\',800,500,'+JSON.stringify(row).replace(/"/g, '&quot;')+')">' +
-                        //     '<a href="javascript:;" >修改</a></span>';
+                        html += '<span style="margin-right: 5px" ' +
+                            'onclick="manager_store_save(\'修改[ '+row.ms_name+' ]\',\'store_massage_save_view.html\',\'100%\',\'100%\','+JSON.stringify(row).replace(/"/g, '&quot;')+')">' +
+                            '<a href="javascript:;" >编辑</a></span>';
                         //
                         html += '<span style="margin-right: 5px" ' +
                             'onclick="manager_store_del(this,\''+value+'\',\''+row.ms_name+'\')">' +
@@ -162,6 +163,26 @@ img{
             content: url,
             area: [w, h],
             maxmin: true
+        });
+        layer.full(index);
+    }
+
+    /**
+     * 显示推拿门店页面
+     * @param title 标题
+     * @param url 添加地址
+     * @param w 宽度
+     * @param h  高度
+     */
+    function manager_store_save(title,url,w,h,data) {
+        // console.log(data)
+        array = data
+        var index = layer.open({
+            title:title,
+            type: 2,
+            content: url,
+            area: [w, h],
+            maxmin: true,
         });
         layer.full(index);
     }
@@ -194,5 +215,12 @@ img{
             layer.closeAll();
         })
     }
+
+    function arrayData() {
+        var data = [];
+        data['data'] = array
+        return data
+    }
+
 </script>
 {/block}
