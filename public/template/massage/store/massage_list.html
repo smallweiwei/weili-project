@@ -1,10 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-  显示推拿门店列表123123
-</body>
-</html>
+{extend name="public:head" /}
+{block name="title"}推拿列表{/block}
+{block name="css"}
+{/block}
+{block name="body"}
+
+<div style="width: 100%;margin-bottom:30px;">
+    具体推拿门店时间
+</div>
+
+{/block}
+{block name="js"}
+<script type="text/javascript">
+   let data = JSON.parse(sessionStorage.getItem("store"))
+   $.each(data,function (key,val) {
+       if(val.ms_id == GetUrlParam('ms_id')){
+           console.log(val)
+       }
+   })
+    console.log(GetUrlParam('ms_id'))
+
+</script>
+
+{/block}

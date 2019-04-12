@@ -23,6 +23,9 @@ input[type="radio"] {
 li{
     list-style: none;
 }
+div::-webkit-scrollbar {
+    display: none;    /* 隐藏滚动条 */
+}
 .footer_nav{
     width: 100%;
     height: 50px;
@@ -55,4 +58,39 @@ li{
 
 .footer_color{
     color: #337ab7;
+}
+#store_list{
+    margin-top: 40px;
+    padding: 0;
+}
+.store_list{
+    height: 100px;
+    border-bottom: 1px solid #ccc;
+    padding: 0;
+    background-color: #fff;
+}
+.store_name{
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    font-size: 16px;
+    color: #000;
+}
+.store_add{
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    font-size: 12px;
+    color: darkgray;
+    overflow-x: auto;
+    white-space: nowrap;
+    overflow-y: hidden;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.store_phone{
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    color: darkgray;
 }

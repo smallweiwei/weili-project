@@ -3,17 +3,36 @@
 {block name="css"}
 {/block}
 {block name="body"}
-    <!--<div class="col-xs-12">-->
-        <!--<img src="__IMAGES__/store.jpg" alt="">-->
-    <!--</div>-->
-<div style="width: 100%;margin-bottom:50px;">
-    <div style="width: 100%;border-bottom: 1px solid #ccc;background-color: #fff;display: flex;">
+<div style="width: 100%;margin-bottom:30px;">
+    <div style="width: 100%;display: flex;">
         <div class="col-xs-12" style="padding: 0;">
             <img src="__IMAGES__/store.jpg" class="img-responsive center-block">
         </div>
+    </div>
+
+    <div class="col-xs-12" id="store_list">
+        
     </div>
 </div>
 
 {/block}
 {block name="js"}
+<script type="text/javascript">
+    $.get("store_list.html", function(data) {
+        let array = JSON.parse(data)
+        let html = ''
+        sessionStorage.setItem("store", JSON.stringify(array.data));
+        $.each(array.data,function (key,val) {
+            html += '<div class="col-xs-12 store_list">'
+            html += '<a href="store.html?ms_id='+val.ms_id+'">'
+            html += '<div class="store_name">'+val.ms_name+'</div>'
+            html += '<div class="store_add">'+val.ms_address+'</div>'
+            html += '<div class="store_phone">'+val.ms_phone+'</div>'
+            html += '</a>'
+            html += '</div>'
+        })
+        $("#store_list").html(html)
+    })
+</script>
+
 {/block}

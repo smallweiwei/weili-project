@@ -10,7 +10,9 @@
 namespace app\massage\controller;
 
 
-class User extends Basic
+use think\Controller;
+
+class User extends Controller
 {
     public function userList(){
         return $this->fetch();
