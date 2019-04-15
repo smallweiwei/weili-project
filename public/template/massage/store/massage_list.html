@@ -3,21 +3,64 @@
 {block name="css"}
 {/block}
 {block name="body"}
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        var mySwiper = new Swiper('.swiper-container',{
+            slidesPerView:'auto',
+            pagination: '.pagination',
+            paginationClickable: true,
+            freeMode: true,
+            freeModeFluid: true
+        })
+    })
+    var mySwiper = new Swiper('.swiper-container',{
+        slidesPerView:'auto',
+        pagination: '.pagination',
+        paginationClickable: true,
+        freeMode: true,
+        freeModeFluid: true
+    })
+</script>
 <div style="width: 100%;margin-bottom:30px;">
-    具体推拿门店时间
+    <div style="width:100%;display: flex">
+        <div class="col-xs-12" style="padding:0;height:150px;" id="store_img">
+            <img src="{$data.ms_pic}" class="img-responsive center-block">
+        </div>
+    </div>
+    <div class="col-xs-12" id="store_add">
+        <a id="store_add_url">
+            <div class="col-xs-2 store_add_img">
+                <img src="__IMAGES__/address.png">
+            </div>
+            <div class="col-xs-10 store_add_name">
+                <span>{$data['ms_address']}</span>
+            </div>
+        </a>
+    </div>
+    <div class="Evaluation2 swiper-container">
+        <ul class="swiper-wrapper">
+            <li>111111</li>
+            <li>222222</li>
+            <li>333333</li>
+            <li>444444</li>
+            <li>555555</li>
+        </ul>
+    </div>
+
 </div>
 
 {/block}
 {block name="js"}
 <script type="text/javascript">
-   let data = JSON.parse(sessionStorage.getItem("store"))
-   $.each(data,function (key,val) {
-       if(val.ms_id == GetUrlParam('ms_id')){
-           console.log(val)
-       }
-   })
-    console.log(GetUrlParam('ms_id'))
+    var a = document.getElementById('store_add_url');
+    if(GetUrlParam('ms_id') == 1){
+        html = "https://map.baidu.com/mobile/webapp/place/detail/qt=ninf&da_src=searchBox.button&wd=%E4%B9%90%E5%A9%B4%E5%B2%9B(%E9%87%91%E6%B2%99%E8%B7%AF%E6%97%97%E8%88%B0%E5%BA%97)&c=257&src=0&wd2=%E5%B9%BF%E5%B7%9E%E5%B8%82%E6%B5%B7%E7%8F%A0%E5%8C%BA&pn=0&sug=1&l=21&from=webmap&biz_forward=%7B%22scaler%22%3A1%2C%22styles%22%3A%22pl%22%7D&uid=9ea481535702f32a9cf7798b&industry=shopping&qid=2193366526345615355/showall=1&pos=0&da_ref=listclk&da_qrtp=11&da_adquery=%E4%B9%90%E5%A9%B4%E5%B2%9B(%E9%87%91%E6%B2%99%E8%B7%AF%E6%97%97%E8%88%B0%E5%BA%97)&da_adtitle=%E4%B9%90%E5%A9%B4%E5%B2%9B(%E9%87%91%E6%B2%99%E8%B7%AF%E6%97%97%E8%88%B0%E5%BA%97)&da_adindus=%E8%B4%AD%E7%89%A9%3B%E5%95%86%E9%93%BA&detail_from=list&vt=map"
+        a.href = html
+    }else if(GetUrlParam('ms_id') == 2){
+        html = "https://map.baidu.com/mobile/webapp/place/detail/qt=inf&uid=60ab0980642c464bfa42b2fb&cityCode=138&tn=B_NORMAL_MAP&hb=B_SATELLITE_STREET/vt=map"
+        a.href = html
+    }
+
 
 </script>
 
