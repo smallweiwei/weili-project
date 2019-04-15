@@ -4,23 +4,45 @@
 {/block}
 {block name="body"}
 <script type="text/javascript">
-    $(document).ready(function () {
-        var mySwiper = new Swiper('.swiper-container',{
-            slidesPerView:'auto',
-            pagination: '.pagination',
-            paginationClickable: true,
-            freeMode: true,
-            freeModeFluid: true
-        })
-    })
-    var mySwiper = new Swiper('.swiper-container',{
-        slidesPerView:'auto',
-        pagination: '.pagination',
-        paginationClickable: true,
-        freeMode: true,
-        freeModeFluid: true
-    })
+
+    // window.onload=function(){
+    //     $(function(){
+    //         $(".swiper-wrapper li").click(function(){
+    //             $("#inputID").remove();
+    //             $(".reserID").remove();
+    //             $(".swiper-wrapper li").eq($(this).index()).addClass("on").siblings().removeClass("on");
+    //             $('#content .reser_content').css('display','none');
+    //             $('#content .reser_content').eq($(this).index()).css('display','block');
+    //             $('.reser_content div').removeClass('ontime');
+    //             var num = $(this).index();
+    //             var inputs = $("<input type='hidden' id='inputID' name='april' value='"+num+"'>");
+    //             $('.swiper-wrapper').append(inputs);
+    //         })
+    //
+    //         var oDiv = $('#content .reser_content')
+    //         for(var i = 0; i<oDiv.length;i++){
+    //             var oDivSmall = oDiv[i].getElementsByClassName('reser');
+    //             for (var j = 0; j < oDivSmall.length; j++) {
+    //                 oDivSmall[j].index = j;
+    //                 oDivSmall[j].onclick = function(){
+    //                     $(".reserID").remove();
+    //
+    //                     var nums = $(this).index();
+    //
+    //                     var inputs = $("<input type='hidden' class='reserID' name='reser_time' value='"+nums+"'>");
+    //                     $('.reser_content .col-xs-3').append(inputs);
+    //                     $('.reser_content div').removeClass('ontime');
+    //                     this.className = "col-xs-3 ontime";
+    //
+    //                 };
+    //             };
+    //         }
+    //     })
+    // }
+
 </script>
+
+
 <div style="width: 100%;margin-bottom:30px;">
     <div style="width:100%;display: flex">
         <div class="col-xs-12" style="padding:0;height:150px;" id="store_img">
@@ -39,11 +61,19 @@
     </div>
     <div class="Evaluation2 swiper-container">
         <ul class="swiper-wrapper">
-            <li>111111</li>
-            <li>222222</li>
-            <li>333333</li>
-            <li>444444</li>
-            <li>555555</li>
+            {foreach $data['time'] as $key=>$vo }
+                {if $key == 0}
+                    <li class="swiper-slide on">
+                {else /}
+                    <li class="swiper-slide">
+                {/if}
+
+                    <div class="reser_resertime">
+                        <div style="font-size: 12px">{$vo}</div>
+                        <div> {$data['slot'][$key]}</div>
+                    </div>
+                </li>
+            {/foreach}
         </ul>
     </div>
 
@@ -63,5 +93,16 @@
 
 
 </script>
+<script type="text/javascript">
 
+    var mySwiper = new Swiper('.swiper-container',{
+        slidesPerView :'auto',
+        pagination: '.pagination',
+        paginationClickable: true,
+        freeMode: true,
+        freeModeFluid: true,
+        observer:true,
+        observeParents:true,//修改swiper的父元素时，自动初始化swiper
+    })
+</script>
 {/block}

@@ -53,6 +53,7 @@ class Store extends Controller
             if($i == 0){
                 $list['slot'][$i] = '今天';
                 $list['time'][$i] = date("Y年m月d日",strtotime("+".$i." day")). "";
+                dump($workShift);
                 $list['workShift'][$i] = $workShift;
             }elseif ($i == 1){
                 $list['slot'][$i] = '明天';
@@ -71,6 +72,7 @@ class Store extends Controller
             }
             $i ++;
         }
+        dump($list);
         $this->assign('data',$list);
         return $this->fetch();
     }
