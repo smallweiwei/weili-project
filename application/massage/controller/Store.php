@@ -37,10 +37,12 @@ class Store extends Controller
     //显示推拿门店列表
     public function massageList(){
         $data = Request::instance()->get();
-        $list = Db::name('massage_store')->where($data)->find();
+        $list = Db::name('massage_store')
+            ->where($data)
+            ->field('ms_id,ms_name,ms_phone,ms_address,ms_slot,ms_number,ms_workShift,ms_pic')
+            ->find();
         $i = 0;
         $time = array("日","一","二","三","四","五","六");
-
         $work = explode(',',$list['ms_workShift']);
         $massage_time = Config::get('app.massage_time');
         $workShift = array();
@@ -48,33 +50,79 @@ class Store extends Controller
             $workShift[$key] = $massage_time[$value];
         }
 
-        while ($i <= $list['ms_slot'])
+        while ($i < $list['ms_slot'])
         {
             if($i == 0){
-                $list['slot'][$i] = '今天';
-                $list['time'][$i] = date("Y年m月d日",strtotime("+".$i." day")). "";
-                dump($workShift);
-                $list['workShift'][$i] = $workShift;
+                $list['workShift'][$i] = $this->storeTime(date("Y-m-d",strtotime("+".$i." day")),$workShift,$list);
+                $list['title'][$i]['key'] = '今天';
+                $list['title'][$i]['value'] = date("Y年m月d日",strtotime("+".$i." day")). "";
             }elseif ($i == 1){
-                $list['slot'][$i] = '明天';
-                $list['time'][$i] = date("Y年m月d日",strtotime("+".$i." day")). "";
-
-                $list['workShift'][$i] = $workShift;
+                $list['workShift'][$i] = $this->storeTime(date("Y-m-d",strtotime("+".$i." day")),$workShift,$list);
+                $list['title'][$i]['key'] = '明天';
+                $list['title'][$i]['value'] = date("Y年m月d日",strtotime("+".$i." day")). "";
             }elseif ($i == 2){
-                $list['slot'][$i] = '后天';
-                $list['time'][$i] = date("Y年m月d日",strtotime("+".$i." day")). "";
-
-                $list['workShift'][$i] = $workShift;
+                $list['workShift'][$i] = $this->storeTime(date("Y-m-d",strtotime("+".$i." day")),$workShift,$list);
+                $list['title'][$i]['key'] = '后天';
+                $list['title'][$i]['value'] = date("Y年m月d日",strtotime("+".$i." day")). "";
             }else{
-                $list['slot'][$i] = '星期'.$time[date("w",strtotime("+".$i." day"))];
-                $list['time'][$i] = date("Y年m月d日",strtotime("+".$i." day")). "";
-                $list['workShift'][$i] = $workShift;
+                $list['workShift'][$i] = $this->storeTime(date("Y-m-d",strtotime("+".$i." day")),$workShift,$list);
+                $list['title'][$i]['key'] =  '星期'.$time[date("w",strtotime("+".$i." day"))];
+                $list['title'][$i]['value'] = date("Y年m月d日",strtotime("+".$i." day")). "";
             }
             $i ++;
         }
-        dump($list);
+//        dump($list['workShift']);
+//        exit;
         $this->assign('data',$list);
         return $this->fetch();
+    }
+
+    private function storeTime($time,$array,$store){
+        $count = Db::name('massage_rest')
+            ->alias('mr')
+            ->join('massage_personnel mp','mr.mr_mpId = mp.mp_id')
+            ->where('mr.mr_date',$time)
+            ->where('mp.mp_msId',$store['ms_id'])
+            ->field('mr.mr_id,mr.mr_date,mr.mr_mpId,mp.mp_msId')
+            ->count();
+
+        $data = array();
+
+        //没有人休息
+        if(empty($count)){
+            foreach ($array as $key=>$value){
+                //区分金沙店特殊
+                if($store['ms_id'] == 1){
+                    if($value >= '14:00'){
+                        $data[$key]['time'] = $value;
+                        $data[$key]['value'] = ($store['ms_number']);
+                    }else{
+                        $data[$key]['time'] = $value;
+                        $data[$key]['value'] = ($store['ms_number']-1);
+                    }
+                }else{
+                    $data[$key]['time'] = $value;
+                    $data[$key]['value'] = ($store['ms_number']);
+                }
+            }
+        }else{
+            foreach ($array as $key=>$value){
+                //区分金沙店特殊
+                if($store['ms_id'] == 1){
+                    if($value >= '14:00'){
+                        $data[$key]['time'] = $value;
+                        $data[$key]['value'] = ($store['ms_number']-$count);
+                    }else{
+                        $data[$key]['time'] = $value;
+                        $data[$key]['value'] = ($store['ms_number']-$count-1);
+                    }
+                }else{
+                    $data[$key]['time'] = $value;
+                    $data[$key]['value'] = ($store['ms_number']-$count);
+                }
+            }
+        }
+        return $data;
     }
 
 

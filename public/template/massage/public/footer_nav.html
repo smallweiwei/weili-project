@@ -3,7 +3,7 @@
         <li class="col-xs-6 col-md-6">
             <a href="index.html" >
                 <i class="fa fa-home fa-color"></i>
-                <span>门店列表</span>
+                <span>门店</span>
             </a>
         </li>
         <li class="col-xs-6 col-md-6">
@@ -19,9 +19,11 @@
     if(GetUrlRelativePath() == '' || GetUrlRelativePath() == 'index.html' || GetUrlRelativePath() == 'store.html'){
         $('ul li i')[0].style.color = '#337ab7'
         $('ul li span')[0].style.color = '#337ab7'
+        $('ul li a')[0].href = 'javascript:;'
     }else{
         $('ul li i')[1].style.color = '#337ab7'
         $('ul li span')[1].style.color = '#337ab7'
+        $('ul li a')[1].href = 'javascript:;'
     }
     // console.log(GetUrlRelativePath());
 </script>

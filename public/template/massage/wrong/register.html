@@ -66,11 +66,11 @@ button{
             return false;
         }
 
-        if(name == 'false'){
-            console.log('name为：',name)
-            layer.msg('手机号码已存在，请换个手机号码后重试',{time: 2000, icon:5});
-            return false
-        }
+        // if(name == 'false'){
+        //     console.log('name为：',name)
+        //     layer.msg('手机号码已存在，请换个手机号码后重试',{time: 2000, icon:5});
+        //     return false
+        // }
 
         $.post("registerApi.html",data, function(data) {
             let array = JSON.parse(data)

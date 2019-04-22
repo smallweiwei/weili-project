@@ -347,7 +347,7 @@ class StoreMassage extends Basic
             exit;
         }
         $list = Db::name('massage_rest')
-            ->insert($data);
+            ->insertGetId($data);
         if(!empty($list)){
             return json('200','添加成功','',$list);
         }else{

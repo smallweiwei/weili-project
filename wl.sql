@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-04-11 18:31:49
+Date: 2019-04-22 18:35:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -190,6 +190,27 @@ INSERT INTO `wl_massage_personnel` VALUES ('4', '1', '李弯', '$2y$10$sRAmad4GL
 INSERT INTO `wl_massage_personnel` VALUES ('5', '1', '刘坤', '$2y$10$hZ4kdop2gTmp/toL8jEBhud/RQbMVioBiYI4Z24TIjfdAsgbu48ye', 'liukun', '3', '2019-03-13 11:12:16');
 
 -- ----------------------------
+-- Table structure for wl_massage_reser
+-- ----------------------------
+DROP TABLE IF EXISTS `wl_massage_reser`;
+CREATE TABLE `wl_massage_reser` (
+  `mr_id` int(10) NOT NULL AUTO_INCREMENT COMMENT '预约时间id',
+  `mr_uid` int(10) NOT NULL COMMENT '用户id',
+  `mr_msid` int(10) NOT NULL COMMENT '门店id',
+  `mr_name` char(50) NOT NULL COMMENT '宝宝名称',
+  `mr_time` int(10) NOT NULL COMMENT '小儿推拿预约时间',
+  `mr_phone` varchar(20) NOT NULL COMMENT '预约手机号码',
+  `mr_remarks` text NOT NULL COMMENT '推拿备注',
+  `mr_state` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态 1 预约 2 删除',
+  `mr_addTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '推拿预约添加时间',
+  PRIMARY KEY (`mr_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='门店小儿推拿预约表';
+
+-- ----------------------------
+-- Records of wl_massage_reser
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for wl_massage_rest
 -- ----------------------------
 DROP TABLE IF EXISTS `wl_massage_rest`;
@@ -199,7 +220,7 @@ CREATE TABLE `wl_massage_rest` (
   `mr_mpId` int(11) NOT NULL COMMENT '推拿员工id',
   `mr_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '推拿休息时间添加时间',
   PRIMARY KEY (`mr_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8 COMMENT='推拿员工休息表';
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8 COMMENT='推拿员工休息表';
 
 -- ----------------------------
 -- Records of wl_massage_rest
@@ -242,6 +263,21 @@ INSERT INTO `wl_massage_rest` VALUES ('35', '2019-03-04 00:00:00', '2', '2019-03
 INSERT INTO `wl_massage_rest` VALUES ('36', '2019-03-15 00:00:00', '3', '2019-03-14 17:35:23');
 INSERT INTO `wl_massage_rest` VALUES ('37', '2019-03-16 00:00:00', '3', '2019-03-14 17:35:25');
 INSERT INTO `wl_massage_rest` VALUES ('38', '2019-03-17 00:00:00', '3', '2019-03-14 17:35:27');
+INSERT INTO `wl_massage_rest` VALUES ('40', '2019-05-06 00:00:00', '2', '2019-04-22 11:27:12');
+INSERT INTO `wl_massage_rest` VALUES ('41', '2019-05-09 00:00:00', '1', '2019-04-22 11:27:22');
+INSERT INTO `wl_massage_rest` VALUES ('42', '2019-05-10 00:00:00', '1', '2019-04-22 11:27:26');
+INSERT INTO `wl_massage_rest` VALUES ('43', '2019-05-11 00:00:00', '1', '2019-04-22 11:27:36');
+INSERT INTO `wl_massage_rest` VALUES ('44', '2019-04-30 00:00:00', '2', '2019-04-22 11:27:47');
+INSERT INTO `wl_massage_rest` VALUES ('45', '2019-04-29 00:00:00', '2', '2019-04-22 11:27:51');
+INSERT INTO `wl_massage_rest` VALUES ('46', '2019-04-27 00:00:00', '2', '2019-04-22 11:27:56');
+INSERT INTO `wl_massage_rest` VALUES ('47', '2019-04-25 00:00:00', '2', '2019-04-22 11:28:00');
+INSERT INTO `wl_massage_rest` VALUES ('48', '2019-05-13 00:00:00', '2', '2019-04-22 11:33:39');
+INSERT INTO `wl_massage_rest` VALUES ('49', '2019-05-20 00:00:00', '2', '2019-04-22 11:33:42');
+INSERT INTO `wl_massage_rest` VALUES ('50', '2019-05-16 00:00:00', '1', '2019-04-22 11:33:48');
+INSERT INTO `wl_massage_rest` VALUES ('51', '2019-05-23 00:00:00', '1', '2019-04-22 11:33:52');
+INSERT INTO `wl_massage_rest` VALUES ('52', '2019-05-30 00:00:00', '1', '2019-04-22 11:33:57');
+INSERT INTO `wl_massage_rest` VALUES ('53', '2019-05-27 00:00:00', '2', '2019-04-22 11:34:16');
+INSERT INTO `wl_massage_rest` VALUES ('54', '2019-04-25 00:00:00', '3', '2019-04-22 14:51:54');
 
 -- ----------------------------
 -- Table structure for wl_massage_store
@@ -252,6 +288,8 @@ CREATE TABLE `wl_massage_store` (
   `ms_name` varchar(255) NOT NULL COMMENT '推拿门店名称',
   `ms_phone` char(11) NOT NULL COMMENT '推拿门店电话',
   `ms_address` varchar(255) NOT NULL COMMENT '推拿门店地址',
+  `ms_number` char(50) NOT NULL COMMENT '上班人数',
+  `ms_slot` char(50) NOT NULL COMMENT '可预约时段',
   `ms_workShift` text NOT NULL COMMENT '推拿门店上班时间',
   `ms_pic` varchar(255) DEFAULT NULL COMMENT '推拿门店图片',
   `ms_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '推拿门店添加时间',
@@ -261,8 +299,8 @@ CREATE TABLE `wl_massage_store` (
 -- ----------------------------
 -- Records of wl_massage_store
 -- ----------------------------
-INSERT INTO `wl_massage_store` VALUES ('1', '金沙店乐婴岛', '18927543087', '广东省广州市海珠区金沙路16至20号首层商铺自编之十二', '0,1,2,3,4,5,6,10,11,12,13,14,15,16,17,18,19', './static/uploads/store_massage/20190307\\e931a095c4a16e5422d96fed044ec2b7.png', '2019-03-18 10:22:12');
-INSERT INTO `wl_massage_store` VALUES ('2', '万达店乐婴岛', '17728026810', '桂城街道桂澜北路28号南海万达广场南7栋235号铺', '0,1,2,3,4,5,6,9,10,11,12,13,14,15,16,17,18,19,20,21', './static/uploads/store_massage/20190307\\312193fdfcf570fa778aff40bae550ac.jpg', '2019-04-09 16:30:16');
+INSERT INTO `wl_massage_store` VALUES ('1', '金沙店乐婴岛', '18927543087', '广东省广州市海珠区金沙路16至20号首层商铺自编之十二', '3', '15', '0,1,2,3,4,5,6,10,11,12,13,14,15,16,17,18,19', './static/uploads/store_massage/20190307\\e931a095c4a16e5422d96fed044ec2b7.png', '2019-04-22 11:07:56');
+INSERT INTO `wl_massage_store` VALUES ('2', '万达店乐婴岛', '17728026810', '桂城街道桂澜北路28号南海万达广场南7栋235号铺', '1', '15', '0,1,2,3,4,5,6,9,10,11,12,13,14,15,16,17,18,19,20,21', './static/uploads/store_massage/20190307\\312193fdfcf570fa778aff40bae550ac.jpg', '2019-04-22 11:07:58');
 
 -- ----------------------------
 -- Table structure for wl_store
@@ -303,9 +341,9 @@ CREATE TABLE `wl_users` (
   `u_nickname` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL COMMENT '第三方返回昵称',
   `u_time` timestamp NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP COMMENT '注册时间',
   PRIMARY KEY (`u_user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户表';
 
 -- ----------------------------
 -- Records of wl_users
 -- ----------------------------
-INSERT INTO `wl_users` VALUES ('1', '$2y$10$wjWqgnsW3IJD1oX7oWOKR.E/MjGLoBXw4S3d5LWb1eJ/oEM3C9HC.', '1', '13800138000', 'weixin', 'o_Aqa1OK0wuGazh3vhFyNfCcuUak', null, 'http://thirdwx.qlogo.cn/mmopen/vi_32/k3r9YIaWdlkax86PLglXP0bKnMEn3d9lHgyQJXfErQ7LnzrVrWQLxdxia0KStY0U4cjXngK241ck8PUFzAGVic4Q/132', '中国', '广东', '揭阳', 'Serena', '2019-04-11 12:21:39');
+INSERT INTO `wl_users` VALUES ('1', '$2y$10$JRmYCmowj5X0w6Pxja5BXuc3Oa3hjN3OOMGJPljKHO6ITEbarG/py', '1', '13800138000', 'weixin', 'o_Aqa1OK0wuGazh3vhFyNfCcuUak', null, 'http://thirdwx.qlogo.cn/mmopen/vi_32/k3r9YIaWdlkax86PLglXP0bKnMEn3d9lHgyQJXfErQ7LnzrVrWQLxdxia0KStY0U4cjXngK241ck8PUFzAGVic4Q/132', '中国', '广东', '揭阳', 'Serena', '2019-04-17 17:13:19');

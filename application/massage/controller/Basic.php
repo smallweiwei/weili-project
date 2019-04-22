@@ -45,12 +45,14 @@ class Basic extends Controller
                 );
                 $user = new Users();
                 $list = $user->thirdLogin($data);
-                Cookie::set('u_mobile',$list['u_mobile']);
-                Cookie::set('u_data',$list);
-                Cookie::set('u_user_id',$list['u_user_id']);
+//                Cookie::set('u_mobile',$list['u_mobile']);
+//                Cookie::set('u_data',$list);
+                Cookie::set('u_user_id',$list);//用户id
 
             }
-
+            $user = new Users();
+            $list = $user->thirdLogin(array('u_openid'=>Session::get('u_openid')));
+            Cookie::set('u_mobile',$list['u_mobile']);
             return true;
         }else{
             return false;

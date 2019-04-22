@@ -6,13 +6,14 @@ class Index extends Basic
 {
     public function initialize()
     {
-//        if(!parent::initialize()){
-//            Header("Location: error.html");
-//            exit;
-//        }
-//        if(empty(Cookie::get('u_mobile'))){
-//            Header("Location: register.html");
-//        }
+//        dump(Cookie::get('u_mobile'));
+        if(!parent::initialize()){
+            Header("Location: error.html");
+            exit;
+        }
+        if(empty(Cookie::get('u_mobile'))){
+            Header("Location: register.html");
+        }
     }
 
     public function index()

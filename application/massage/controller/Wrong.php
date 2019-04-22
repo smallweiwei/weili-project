@@ -22,8 +22,8 @@ class Wrong extends Controller
     public function initialize()
     {
         if(!empty(Cookie::get('u_mobile'))){
-        Header("Location: index.html");
-    }
+            Header("Location: index.html");
+        }
     }
 
     /**

@@ -118,6 +118,7 @@
                         mr_date:time
                     },function(e){
                         let array = JSON.parse(e)
+                        console.log(array)
                         if(array.code < 0){
                             errorMsg(array.msg)
                         }else{
@@ -132,7 +133,7 @@
                 //日历拖动传值给后端
                 let t = event.start
                 // $("#calendar").fullCalendar( 'refetchEvents' );//加载数据
-
+                // console.log(event);
                 let time = new Date(t).getTime();
                 let start = getLocalTime(time - (dayDelta*(24*60*60*1000)))
                 let end = t.getFullYear() + "-" +((t.getMonth()+1)<10?"0":"")+(t.getMonth()+1)+"-"+(t.getDate()<10?"0":"")+t.getDate();
@@ -177,7 +178,6 @@
                 //点击选择
                 let g = event.start
                 let time = g.getFullYear() + "-" +((g.getMonth()+1)<10?"0":"")+(g.getMonth()+1)+"-"+(g.getDate()<10?"0":"")+g.getDate();
-                console.log(event)
                 layer.confirm('是否删除'+event.title+'['+time+']休息时间',{title:'提示信息'},function(){
                     $.ajax({
                         type: "delete",
