@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-04-22 18:35:00
+Date: 2019-04-25 18:39:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -200,15 +200,19 @@ CREATE TABLE `wl_massage_reser` (
   `mr_name` char(50) NOT NULL COMMENT '宝宝名称',
   `mr_time` int(10) NOT NULL COMMENT '小儿推拿预约时间',
   `mr_phone` varchar(20) NOT NULL COMMENT '预约手机号码',
-  `mr_remarks` text NOT NULL COMMENT '推拿备注',
+  `mr_remarks` text COMMENT '推拿备注',
   `mr_state` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态 1 预约 2 删除',
   `mr_addTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '推拿预约添加时间',
   PRIMARY KEY (`mr_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='门店小儿推拿预约表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='门店小儿推拿预约表';
 
 -- ----------------------------
 -- Records of wl_massage_reser
 -- ----------------------------
+INSERT INTO `wl_massage_reser` VALUES ('1', '1', '1', 'serena', '1556002800', '13800138000', null, '1', '2019-04-23 12:29:49');
+INSERT INTO `wl_massage_reser` VALUES ('2', '1', '1', 'serena', '1556006400', '13800138000', null, '1', '2019-04-23 12:35:00');
+INSERT INTO `wl_massage_reser` VALUES ('3', '1', '1', 'serena', '1556092800', '13800138000', null, '1', '2019-04-23 15:12:11');
+INSERT INTO `wl_massage_reser` VALUES ('4', '1', '2', 'serena', '1556092800', '13800138000', null, '1', '2019-04-23 15:12:34');
 
 -- ----------------------------
 -- Table structure for wl_massage_rest

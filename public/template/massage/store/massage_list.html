@@ -7,16 +7,15 @@
 
     window.onload=function() {
         $(function () {
-            $(".swiper-wrapper li").click(function () {
+            $(".swiper-wrapper .swiper-slide").click(function () {
                 // console.log($(this).index())
                 $("#inputID").remove();
                 $(".reserID").remove();
-                $(".swiper-wrapper li").eq($(this).index()).addClass("on").siblings().removeClass("on");
+                $(".swiper-wrapper .swiper-slide").eq($(this).index()).addClass("on").siblings().removeClass("on");
                 $('#reser_list .reser_content').css('display', 'none');
                 $('#reser_list .reser_content').eq($(this).index()).css('display', 'block');
                 $('.reser_content div').removeClass('ontime');
                 var num = $(this).index();
-                console.log(num)
                 var inputs = $("<input type='hidden' id='inputID' name='april' value='" + num + "'>");
                 $('.swiper-wrapper').append(inputs);
             })
@@ -44,7 +43,7 @@
 </script>
 
 
-<div style="width: 100%;margin-bottom:30px;">
+<div style="width: 100%;margin-bottom:50px;">
     <div style="width:100%;display: flex">
         <div class="col-xs-12" style="padding:0;height:150px;" id="store_img">
             <img src="{$data.ms_pic}" class="img-responsive center-block">
@@ -61,38 +60,76 @@
         </a>
     </div>
     <div class="Evaluation2 swiper-container">
-        <ul class="swiper-wrapper">
+        <div class="col-xs-12 swiper-wrapper">
             {foreach $data['title'] as $key=>$vo }
-                {if $key == 0}
-                    <li class="swiper-slide on">
-                {else /}
-                    <li class="swiper-slide">
-                {/if}
-                <div class="reser_resertime">
-                    <div style="font-size: 15px">{$vo['key']}</div>
-                    <div style="font-size: 13px"> {$vo['value']}</div>
+                <div class="col-xs-12 swiper-slide {if $key eq 0}on {/if}">
+                    <div class="reser_resertime">
+                        <div style="font-size: 15px">{$vo['key']}</div>
+                        <div style="font-size: 12px"> {$vo['value']}</div>
+                    </div>
                 </div>
-            </li>
+                {if $key == 0}
+                    <input type='hidden' id='inputID' name='april' value='0'>
+                {/if}
             {/foreach}
-        </ul>
+        </div>
     </div>
-
     <div id="reser_list">
         {foreach $data['workShift'] as $key=>$value}
-        {if $key == 0}
-            <div class="reser_content" style="display: block">
-        {else /}
-            <div class="reser_content">
-        {/if}
+             <div class="reser_content {if $key eq 0}dispblock{/if}" >
             {foreach $value as $k=>$v}
-                <div class="col-xs-3 reser">
+                <div class="col-xs-3  {if $v['expire'] eq 'false'}bg{elseif $v['state'] != 'false'}reser{/if}" >
                     <span>{$v['time']}<br>
-                        <span style="font-size:10px;">({$v['value']}位)</span>
+                        {if $v['expire'] == 'false'}
+                            <span style="font-size:10px;">(时间过期)</span>
+                        {else /}
+                             {if $v['state'] == 'false'}
+                                <span style="font-size:10px;color: red">(已满)</span>
+                            {else /}
+                                <span style="font-size:10px;">(还剩{$v['value']}个空位)</span>
+                            {/if}
+                        {/if}
+
+
                     </span>
                 </div>
             {/foreach}
             </div>
         {/foreach}
+    </div>
+
+    <div class="reser_botton">
+        <button type="button" onclick="reserDisplay()" class="btn btn-success btn-lg">确认预约</button>
+    </div>
+
+    <div class="reserForm float-e-margins" style="display: block">
+        <div class="form-group" style="padding-top:20px;">
+            <div class="col-xs-3" style="padding:0;padding-left:10px;">
+                <label for="inputEmail3" class="control-label">姓名<i style="color:red">*</i></label>
+            </div>
+            <div class="col-xs-8" style="padding:0">
+                <input type="text" class="form-control" placeholder="姓名" name="username">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-3" style="padding:0;padding-left:10px;">
+                <label for="inputPassword3" class="control-label">手机号码<i style="color:red">*</i></label>
+            </div>
+            <div class="col-xs-8" style="padding:0">
+                <input type="text" class="form-control" name="phone" maxlength="11" placeholder="手机号码">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-3" style="padding:0;padding-left:10px;">
+                <label for="inputPassword3" class="control-label">备注</label>
+            </div>
+            <div class="col-xs-8" style="padding:0">
+                <textarea class="form-control" name="remarks" rows="3" placeholder="请说明宝宝的具体情况，如流鼻水或日常保健等"></textarea>
+            </div>
+        </div>
+        <div class="reser_botton">
+            <button type="button" onclick="submin()" class="btn btn-primary btn-lg">确认预约</button>
+        </div>
     </div>
 </div>
 
@@ -107,7 +144,7 @@
         html = "https://map.baidu.com/mobile/webapp/place/detail/qt=inf&uid=60ab0980642c464bfa42b2fb&cityCode=138&tn=B_NORMAL_MAP&hb=B_SATELLITE_STREET/vt=map"
         a.href = html
     }
-    var mySwiper = new Swiper('.swiper-container',{
+     new Swiper('.swiper-container',{
         slidesPerView :'auto',
         pagination: '.pagination',
         paginationClickable: true,
@@ -116,6 +153,18 @@
         observer:true,
         observeParents:true,//修改swiper的父元素时，自动初始化swiper
     })
+    
+    function reserDisplay() {
+        var april = $('input[name="april"]').val();
+        var reser_time = $('input[name="reser_time"]').val();
+        if(reser_time == undefined){
+            layer.msg('请选择预约的时间段',{time: 2000, icon:5})
+            return false
+        }else{
+            console.log('123')
+        }
+
+    }
 </script>
 {include file="public/footer_nav" /}
 {/block}
