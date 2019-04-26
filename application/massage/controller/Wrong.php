@@ -46,7 +46,13 @@ class Wrong extends Controller
         return $this->fetch();
     }
 
-    //验证电话是否存在
+    /**
+     * 验证电话是否存在
+     * @return string|\think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function verify(){
         $data = Request::instance()->post();
         $list = Db::name('users')
@@ -71,7 +77,7 @@ class Wrong extends Controller
         $request = Request::instance()->post();
         Cookie::set('u_mobile',$request['phone']);//把手机号码存在cookie中
         $data['u_mobile'] = $request['phone'];
-        $data['u_password'] = $this->passworHash($request['password']);
+        $data['u_password'] = $this->passwordHash($request['password']);
         $list = Db::name('users')->where('u_user_id',Cookie::get('u_user_id'))->update($data);//返回新增id
         if(!empty($list)){
             return json('200','绑定成功','',$list);
@@ -87,7 +93,7 @@ class Wrong extends Controller
      * @param string $password 密码
      * @return bool|string 返回字符串
      */
-    public static function passworHash($password = '123456')
+    public static function passwordHash($password = '123456')
     {
         return password_hash($password,PASSWORD_DEFAULT,['cost'=>10]);
     }

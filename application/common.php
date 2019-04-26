@@ -217,3 +217,33 @@ function get_url() {
     $relate_url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : $php_self.(isset($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : $path_info);
     return $sys_protocal.(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '').$relate_url;
 }
+
+/**
+ * 获取token
+ * @param $appid 公众号appid
+ * @param $appsecret  公众号密钥
+ * @return mixed
+ */
+function getWxAccessToken($appid,$appsecret){
+    // 请求url地址
+    $url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$appid."&secret=".$appsecret;
+    return http_curl($url);
+}
+
+function http_curl($url,$type='get',$data=''){
+    $ch = curl_init();//初始化curl
+    curl_setopt($ch, CURLOPT_TIMEOUT, 30);//设置超时
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,FALSE);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,FALSE);
+    curl_setopt($ch, CURLOPT_HEADER, FALSE);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    if($type=='post'){
+        curl_setopt($ch,CURLOPT_POST,1);
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$data);
+    }
+    $res = curl_exec($ch);//运行curl，结果以jason形式返回
+    $data = json_decode($res,true);//取出openid access_token
+    curl_close($ch);
+    return $data;
+}

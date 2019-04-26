@@ -32,7 +32,6 @@ class Weixin extends Controller
     }
 
     public function weixinApi(){
-//        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $app = Factory::officialAccount($this->config);
         $app->server->push(function ($message) {
             return "您好！欢迎关注公众号";

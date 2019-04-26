@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-04-25 18:39:11
+Date: 2019-04-26 18:44:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -204,7 +204,7 @@ CREATE TABLE `wl_massage_reser` (
   `mr_state` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态 1 预约 2 删除',
   `mr_addTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '推拿预约添加时间',
   PRIMARY KEY (`mr_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='门店小儿推拿预约表';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='门店小儿推拿预约表';
 
 -- ----------------------------
 -- Records of wl_massage_reser
@@ -213,6 +213,11 @@ INSERT INTO `wl_massage_reser` VALUES ('1', '1', '1', 'serena', '1556002800', '1
 INSERT INTO `wl_massage_reser` VALUES ('2', '1', '1', 'serena', '1556006400', '13800138000', null, '1', '2019-04-23 12:35:00');
 INSERT INTO `wl_massage_reser` VALUES ('3', '1', '1', 'serena', '1556092800', '13800138000', null, '1', '2019-04-23 15:12:11');
 INSERT INTO `wl_massage_reser` VALUES ('4', '1', '2', 'serena', '1556092800', '13800138000', null, '1', '2019-04-23 15:12:34');
+INSERT INTO `wl_massage_reser` VALUES ('5', '1', '1', 'serena', '1556274600', '13800138000', null, '1', '2019-04-26 17:46:22');
+INSERT INTO `wl_massage_reser` VALUES ('6', '1', '1', 'serena', '1556361000', '13800138000', null, '1', '2019-04-26 17:46:22');
+INSERT INTO `wl_massage_reser` VALUES ('7', '1', '1', '测试', '1556359200', '1380038000', null, '1', '2019-04-26 17:48:16');
+INSERT INTO `wl_massage_reser` VALUES ('8', '1', '1', '测试', '1556359200', '1380038000', '', '1', '2019-04-26 17:59:46');
+INSERT INTO `wl_massage_reser` VALUES ('9', '1', '1', '测试', '1556359200', '1380038000', '', '2', '2019-04-26 17:48:16');
 
 -- ----------------------------
 -- Table structure for wl_massage_rest
@@ -224,7 +229,7 @@ CREATE TABLE `wl_massage_rest` (
   `mr_mpId` int(11) NOT NULL COMMENT '推拿员工id',
   `mr_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '推拿休息时间添加时间',
   PRIMARY KEY (`mr_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8 COMMENT='推拿员工休息表';
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8 COMMENT='推拿员工休息表';
 
 -- ----------------------------
 -- Records of wl_massage_rest
