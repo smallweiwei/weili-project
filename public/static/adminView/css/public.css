@@ -243,7 +243,8 @@ div::-webkit-scrollbar
     text-align: center;
     margin-top: 30px;
 }
-.reser_botton button {
+.reser_botton button
+{
     margin: 0 auto;
     width: 85%;
     background-color: #337ab7;
@@ -262,7 +263,8 @@ div::-webkit-scrollbar
     height:380px;
 }
 
-.shadow {
+.shadow
+{
     width: 100%;
     height: 130%;
     background-color: #000;
@@ -275,6 +277,27 @@ div::-webkit-scrollbar
     display: none;
     z-index: 900;
 }
-.reserFormDiv{
+.reserFormDiv
+{
     height: 50px;
+}
+.user_head
+{
+    width: 100%;
+    height: 100px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #ccc;
+    padding: 0;
+}
+.user_head_pic
+{
+    height: 100px;
+    background-color: red;
+    padding: 0;
+}
+.user_head_name
+{
+    height: 100px;
+    background-color: pink;
+    padding: 0;
 }

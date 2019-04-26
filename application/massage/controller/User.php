@@ -14,7 +14,8 @@ use think\Controller;
 
 class User extends Controller
 {
-    public function userList(){
+    public function userList()
+    {
         return $this->fetch();
     }
 }

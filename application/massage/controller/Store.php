@@ -10,16 +10,21 @@
 namespace app\massage\controller;
 
 use think\App;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\ModelNotFoundException;
+use think\exception\DbException;
 use think\facade\Cache;
 use think\Controller;
 use think\Db;
 use think\facade\Config;
 use think\facade\Cookie;
 use think\facade\Request;
+use think\response\Json;
 
 class Store extends Controller
 {
     public $weixin_config;
+
     public function initialize()
     {
         $wechat = Db::name('config')
@@ -28,12 +33,13 @@ class Store extends Controller
         $config = json_decode($wechat,true);
         $this->weixin_config = $config;
     }
+
     /**
      * 获取推拿门店列表
-     * @return string|\think\response\Json
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @return string|Json
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     public function storeList()
     {
@@ -48,9 +54,9 @@ class Store extends Controller
     /**
      * 显示推拿门店列表
      * @return mixed
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     public function massageList()
     {
@@ -96,10 +102,10 @@ class Store extends Controller
 
     /**
      * 添加预约信息
-     * @return string|\think\response\Json
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @return string|Json
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     public function reser_from()
     {
@@ -113,14 +119,14 @@ class Store extends Controller
         $array['mr_phone'] = $data['mr_phone'];
         $array['mr_remarks'] = $data['mr_remarks'];
         $array['mr_state'] = '1';
-        $this->successNotice();
-        exit;
+
         if(!$this->reserFull($data['mr_msid'],$time)){
             return json('-200','预约失败，请刷新后重选时间');
             exit;
         }else{
             $list = Db::name('massage_reser')->insertGetId($array);
             if(!empty($list)){
+                $this->userSuccessNotice($array);//发送用户模板
                 return json('200','预约成功','',$list);
             }else{
                 return json('-200','预约失败，请刷新后重选时间','','');
@@ -255,9 +261,9 @@ class Store extends Controller
      *  获取预约的时间戳
      * @param $array 传过来的值
      * @return false|int 返回的时间戳
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     private function reserTime($array)
     {
@@ -308,47 +314,53 @@ class Store extends Controller
     }
 
     //发送模板消息
-    public function successNotice()
+    public function userSuccessNotice($data)
     {
+        $store = Db::name('massage_store')
+            ->where('ms_id',$data['mr_msid'])
+            ->find();
         $user = json_decode(Cookie::get('u_user_id'),true);
         $wx = $this->weixin_config;
         $token = getWxAccessToken($wx['wc_appid'],$wx['wc_appsecret']);
         $url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=".$token['access_token'];
-        $array = array(
+        $time = "开始时间:".date('Y-m-d H:i:s',$data['mr_time']).',
+        结束时间:'.date('Y-m-d H:i:s',strtotime('+30minute',$data['mr_time']));
+
+        $array = [
             'touser' => $user['u_openid'],
             'template_id' =>'3-fbZIC-Lm_ZTXKFR5gbRtHDvpylfgN3HFJTysl1mEQ',
-            'url' => 'https://m.buymelots.com/index.php?s=/Reser/User/index',
-            'data' => array(
-                'first' => array(
+            'url' => 'https://wx.94vessel.cn/user.html',
+            'data' => [
+                'first' => [
                     'value'=>'您好,您的预约已经成功,请准时赴约',
                     'color' =>'#173177',
-                ),
-                'keyword1' =>array(
-                    'value'=>'测试',
+                ],
+                'keyword1' => [
+                    'value'=>$data['mr_name'],
                     'color' =>"#173177",
-                ),
-                'keyword2' =>array(
-                    'value'=>'测试',
+                ],
+                'keyword2' => [
+                    'value'=>$store['ms_name'],
                     'color' =>"#173177",
-                ),
-                'keyword3' =>array(
-                    'value'=>'门店',
+                ],
+                'keyword3' => [
+                    'value'=>$store['ms_address'],
                     'color' =>"#173177",
-                ),
-                'keyword4' =>array(
-                    'value'=>'时间',
+                ],
+                'keyword4' => [
+                    'value'=>$time,
                     'color'=>'#173177',
-                ),
-                'keyword5' =>array(
-                    'value'=>'小儿推拿',
+                ],
+                'keyword5' => [
+                    'value'=>$store['ms_name'].'小儿推拿',
                     'color'=>'#173177',
-                ),
-                'remark' =>array(
-                    'value'=>'备注：联系电话',
+                ],
+                'remark' => [
+                    'value'=>'备注：联系电话:'.$store['ms_phone'],
                     'color' =>"#173177",
-                )
-            ),
-        );
+                ]
+            ],
+        ];
         $data = json_encode($array);
         http_curl($url,'post',$data);
     }
