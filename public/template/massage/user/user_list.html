@@ -4,11 +4,25 @@
 {/block}
 {block name="body"}
 <div class="col-xs-12 user_head">
-    <div class="col-xs-6 user_head_pic"></div>
-    <div class="col-xs-6 user_head_name"></div>
+    <div class="col-xs-4 user_head_pic">
+        <div class="user_pic"  align="center">
+            <img class="img-circle" id="user_pic" height="80" src="./static/adminView/images/user68.jpg">
+        </div>
+    </div>
+    <div class="col-xs-8 user_head_name">
+        <div class="user_nickname"><span></span></div>
+    </div>
 </div>
 {/block}
 {block name="js"}
+<script type="text/javascript">
+    $(function () {
+        let user = JSON.parse(getCookie('u_user_id'))
+        $(".user_nickname span").html(user['u_nickname'])
+        let img = document.getElementById('user_pic');
+        img.src = user['u_head_pic']
+    })
 
+</script>
 {include file="public/footer_nav" /}
 {/block}
