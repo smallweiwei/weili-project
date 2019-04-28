@@ -6,21 +6,27 @@
 <div class="col-xs-12 user_head">
     <div class="col-xs-4 user_head_pic">
         <div class="user_pic"  align="center">
-            <img class="img-circle" id="user_pic" height="80" src="./static/adminView/images/user68.jpg">
+
+            <img class="img-circle" id="user_pic" height="80" src="{$data['u_head_pic']|default='./static/adminView/images/user68.jpg' }">
         </div>
     </div>
     <div class="col-xs-8 user_head_name">
-        <div class="user_nickname"><span></span></div>
+        <div class="user_nickname"><span>{$data['u_nickname']|default='神秘身份'}</span></div>
     </div>
 </div>
+
+<div class="col-xs-12 user_reser_list">
+
+</div>
+
 {/block}
 {block name="js"}
 <script type="text/javascript">
     $(function () {
-        let user = JSON.parse(getCookie('u_user_id'))
-        $(".user_nickname span").html(user['u_nickname'])
-        let img = document.getElementById('user_pic');
-        img.src = user['u_head_pic']
+        // let user = JSON.parse(getCookie('u_user_id'))
+        // $(".user_nickname span").html(user['u_nickname'])
+        // let img = document.getElementById('user_pic');
+        // img.src = user['u_head_pic']
     })
 
 </script>
