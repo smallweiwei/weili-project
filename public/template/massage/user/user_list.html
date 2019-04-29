@@ -32,17 +32,35 @@
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active">
-                                <div class="panel-body">
-                                    <strong>还没有过期记录</strong>
-                                    <p>Bootstrap 使用到的某些 HTML 抠脚大汉发了电话费静安寺老地方奥斯卡发哈数据库的发哈数据库的发哈开始就打合法可接受的会发生爱神的箭发哈手机号发神经的合法会计师的合法开始就打发哈数据库电话费阿斯蒂芬哈克圣诞节和罚金是肯定会发烧抠脚大汉发开始就元素和 CSS 属性需要将页面设置为 HTML5 文档类型。在你项目中的每个页面都要参照下面的格式进行设置。</p>
-                                </div>
+                                <div class="col-sm-12 panel-body reser_user_list" style="padding: 0">
+                                    <div class="booking_list">
+                                        12323
+                                    </div>
+                                    <div class="booking_list">
+                                        12323
+                                    </div>
+                                    <div class="booking_list">
+                                        12323
+                                    </div>
+                                    <div class="booking_list">
+                                        12323
+                                    </div>
+                                    <div class="booking_list">
+                                        12323
+                                    </div>
+                                    <div class="booking_list">
+                                        12323
+                                    </div>
+                                    <div class="booking_list">
+                                        12323
+                                    </div>
+								</div>
                             </div>
                             <div class="tab-pane">
-                                <div class="panel-body">
+                                <div class="col-sm-12 panel-body">
 
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -59,18 +77,22 @@
         n = $(this).index();
         $(this).siblings().removeClass("active")
         $(this).addClass('active')
-        $(".tab-content div").siblings().eq($(this).index()).siblings().removeClass("active")
-        $(".tab-content div").siblings().eq($(this).index()).addClass('active')
-        reser_list(n)
+        $(".tab-content").children().eq($(this).index()).siblings().removeClass("active")
+        $(".tab-content").children().eq($(this).index()).addClass("active")
+        // console.log($(".tab-content").children().eq($(this).index()).siblings().removeClass("active"))
+        // $(".tab-content div").siblings().eq($(this).index()).siblings().removeClass("active")
+        // $(".tab-content div").siblings().eq($(this).index()).addClass('active')
+        // reser_list(n)
     })
 
     //请求数据
-    function reser_list(e){
+    function reser_list(n){
         let data = JSON.parse(getCookie('u_user_id'))
-        let json = {u_user_id:data['u_user_id'],time:e}
+        let json = {u_user_id:data['u_user_id'],time:n}
         $.get('reserList.html',json,function (e) {
             let array = JSON.parse(e)
             console.log(array)
+			console.log(n)
         })
     }
 
