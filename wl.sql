@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-04-26 18:44:00
+Date: 2019-04-29 18:44:34
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -209,15 +209,15 @@ CREATE TABLE `wl_massage_reser` (
 -- ----------------------------
 -- Records of wl_massage_reser
 -- ----------------------------
-INSERT INTO `wl_massage_reser` VALUES ('1', '1', '1', 'serena', '1556002800', '13800138000', null, '1', '2019-04-23 12:29:49');
-INSERT INTO `wl_massage_reser` VALUES ('2', '1', '1', 'serena', '1556006400', '13800138000', null, '1', '2019-04-23 12:35:00');
-INSERT INTO `wl_massage_reser` VALUES ('3', '1', '1', 'serena', '1556092800', '13800138000', null, '1', '2019-04-23 15:12:11');
+INSERT INTO `wl_massage_reser` VALUES ('1', '1', '1', 'serena', '1556589600', '13800138000', null, '1', '2019-04-29 18:32:53');
+INSERT INTO `wl_massage_reser` VALUES ('2', '1', '1', 'serena', '1556591400', '13800138000', null, '1', '2019-04-29 18:33:07');
+INSERT INTO `wl_massage_reser` VALUES ('3', '1', '2', 'serena', '1556595000', '13800138000', null, '1', '2019-04-29 18:33:20');
 INSERT INTO `wl_massage_reser` VALUES ('4', '1', '2', 'serena', '1556092800', '13800138000', null, '1', '2019-04-23 15:12:34');
 INSERT INTO `wl_massage_reser` VALUES ('5', '1', '1', 'serena', '1556274600', '13800138000', null, '1', '2019-04-26 17:46:22');
-INSERT INTO `wl_massage_reser` VALUES ('6', '1', '1', 'serena', '1556361000', '13800138000', null, '1', '2019-04-26 17:46:22');
-INSERT INTO `wl_massage_reser` VALUES ('7', '1', '1', '测试', '1556359200', '1380038000', null, '1', '2019-04-26 17:48:16');
-INSERT INTO `wl_massage_reser` VALUES ('8', '1', '1', '测试', '1556359200', '1380038000', '', '1', '2019-04-26 17:59:46');
-INSERT INTO `wl_massage_reser` VALUES ('9', '1', '1', '测试', '1556359200', '1380038000', '', '2', '2019-04-26 17:48:16');
+INSERT INTO `wl_massage_reser` VALUES ('6', '1', '2', 'serena', '1556361000', '13800138000', null, '1', '2019-04-29 18:33:33');
+INSERT INTO `wl_massage_reser` VALUES ('7', '1', '2', 'serena', '1556359200', '13800138000', null, '1', '2019-04-29 18:33:39');
+INSERT INTO `wl_massage_reser` VALUES ('8', '1', '1', 'serena', '1556359200', '13800138000', '', '1', '2019-04-29 18:33:41');
+INSERT INTO `wl_massage_reser` VALUES ('9', '1', '1', 'serena', '1556359200', '13800138000', '', '2', '2019-04-29 18:33:43');
 
 -- ----------------------------
 -- Table structure for wl_massage_rest
@@ -229,7 +229,7 @@ CREATE TABLE `wl_massage_rest` (
   `mr_mpId` int(11) NOT NULL COMMENT '推拿员工id',
   `mr_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '推拿休息时间添加时间',
   PRIMARY KEY (`mr_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8 COMMENT='推拿员工休息表';
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8 COMMENT='推拿员工休息表';
 
 -- ----------------------------
 -- Records of wl_massage_rest
@@ -355,4 +355,4 @@ CREATE TABLE `wl_users` (
 -- ----------------------------
 -- Records of wl_users
 -- ----------------------------
-INSERT INTO `wl_users` VALUES ('1', '$2y$10$JRmYCmowj5X0w6Pxja5BXuc3Oa3hjN3OOMGJPljKHO6ITEbarG/py', '1', '13800138000', 'weixin', 'o_Aqa1OK0wuGazh3vhFyNfCcuUak', null, 'http://thirdwx.qlogo.cn/mmopen/vi_32/k3r9YIaWdlkax86PLglXP0bKnMEn3d9lHgyQJXfErQ7LnzrVrWQLxdxia0KStY0U4cjXngK241ck8PUFzAGVic4Q/132', '中国', '广东', '揭阳', 'Serena', '2019-04-17 17:13:19');
+INSERT INTO `wl_users` VALUES ('1', '$2y$10$JRmYCmowj5X0w6Pxja5BXuc3Oa3hjN3OOMGJPljKHO6ITEbarG/py', '1', '13800138000', 'weixin', 'o_Aqa1OK0wuGazh3vhFyNfCcuUak', null, 'https://thirdwx.qlogo.cn/mmopen/vi_32/k3r9YIaWdlkax86PLglXP0bKnMEn3d9lHgyQJXfErQ7LnzrVrWQLxdxia0KStY0U4cjXngK241ck8PUFzAGVic4Q/132', '中国', '广东', '揭阳', 'Serena', '2019-04-29 12:16:59');

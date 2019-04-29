@@ -15,19 +15,64 @@
     </div>
 </div>
 
-<div class="col-xs-12 user_reser_list">
+<div class="col-xs-12 user_list">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="float-e-margins">
+                <div class="ibox-content" style="padding: 0;">
+                    <div class="tabs-container">
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <a href="javascript:;">预约列表</a>
+                            </li>
+                            <li class="">
+                                <a href="javascript:;">历史记录</a>
+                            </li>
 
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active">
+                                <div class="panel-body">
+                                    <strong>还没有过期记录</strong>
+                                    <p>Bootstrap 使用到的某些 HTML 抠脚大汉发了电话费静安寺老地方奥斯卡发哈数据库的发哈数据库的发哈开始就打合法可接受的会发生爱神的箭发哈手机号发神经的合法会计师的合法开始就打发哈数据库电话费阿斯蒂芬哈克圣诞节和罚金是肯定会发烧抠脚大汉发开始就元素和 CSS 属性需要将页面设置为 HTML5 文档类型。在你项目中的每个页面都要参照下面的格式进行设置。</p>
+                                </div>
+                            </div>
+                            <div class="tab-pane">
+                                <div class="panel-body">
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
 {/block}
 {block name="js"}
 <script type="text/javascript">
-    $(function () {
-        // let user = JSON.parse(getCookie('u_user_id'))
-        // $(".user_nickname span").html(user['u_nickname'])
-        // let img = document.getElementById('user_pic');
-        // img.src = user['u_head_pic']
+    let n = 0;
+    reser_list(n)
+    $('.tabs-container ul li').click(function (e) {
+        n = $(this).index();
+        $(this).siblings().removeClass("active")
+        $(this).addClass('active')
+        $(".tab-content div").siblings().eq($(this).index()).siblings().removeClass("active")
+        $(".tab-content div").siblings().eq($(this).index()).addClass('active')
+        reser_list(n)
     })
+
+    //请求数据
+    function reser_list(e){
+        let data = JSON.parse(getCookie('u_user_id'))
+        let json = {u_user_id:data['u_user_id'],time:e}
+        $.get('reserList.html',json,function (e) {
+            let array = JSON.parse(e)
+            console.log(array)
+        })
+    }
 
 </script>
 {include file="public/footer_nav" /}

@@ -17,7 +17,8 @@ Route::domain('wx.94vessel.cn', function () {
     Route::rule('verifyName','massage/Wrong/verify');//验证手机号码是否存在
     Route::rule('registerApi','massage/Wrong/registerApi');//绑定手机号码和密码
     Route::rule('store_list','massage/Store/storeList');//获取门店列表信息
-    Route::rule('user','massage/User/userList');//个人中心页面
     Route::rule('reser_form','massage/Store/reser_from','POST');//提交预约信息
+    Route::rule('user','massage/User/userList');//个人中心页面
+    Route::rule('reserList','massage/User/reserList','get');//提交预约信息
 
 });
