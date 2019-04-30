@@ -43,12 +43,12 @@ class Store extends Controller
      */
     public function storeList()
     {
-        if(!Cache::get('store_list')){
+//        if(!Cache::get('store_list')){
             $list = Db::name('massage_store')->select();
-            Cache::set('store_list',$list);
+//            Cache::set('store_list',$list);
             return json('200','推拿门店获取成功',count($list),$list);
-        }
-        return json('200','推拿门店获取成功',count(Cache::get('store_list')),Cache::get('store_list'));
+//        }
+//        return json('200','推拿门店获取成功',count(Cache::get('store_list')),Cache::get('store_list'));
     }
 
     /**

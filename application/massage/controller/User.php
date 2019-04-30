@@ -29,15 +29,19 @@ class User extends Controller
         $data = Request::instance()->get();
         if($data['time'] == 0){
             $list = Db::name('massage_reser')
-                ->where('mr_uid',$data['u_user_id'])
-                ->where('mr_state','1')
-                ->whereTime('mr_time','>=',time())
+                ->alias('mr')
+                ->join('massage_store ms','mr.mr_msid = ms.ms_id')
+                ->where('mr.mr_uid',$data['u_user_id'])
+                ->where('mr.mr_state','1')
+                ->whereTime('mr.mr_time','>=',time())
+                ->field('mr.mr_id,mr.mr_uid,mr.mr_msid,mr.mr_time,ms.ms_name')
                 ->select();
         }else{
             $list = Db::name('massage_reser')
                 ->where('mr_uid',$data['u_user_id'])
                 ->where('mr_state','1')
                 ->whereTime('mr_time','<',time())
+                ->field('mr_id,mr_uid,mr_msid,mr_time')
                 ->select();
         }
 

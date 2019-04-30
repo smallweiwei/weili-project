@@ -28,35 +28,47 @@
                             <li class="">
                                 <a href="javascript:;">历史记录</a>
                             </li>
-
                         </ul>
                         <div class="tab-content">
-                            <div class="tab-pane active">
-                                <div class="col-sm-12 panel-body reser_user_list" style="padding: 0">
-                                    <div class="booking_list">
-                                        12323
-                                    </div>
-                                    <div class="booking_list">
-                                        12323
-                                    </div>
-                                    <div class="booking_list">
-                                        12323
-                                    </div>
-                                    <div class="booking_list">
-                                        12323
-                                    </div>
-                                    <div class="booking_list">
-                                        12323
-                                    </div>
-                                    <div class="booking_list">
-                                        12323
-                                    </div>
-                                    <div class="booking_list">
-                                        12323
-                                    </div>
+                            <div class="tab-pane active" style="margin-top: 10px">
+                                <div class="col-sm-12 panel-body reser_user_list" id="reser_user_list" style="padding: 0">
+                                    <!--<div class="booking_list">-->
+                                        <!--<div class="col-xs-7 reser_time">-->
+                                            <!--<div class="col-xs-12" style="height: 40px">-->
+                                                <!--<span>预约门店：金沙店乐婴岛</span>-->
+                                            <!--</div>-->
+                                            <!--<div class="col-xs-12" style="height: 30px">-->
+                                                <!--<div class="col-xs-3 reser_start_time" style="height: 30px;line-height: 30px"></div>-->
+                                                <!--<div class="col-xs-9" style="height: 30px;line-height: 30px">2019年04月30日 16:00</div>-->
+                                            <!--</div>-->
+                                            <!--<div class="col-xs-12" style="height: 30px">-->
+                                                <!--<div class="col-xs-3 reser_end_time" style="height: 30px;line-height: 30px"></div>-->
+                                                <!--<div class="col-xs-9" style="height:30px;line-height: 30px">2019年04月30日 16:30</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                        <!--<div class="col-xs-5">-->
+                                            <!--<button type="button" class="btn btn-success">取消预约</button>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+
+                                    <!--<div class="booking_list">-->
+                                        <!--<div class="col-xs-7 reser_time">-->
+                                            <!--<div class="col-xs-12" style="height: 40px">-->
+                                                <!--<div class="col-xs-3 reser_start_time" style="height: 40px;"></div>-->
+                                                <!--<div class="col-xs-9" style="height: 40px;">2019年04月30日 16:00</div>-->
+                                            <!--</div>-->
+                                            <!--<div class="col-xs-12" style="height: 40px">-->
+                                                <!--<div class="col-xs-3 reser_end_time" style="height: 40px;"></div>-->
+                                                <!--<div class="col-xs-9" style="height: 40px;">2019年04月30日 16:30</div>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                        <!--<div class="col-xs-5">-->
+                                            <!--<button type="button" class="btn btn-success">取消预约</button>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
 								</div>
                             </div>
-                            <div class="tab-pane">
+                            <div class="tab-pane" style="margin-top: 10px">
                                 <div class="col-sm-12 panel-body">
 
                                 </div>
@@ -79,10 +91,7 @@
         $(this).addClass('active')
         $(".tab-content").children().eq($(this).index()).siblings().removeClass("active")
         $(".tab-content").children().eq($(this).index()).addClass("active")
-        // console.log($(".tab-content").children().eq($(this).index()).siblings().removeClass("active"))
-        // $(".tab-content div").siblings().eq($(this).index()).siblings().removeClass("active")
-        // $(".tab-content div").siblings().eq($(this).index()).addClass('active')
-        // reser_list(n)
+        reser_list(n)
     })
 
     //请求数据
@@ -91,11 +100,35 @@
         let json = {u_user_id:data['u_user_id'],time:n}
         $.get('reserList.html',json,function (e) {
             let array = JSON.parse(e)
-            console.log(array)
-			console.log(n)
+            if(array['code'] > 0){
+                reser_view(array['data'])
+            }else{
+
+            }
         })
     }
+    
+    function reser_view(array) {
+        let html = ''
+        $.each(array,function (key,value) {
+            html += '<div class="booking_list">'
+                html += '<div class="col-xs-7 reser_time">'
+                    html += '<div class="col-xs-12" style="height: 40px"><span>预约门店：'+value.ms_name+'</span></div>'
+                    html += '<div class="col-xs-12" style="height: 30px"><div class="col-xs-3 reser_start_time" style="height: 30px;line-height: 30px"></div>'
+                    html += '<div class="col-xs-9" style="height: 30px;line-height: 30px">'+getTime(value['mr_time'])+'</div></div>'
+                    html += '<div class="col-xs-12" style="height: 30px"><div class="col-xs-3 reser_end_time" style="height: 30px;line-height: 30px"></div>'
+                    html += '<div class="col-xs-9" style="height: 30px;line-height: 30px">'+getTime(value['mr_time']+30*60)+'</div></div>'
+                html += '</div>'
 
+                html += '<div class="col-xs-5">'
+                    html += '<button type="button" class="btn btn-success">取消预约</button>'
+                html += '</div>'
+            html += '</div>'
+            // console.log(html)
+        })
+
+        $('#reser_user_list').html(html)
+    }
 </script>
 {include file="public/footer_nav" /}
 {/block}

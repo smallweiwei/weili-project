@@ -350,10 +350,24 @@ div::-webkit-scrollbar
 }
 .reser_user_list{
     padding: 0;
-    line-height: 80px;
+    line-height: 100px;
 }
 .booking_list{
     border-bottom: 1px solid #ccc;
-    height: 80px;
+    height: 100px;
     min-height: 100px;
+}
+.booking_list div{
+    padding: 0;
+}
+.reser_time{
+    line-height: 40px;
+}
+.reser_start_time{
+    background: url("../images/reser_start_image.png") no-repeat 50% 50%;
+    background-size:45%;
+}
+.reser_end_time{
+    background: url("../images/reser_end_image.png") no-repeat 50% 50%;
+    background-size:45%;
 }

@@ -217,6 +217,39 @@ function getLocalTime(time)
     return t.getFullYear() + "-" +((t.getMonth()+1)<10?"0":"")+(t.getMonth()+1)+"-"+(t.getDate()<10?"0":"")+ (t.getDate());
 }
 
+function getTime(now) {
+    var d=new Date(now*1000);
+    var year=d.getFullYear();
+    let month
+    if((d.getMonth()+1)<10){
+        month = '0'+ (d.getMonth()+1);  //补齐
+    }else{
+        month = d.getMonth()+1
+    }
+    let date
+    if(d.getDate() < 10){
+        date = '0'+ d.getDate();  //补齐
+    }else{
+        date = d.getDate()
+    }
+    let hour
+    if(d.getHours() < 10){
+        hour = '0'+ d.getHours();  //补齐
+    }else{
+        hour = d.getHours();
+    }
+
+    let minute
+    if(d.getMinutes() < 10){
+        minute = '0'+ d.getMinutes();  //补齐
+    }else{
+        minute = d.getMinutes()
+    }
+
+    return year+"年"+month+"月"+date+"日 "+hour+":"+minute;
+}
+
+
 /**
  * 手机号码正则验证
  * @param data 手机号码
