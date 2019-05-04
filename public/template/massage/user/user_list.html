@@ -6,7 +6,6 @@
 <div class="col-xs-12 user_head">
     <div class="col-xs-4 user_head_pic">
         <div class="user_pic"  align="center">
-
             <img class="img-circle" id="user_pic" height="80" src="{$data['u_head_pic']|default='./static/adminView/images/user68.jpg' }">
         </div>
     </div>
@@ -32,45 +31,59 @@
                         <div class="tab-content">
                             <div class="tab-pane active" style="margin-top: 10px">
                                 <div class="col-sm-12 panel-body reser_user_list" id="reser_user_list" style="padding: 0">
-                                    <!--<div class="booking_list">-->
-                                        <!--<div class="col-xs-7 reser_time">-->
-                                            <!--<div class="col-xs-12" style="height: 40px">-->
-                                                <!--<span>预约门店：金沙店乐婴岛</span>-->
-                                            <!--</div>-->
-                                            <!--<div class="col-xs-12" style="height: 30px">-->
-                                                <!--<div class="col-xs-3 reser_start_time" style="height: 30px;line-height: 30px"></div>-->
-                                                <!--<div class="col-xs-9" style="height: 30px;line-height: 30px">2019年04月30日 16:00</div>-->
-                                            <!--</div>-->
-                                            <!--<div class="col-xs-12" style="height: 30px">-->
-                                                <!--<div class="col-xs-3 reser_end_time" style="height: 30px;line-height: 30px"></div>-->
-                                                <!--<div class="col-xs-9" style="height:30px;line-height: 30px">2019年04月30日 16:30</div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                        <!--<div class="col-xs-5">-->
-                                            <!--<button type="button" class="btn btn-success">取消预约</button>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-
-                                    <!--<div class="booking_list">-->
-                                        <!--<div class="col-xs-7 reser_time">-->
-                                            <!--<div class="col-xs-12" style="height: 40px">-->
-                                                <!--<div class="col-xs-3 reser_start_time" style="height: 40px;"></div>-->
-                                                <!--<div class="col-xs-9" style="height: 40px;">2019年04月30日 16:00</div>-->
-                                            <!--</div>-->
-                                            <!--<div class="col-xs-12" style="height: 40px">-->
-                                                <!--<div class="col-xs-3 reser_end_time" style="height: 40px;"></div>-->
-                                                <!--<div class="col-xs-9" style="height: 40px;">2019年04月30日 16:30</div>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                        <!--<div class="col-xs-5">-->
-                                            <!--<button type="button" class="btn btn-success">取消预约</button>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-								</div>
+                                    {volist name="newReserList" id="vo" empty="<div class='booking_list'
+                                         style='color: #A7B1C2;'><span>近期无小儿推拿预约</span></div>" }
+                                    <div class="booking_list">
+                                        <div class="col-xs-7 reser_time">
+                                            <div class="col-xs-12" style="height: 40px">
+                                                <span>预约门店：{$vo.ms_name}</span></div>
+                                            <div class="col-xs-12" style="height: 30px">
+                                                <div class="col-xs-3 reser_start_time" style="height: 30px;line-height: 30px">
+                                                </div>
+                                                <div class="col-xs-9" style="height: 30px;line-height: 30px">
+                                                    {$vo['startTime']}
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12" style="height: 30px">
+                                                <div class="col-xs-3 reser_end_time" style="height: 30px;line-height: 30px"></div>
+                                                <div class="col-xs-9" style="height: 30px;line-height: 30px">
+                                                    {$vo['endTime']}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-5">
+                                            <button type="button" onclick="reserCancel({$vo['mr_id']})" class="btn btn-success">取消预约</button>
+                                        </div>
+                                    </div>
+                                    {/volist}
+                                </div>
                             </div>
                             <div class="tab-pane" style="margin-top: 10px">
-                                <div class="col-sm-12 panel-body">
-
+                                <div class="col-sm-12 panel-body reser_user_list" style="padding: 0;">
+                                    {volist name="ReserList" id="vo" empty="暂时没有数据" }
+                                    <div class="booking_list">
+                                        <div class="col-xs-7 reser_time">
+                                            <div class="col-xs-12" style="height: 40px">
+                                                <span>预约门店：{$vo.ms_name}</span></div>
+                                            <div class="col-xs-12" style="height: 30px">
+                                                <div class="col-xs-3 reser_start_time" style="height: 30px;line-height: 30px">
+                                                </div>
+                                                <div class="col-xs-9" style="height: 30px;line-height: 30px">
+                                                    {$vo['startTime']}
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12" style="height: 30px">
+                                                <div class="col-xs-3 reser_end_time" style="height: 30px;line-height: 30px"></div>
+                                                <div class="col-xs-9" style="height: 30px;line-height: 30px">
+                                                    {$vo['endTime']}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-5">
+                                            <button type="button" disabled="disabled" class="btn btn-default btn-lg">过期记录</button>
+                                        </div>
+                                    </div>
+                                    {/volist}
                                 </div>
                             </div>
                         </div>
@@ -83,52 +96,25 @@
 {/block}
 {block name="js"}
 <script type="text/javascript">
-    let n = 0;
-    reser_list(n)
     $('.tabs-container ul li').click(function (e) {
-        n = $(this).index();
         $(this).siblings().removeClass("active")
         $(this).addClass('active')
         $(".tab-content").children().eq($(this).index()).siblings().removeClass("active")
         $(".tab-content").children().eq($(this).index()).addClass("active")
-        reser_list(n)
     })
 
-    //请求数据
-    function reser_list(n){
-        let data = JSON.parse(getCookie('u_user_id'))
-        let json = {u_user_id:data['u_user_id'],time:n}
-        $.get('reserList.html',json,function (e) {
-            let array = JSON.parse(e)
-            if(array['code'] > 0){
-                reser_view(array['data'])
-            }else{
-
-            }
-        })
+    //取消预约请求后台数据
+    function reserCancel(mr_id) {
+        layer.confirm('确认取消推拿预约？', {
+            btn: ['确认','取消'], //按钮
+            title:'标题'
+        }, function(){
+            layer.msg('确认', {icon: 1});
+        }, function(){
+            layer.msg('取消', {icon: 1});
+        });
     }
-    
-    function reser_view(array) {
-        let html = ''
-        $.each(array,function (key,value) {
-            html += '<div class="booking_list">'
-                html += '<div class="col-xs-7 reser_time">'
-                    html += '<div class="col-xs-12" style="height: 40px"><span>预约门店：'+value.ms_name+'</span></div>'
-                    html += '<div class="col-xs-12" style="height: 30px"><div class="col-xs-3 reser_start_time" style="height: 30px;line-height: 30px"></div>'
-                    html += '<div class="col-xs-9" style="height: 30px;line-height: 30px">'+getTime(value['mr_time'])+'</div></div>'
-                    html += '<div class="col-xs-12" style="height: 30px"><div class="col-xs-3 reser_end_time" style="height: 30px;line-height: 30px"></div>'
-                    html += '<div class="col-xs-9" style="height: 30px;line-height: 30px">'+getTime(value['mr_time']+30*60)+'</div></div>'
-                html += '</div>'
 
-                html += '<div class="col-xs-5">'
-                    html += '<button type="button" class="btn btn-success">取消预约</button>'
-                html += '</div>'
-            html += '</div>'
-            // console.log(html)
-        })
-
-        $('#reser_user_list').html(html)
-    }
 </script>
 {include file="public/footer_nav" /}
 {/block}
