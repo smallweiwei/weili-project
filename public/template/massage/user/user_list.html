@@ -107,11 +107,27 @@
     function reserCancel(mr_id) {
         layer.confirm('确认取消推拿预约？', {
             btn: ['确认','取消'], //按钮
-            title:'标题'
+            title:'取消预约'
         }, function(){
-            layer.msg('确认', {icon: 1});
-        }, function(){
-            layer.msg('取消', {icon: 1});
+            $.ajax({
+                type : 'POST',
+                url : 'reser_cancel.html',
+                data : {
+                    mr_id:mr_id,
+                },
+                dataType : "json",
+                success : function (res) {
+                    if(res.code < 0){
+                        layer.msg(res.msg,{time: 2000, icon:5})
+                        location = location;
+                        return false
+                    }else{
+                        layer.msg(res.msg,{time: 2000, icon:6})
+                        location = location;
+                        return false
+                    }
+                }
+            })
         });
     }
 

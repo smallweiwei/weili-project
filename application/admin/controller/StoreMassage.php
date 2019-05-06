@@ -42,7 +42,7 @@ class StoreMassage extends Basic
         $data = Request::instance()->post();
         $list = Db::name('massage_store')
             ->order($data['sort'],$data['order'])
-            ->field('ms_id,ms_name,ms_phone,ms_address,ms_workShift,ms_pic,ms_time')
+            ->field('ms_id,ms_name,ms_phone,ms_address,ms_workShift,ms_pic,ms_time,ms_number')
             ->select();
         if(!empty($list)){
             return json('200','数据获取成功','',$list);
@@ -410,4 +410,10 @@ class StoreMassage extends Basic
 
 //推拿门店  排班设置 end
 
+//推拿门店  预约列表  start
+    public function SubscribeListView()
+    {
+        return $this->fetch();
+    }
+//推拿门店  预约列表  end
 }

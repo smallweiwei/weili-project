@@ -19,6 +19,6 @@ Route::domain('wx.94vessel.cn', function () {
     Route::rule('store_list','massage/Store/storeList');//获取门店列表信息
     Route::rule('reser_form','massage/Store/reser_from','POST');//提交预约信息
     Route::rule('user','massage/User/userList');//个人中心页面
-    Route::rule('reserList','massage/User/reserList','get');//提交预约信息
-
+    Route::rule('reserList','massage/User/reserList','GET');//提交预约信息
+    Route::rule('reser_cancel','massage/User/reserCancel','POST');//取消预约
 });

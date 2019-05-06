@@ -43,12 +43,8 @@ class Store extends Controller
      */
     public function storeList()
     {
-//        if(!Cache::get('store_list')){
             $list = Db::name('massage_store')->select();
-//            Cache::set('store_list',$list);
             return json('200','推拿门店获取成功',count($list),$list);
-//        }
-//        return json('200','推拿门店获取成功',count(Cache::get('store_list')),Cache::get('store_list'));
     }
 
     /**
@@ -89,13 +85,15 @@ class Store extends Controller
                 $list['title'][$i]['key'] = '后天';
                 $list['title'][$i]['value'] = date("Y年m月d日",strtotime("+".$i." day")). "";
             }else{
-                $list['workShift'][$i] = $this->storeTime(date("Y-m-d",strtotime("+".$i." day")),$workShift,$list,2);
+//                if($i == 14){
+                    $list['workShift'][$i] = $this->storeTime(date("Y-m-d",strtotime("+".$i." day")),$workShift,$list,2);
+//                }
                 $list['title'][$i]['key'] =  '星期'.$time[date("w",strtotime("+".$i." day"))];
                 $list['title'][$i]['value'] = date("Y年m月d日",strtotime("+".$i." day")). "";
             }
             $i ++;
         }
-        
+
         $this->assign('data',$list);
         return $this->fetch();
     }
@@ -144,14 +142,18 @@ class Store extends Controller
      */
     private function storeTime($time,$array,$store,$today)
     {
-        $count = Db::name('massage_rest')
+        //查询有没有人休息
+        $list = Db::name('massage_rest')
             ->alias('mr')
             ->join('massage_personnel mp','mr.mr_mpId = mp.mp_id')
             ->where('mr.mr_date',$time)
             ->where('mp.mp_msId',$store['ms_id'])
-            ->field('mr.mr_id,mr.mr_date,mr.mr_mpId,mp.mp_msId')
-            ->count();
+            ->field('mr.mr_id,mr.mr_date,mr.mr_mpId,mp.mp_msId,mp.mp_workShift')
+            ->select();
+        $count = count($list);
         $data = array();
+
+        //判断是否是今天，今天的话判断有没有时间过了，时间过为false  没有过为true
         if($today == 1){
             foreach ($array as $key=>$value){
                 if(time() >= strtotime($time.' '.$value)){
@@ -161,10 +163,12 @@ class Store extends Controller
                 }
             }
         }else{
+
             foreach ($array as $key=>$value){
                 $data[$key]['expire'] = 'true';
             }
         }
+
         //没有人休息
         if(empty($count)){
             foreach ($array as $key=>$value){
@@ -203,41 +207,85 @@ class Store extends Controller
                 }
             }
         }else{
+
             foreach ($array as $key=>$value){
-                $num = $this->storeReser(strtotime($time.' '.$value),$store['ms_id']);
-                //区分金沙店特殊
-                if($store['ms_id'] == 1){
-                    if($value >= '14:00'){
-                        $n = ($store['ms_number']-$count-$num);
+                $num = $this->storeReser(strtotime($time.' '.$value),$store['ms_id']);//查询时间段有没有人预约
+                $n = 0;
+                foreach ($list as $k=>$v){
+                    //$v['mp_workShift']  1为全职  2为上午上班  3为下午上班
+                    if($v['mp_workShift'] == 1){
+                        if($store['ms_id'] == 1){
+                            if($value >= '14:00'){
+                                $n = ($store['ms_number']-count($list)-$num);
+                            }else{
+                                $n = ($store['ms_number']-count($list)-1-$num);
+                            }
+                        }else{
+                            $n = ($store['ms_number']-count($list)-$num);
+                        }
+                    }elseif ($v['mp_workShift'] == 2){
+                        if($value < '14:00'){
+                            $n = ($store['ms_number']-count($list)-1-$num);
+                        }else{
+                            $n = ($store['ms_number']-count($list)-$num);
+                        }
+                    }elseif ($v['mp_workShift'] == 3){
+                        if($value >= '14:00'){
+                            $n = ($store['ms_number']-count($list)-$num);
+                        }else{
+                            $n = ($store['ms_number']-count($list)-$num);
+                        }
                         if($n == 0){
                             $data[$key]['state'] = 'false';
                         }else{
                             $data[$key]['state'] = 'true';
                         }
-                        $data[$key]['time'] = $value;
-                        $data[$key]['value'] = ($store['ms_number']-$count-$num);
-                    }else{
-                        $n = ($store['ms_number']-$count-1-$num);
-                        if($n == 0){
-                            $data[$key]['state'] = 'false';
-                        }else{
-                            $data[$key]['state'] = 'true';
-                        }
-                        $data[$key]['time'] = $value;
-                        $data[$key]['value'] = ($store['ms_number']-$count-1-$num);
+//
                     }
-                }else{
-                    $n = ($store['ms_number']-$count-$num);
-                    if($n == 0){
-                        $data[$key]['state'] = 'false';
-                    }else{
-                        $data[$key]['state'] = 'true';
-                    }
-                    $data[$key]['time'] = $value;
-                    $data[$key]['value'] = ($store['ms_number']-$count-$num);
+
                 }
+                $data[$key]['time'] = $value;
+                $data[$key]['value'] = $n;
+                if($n == 0){
+                    $data[$key]['state'] = 'false';
+                }else{
+                    $data[$key]['state'] = 'true';
+                }
+//                dump($value);
+//                if($store['ms_id'] == 1){
+//                    if($value >= '14:00'){
+//                        $n = ($store['ms_number']-count($count)-$num);
+//                        if($n == 0){
+//                            $data[$key]['state'] = 'false';
+//                        }else{
+//                            $data[$key]['state'] = 'true';
+//                        }
+//                        $data[$key]['time'] = $value;
+//                        $data[$key]['value'] = ($store['ms_number']-count($count)-$num);
+//                    }else{
+//                        $n = ($store['ms_number']-count($count)-1-$num);
+//                        if($n == 0){
+//                            $data[$key]['state'] = 'false';
+//                        }else{
+//                            $data[$key]['state'] = 'true';
+//                        }
+//                        $data[$key]['time'] = $value;
+//                        $data[$key]['value'] = ($store['ms_number']-count($count)-1-$num);
+//                    }
+//                }else{
+//                    $n = ($store['ms_number']-count($count)-$num);
+//                    if($n == 0){
+//                        $data[$key]['state'] = 'false';
+//                    }else{
+//                        $data[$key]['state'] = 'true';
+//                    }
+//                    $data[$key]['time'] = $value;
+//                    $data[$key]['value'] = ($store['ms_number']-count($count)-$num);
+//                }
             }
         }
+//        dump($data);
+//        exit;
         return $data;
     }
 
