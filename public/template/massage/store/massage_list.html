@@ -253,6 +253,11 @@
                     location = location;
                     return false
                 }
+            },
+            error:function (xhr) {
+                if(!errorAjax(xhr.status)){
+                    return false;
+                }
             }
         })
         

@@ -134,11 +134,14 @@ class Store extends Controller
 
     /**
      * 获取有没有人休息，时间段是否约满等
-     * @param $time 传的时间，今天到可预约结束时间
+     * @param $time  传的时间，今天到可预约结束时间
      * @param $array 时间段
-     * @param $store 门店信息
-     * @param $today 是否是今天 1为今天 2为以后
-     * @return array 返回数组
+     * @param $store  门店信息
+     * @param $today  是否是今天 1为今天 2为以后
+     * @return array  返回数组
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     private function storeTime($time,$array,$store,$today)
     {
