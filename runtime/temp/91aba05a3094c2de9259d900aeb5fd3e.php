@@ -1,4 +1,4 @@
-<?php /*a:1:{s:35:"template/adminView/login/index.html";i:1555081364;}*/ ?>
+<?php /*a:1:{s:35:"template/adminView/login/index.html";i:1557933895;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,10 +34,10 @@
                     <input type="password" required="required" oninvalid="setCustomValidity('密码不能为空')"
                            name="m_password" placeholder="管理员密码" autocomplete="off" oninput="setCustomValidity('')">
                 </div>
-                <div class="user">
-                    <input type="text" required="required" oninvalid="setCustomValidity('验证码不能为空')"
-                           name="idCode" placeholder="验证码" autocomplete="off" oninput="setCustomValidity('')">
-                </div>
+<!--                <div class="user">-->
+<!--                    <input type="text" required="required" oninvalid="setCustomValidity('验证码不能为空')"-->
+<!--                           name="idCode" placeholder="验证码" autocomplete="off" oninput="setCustomValidity('')">-->
+<!--                </div>-->
                 <input value="登录" style="width:100%;" type="submit">
             </form>
         </div>
@@ -80,15 +80,14 @@
                     if (!errorAjax(xhr.status)) {
                         return false;
                     }
-                }
-                // ,beforeSend:function(){
-                //     index = layer.msg('登录提交中', {
-                //         icon: 16,
-                //         shade: 0.4,
-                //         time:false //取消自动关闭
-                //     });
-                //     // return false;
-                // },
+                },beforeSend:function(){
+                    index = layer.msg('登录提交中', {
+                        icon: 16,
+                        shade: 0.4,
+                        time:false //取消自动关闭
+                    });
+                    // return false;
+                },
             })
         }
 

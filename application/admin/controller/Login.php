@@ -43,12 +43,12 @@ class Login extends Controller
         $data = Request::instance()->post();
         $name = Request::instance()->param('m_name');
         $password = Request::instance()->param('m_password');
-        $yzm = Request::instance()->param('idCode');
-        //判断验证码是否正确
-        if($yzm != (Config::get('yzm').yzm())){
-            return json('-1000','验证码不正确');
-            exit;
-        }
+//        $yzm = Request::instance()->param('idCode');
+//        //判断验证码是否正确
+//        if($yzm != (Config::get('yzm').yzm())){
+//            return json('-1000','验证码不正确');
+//            exit;
+//        }
         //判断是否通过表单提交
         if(!request()->isPost()){
             return json('-1001','非法登录');
