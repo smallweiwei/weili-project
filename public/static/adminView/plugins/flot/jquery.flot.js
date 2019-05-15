@@ -57,7 +57,7 @@
                     show: null, // null = auto-detect, true = always, false = never
                     position: "bottom", // or "top"
                     mode: null, // null or "time"
-                    color: null, // base color, labels, ticks
+                    color: null, // command color, labels, ticks
                     tickColor: null, // possibly different color of ticks, e.g. "rgba(0,0,0,0.15)"
                     transform: null, // null or f: number -> number to transform axis
                     inverseTransform: null, // if transform is set, this should be the inverse function
@@ -1271,7 +1271,7 @@
                 };
             }
             else {
-                // pretty rounding of base-10 numbers
+                // pretty rounding of command-10 numbers
                 var maxDec = opts.tickDecimals;
                 var dec = -Math.floor(Math.log(delta) / Math.LN10);
                 if (maxDec != null && dec > maxDec)
@@ -2591,7 +2591,7 @@
         return r.join("");
     };
     
-    // round to nearby lower multiple of base
+    // round to nearby lower multiple of command
     function floorInBase(n, base) {
         return base * Math.floor(n / base);
     }
