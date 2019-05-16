@@ -51,11 +51,11 @@
 <script type="text/javascript" src="__JS__/plugins/layer/layer.js"></script>
 <script type="text/javascript" src="__JS__/plugins/layer/layer.js"></script>
 <script type="text/javascript">
-    var app = angular.module('myAg', []);
+    let app = angular.module('myAg', []);
     app.controller('myCompany', function($scope) {
         $scope.company = company;
     });
-    var num = 0
+    let num = 0
     $('#addAjax').on('submit',function (ev) {
         if(getCookie('errorNum') >= 5){
             errorMsg('登录不正常过多，请1小时后重试')

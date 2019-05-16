@@ -1,4 +1,4 @@
-<?php /*a:1:{s:35:"template/adminView/login/index.html";i:1557933895;}*/ ?>
+<?php /*a:1:{s:35:"template/adminView/login/index.html";i:1557962848;}*/ ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,11 +52,11 @@
 <script type="text/javascript" src="/static/adminView/js/plugins/layer/layer.js"></script>
 <script type="text/javascript" src="/static/adminView/js/plugins/layer/layer.js"></script>
 <script type="text/javascript">
-    var app = angular.module('myAg', []);
+    let app = angular.module('myAg', []);
     app.controller('myCompany', function($scope) {
         $scope.company = company;
     });
-    var num = 0
+    let num = 0
     $('#addAjax').on('submit',function (ev) {
         if(getCookie('errorNum') >= 5){
             errorMsg('登录不正常过多，请1小时后重试')

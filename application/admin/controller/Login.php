@@ -6,6 +6,7 @@
  * Time: 0:02
  */
 namespace app\admin\controller;
+use app\admin\logic\login as logic_login;
 use think\Controller;
 use think\facade\Config;
 use think\Db;
@@ -49,15 +50,18 @@ class Login extends Controller
 //            return json('-1000','验证码不正确');
 //            exit;
 //        }
+
         //判断是否通过表单提交
         if(!request()->isPost()){
             return json('-1001','非法登录');
         }
-        //判断名称和密码是否不为空
-        if(empty($name) || empty($password)){
-            return json('-1002','用户名密码不能为空');
-            exit;
-        }
+        $massage = new logic_login();
+        $massage->is_null($data);
+//        $name = $massage->is_name($data);
+//        dump($name);/
+        exit;
+
+
         $array['m_name'] = $data['m_name'];
         $m_id = Db::name('manager')->where($array)->field('m_id')->find();
         if(empty($m_id)){
