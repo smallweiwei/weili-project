@@ -2,7 +2,8 @@
 
 
 namespace app\admin\logic;
-use app\admin\model\manager;
+use app\admin\model\Manager;
+use app\admin\model\MassagePersonnel;
 use think\Db;
 
 
@@ -32,9 +33,23 @@ class login
     public function is_name($data)
     {
         $where['m_name'] = $data['m_name'];
-        $list = Db::name('manager')->where($where)->find();
-        if(!empty($list)){
+        $manager = new manager();
+        $massagePersonnel = new MassagePersonnel();
+
+        $list = $manager->find(array('m_name'=>$data['m_name']));
+
+        if(empty($list)){
+            $mp = $massagePersonnel->find(array('mp_name|mp_spell'=>$data['m_name']));
+            dump($mp);
+        }else{
 
         }
+//        return $list;
+//        dump($list);
+//        $list = Db::name('manager')->where($where)->find();
+//        if(empty($list)){
+//
+//        }
     }
+
 }

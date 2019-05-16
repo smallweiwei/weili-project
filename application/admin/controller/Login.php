@@ -6,7 +6,7 @@
  * Time: 0:02
  */
 namespace app\admin\controller;
-use app\admin\logic\login as logic_login;
+use app\admin\logic\Login as logic_login;
 use think\Controller;
 use think\facade\Config;
 use think\Db;
