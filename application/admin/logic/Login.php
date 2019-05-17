@@ -4,7 +4,7 @@
 namespace app\admin\logic;
 use app\admin\model\Manager;
 use app\admin\model\MassagePersonnel;
-use think\Db;
+use app\admin\model\StorePersonnel;
 
 
 /**
@@ -12,7 +12,7 @@ use think\Db;
  * Class login
  * @package app\admin\login
  */
-class login
+class Login
 {
     /**
      * 判断传过来的值是否为空
@@ -36,20 +36,34 @@ class login
         $manager = new manager();
         $massagePersonnel = new MassagePersonnel();
 
+
         $list = $manager->find(array('m_name'=>$data['m_name']));
 
         if(empty($list)){
-            $mp = $massagePersonnel->find(array('mp_name|mp_spell'=>$data['m_name']));
-            dump($mp);
-        }else{
-
-        }
-//        return $list;
-//        dump($list);
-//        $list = Db::name('manager')->where($where)->find();
-//        if(empty($list)){
+            $this->is_store_name($data['m_name']);
+//            $mp = $massagePersonnel->find(array('mp_name|mp_spell'=>$data['m_name']));
+//            if(empty($mp)){
 //
-//        }
+//            }else{
+//                return $mp;
+//                exit;
+//            }
+        }else{
+            return $list;
+            exit;
+        }
+    }
+
+    public function is_store_name($name){
+        $storePersonnel = new StorePersonnel();
+        $sp = $storePersonnel->find(array('sp_name|sp_spell'=>$name));
+        if(empty($sp)){
+            return json('-1003','管理员不存在');
+            exit;
+        }else{
+            return $sp;
+            exit;
+        }
     }
 
 }

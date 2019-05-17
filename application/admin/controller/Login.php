@@ -55,11 +55,11 @@ class Login extends Controller
         if(!request()->isPost()){
             return json('-1001','非法登录');
         }
-        $massage = new logic_login();
-        $massage->is_null($data);
-//        $name = $massage->is_name($data);
-//        dump($name);/
-        exit;
+//        $massage = new logic_login();
+//        $admin = $massage->is_null($data);
+////        $name = $massage->is_name($data);
+//        dump($admin);
+//        exit;
 
 
         $array['m_name'] = $data['m_name'];
