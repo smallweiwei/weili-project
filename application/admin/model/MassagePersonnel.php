@@ -13,9 +13,21 @@ use think\Model;
 class MassagePersonnel extends Model
 {
     protected $pk = 'mp_id'; //数据库主键
+    protected $field = ['mp_id','mp_msId','mp_name','mp_password','mp_spell','mp_workShift','mp_state','mp_delete','mp_time']; //表字段
 
-    public function find($where)
+    public function __construct($data = [])
     {
-        return $this->where($where)->find();
+        parent::__construct($data);
+    }
+
+    //查询单条数据
+    public function find($where,$array = [])
+    {
+        if(empty($array)){
+            $field = $this->field;
+        }else{
+            $field = $array;
+        }
+        return $this->where($where)->field($field)->find();
     }
 }

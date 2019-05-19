@@ -12,14 +12,21 @@ use think\Model;
 class Manager extends Model
 {
     protected $pk = 'm_id'; //数据库主键
+    protected $field = ['m_id','m_name','m_password','m_sex','m_addTime','m_state','m_delete']; //表字段
 
     public function __construct($data = [])
     {
         parent::__construct($data);
     }
 
-    public function find($where)
+    //查询单条数据
+    public function find($where,$array = [])
     {
-        dump($this->where($where)->find());
+        if(empty($array)){
+            $field = $this->field;
+        }else{
+            $field = $array;
+        }
+        return $this->where($where)->field($field)->find();
     }
 }

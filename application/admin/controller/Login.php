@@ -7,13 +7,21 @@
  */
 namespace app\admin\controller;
 use app\admin\logic\Login as logic_login;
+use PDOStatement;
 use think\Controller;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\ModelNotFoundException;
+use think\exception\DbException;
 use think\facade\Config;
 use think\Db;
+use think\facade\Cookie;
 use think\facade\Request;
 use think\facade\Session;
+use think\Model;
+use think\response\Json;
+
 /**
- * 后端登录界面
+ * 微粒管理后台登录界面
  * Class login
  * @package app\admin\controller
  */
@@ -34,66 +42,26 @@ class Login extends Controller
 
     /**
      * 登录操作
-     * @return string|\think\response\Json
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * $_post 前端传过来的值为用户名和密码
+     * @return string|Json
      */
     public function login()
     {
         $data = Request::instance()->post();
-        $name = Request::instance()->param('m_name');
-        $password = Request::instance()->param('m_password');
-//        $yzm = Request::instance()->param('idCode');
-//        //判断验证码是否正确
-//        if($yzm != (Config::get('yzm').yzm())){
-//            return json('-1000','验证码不正确');
-//            exit;
-//        }
 
         //判断是否通过表单提交
         if(!request()->isPost()){
             return json('-1001','非法登录');
         }
-//        $massage = new logic_login();
-//        $admin = $massage->is_null($data);
-////        $name = $massage->is_name($data);
-//        dump($admin);
-//        exit;
 
-
-        $array['m_name'] = $data['m_name'];
-        $m_id = Db::name('manager')->where($array)->field('m_id')->find();
-        if(empty($m_id)){
-            return json('-1003','管理员不存在');
-            exit;
-        }
-        $list = $this->managerInfo($m_id['m_id']);
-
-        if(empty($list)){
-            return json('-1003','管理员不存在');
-            exit;
-        }
-        if($list['m_state'] != '1'){
-            return json('-1004','禁止登录');
-            exit;
-
-        }
-        if($list['m_delete'] != '1'){
-            return json('-1004','账号不存在');
-            exit;
-        }
-        if(password_verify($data['m_password'],$list['m_password']) === false){
-            return json('-1006','账号或者密码不正确');
-            exit;
-        }
-
-        Session::set('adminSession',$list);
-
+        $massage = new logic_login();
+        $list = $massage->login_logic($data);//处理和判断前端传过来的值,返回false 或者 管理员信息
+        dump($list);
+        exit;
         if(!empty($list)){
+            Session::set('adminSession',json_encode($list));
+            Cookie::set('admin',json_encode($list));
             return json('200','登录成功','1',$list);
-        }else{
-            return json('-200','登录失败');
         }
     }
 
@@ -111,10 +79,10 @@ class Login extends Controller
     /**
      * 根据角色管理员表管理查询角色
      * @param string $m_id  管理员id
-     * @return array|null|\PDOStatement|string|\think\Model
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @return array|null|PDOStatement|string|Model
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     public function managerInfo($m_id = '')
     {
@@ -136,7 +104,7 @@ class Login extends Controller
     public function logout()
     {
         if(!empty(Session::get('adminSession'))){
-            Session::set('adminSession','');//清除缓存
+            Session::delete('adminSession');//清除缓存
             return $this->error('退出成功！','/login.html', 1,1);
         }else{
             return $this->error('非法操作！','/', 1,1);

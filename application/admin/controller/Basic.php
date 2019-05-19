@@ -33,12 +33,14 @@ class Basic extends Controller
      * @throws \think\exception\DbException
      */
     public function menu(){
+        $admin = json_decode(Session::get('adminSession'),true);
         $list = Db::name('auth_rule')
             ->where('ar_status = 1')
             ->order('ar_sort','asc')
             ->select();
         if(!empty($list)){
-            return json('200','菜单获取成功','',classify(array_accord_string($list,'ar_id',Session::get('adminSession.ag_rules'),','),0));
+            return json('200','菜单获取成功','',
+                classify(array_accord_string($list,'ar_id',$admin['ag_rules'],','),0));
             exit;
         }else{
             return json('-10000','菜单获取失败','','');

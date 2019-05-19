@@ -60,7 +60,6 @@
         if(getCookie('errorNum') >= 5){
             errorMsg('登录不正常过多，请1小时后重试')
         }else{
-
             $.ajax({
                 type : 'post',
                 url : "api_login.html",
@@ -70,7 +69,7 @@
                 success : function(e){
                     if(e.code < 0){
                         num += 1
-                        // setCookie('errorNum',num,60*60*1)//保存1小时
+                        setCookie('errorNum',num,60*60*1)//保存1小时
                         errorMsg(e.msg)
                     }else{
                         window.location.replace(admin_url);
@@ -85,7 +84,6 @@
                         shade: 0.4,
                         time:false //取消自动关闭
                     });
-                    // return false;
                 },
             })
         }

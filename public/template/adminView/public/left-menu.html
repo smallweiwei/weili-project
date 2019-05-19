@@ -42,6 +42,9 @@
 
 <block name="js">
     <script type="text/javascript">
+        const admin = JSON.parse(getCookie('admin'));
+        $("#adminSessionName").html(admin['m_name'])
+        $("#adminSessionTitle").html(admin['ag_title'])
         $(function() {
              $.ajax({
                     type : 'post',
