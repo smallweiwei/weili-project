@@ -45,6 +45,12 @@ function isArrayNull(array)
     }
 }
 
+//判断数值是否为空
+function isUndefined(value)
+{
+    return value==undefined || $.trim(value).length==0;
+}
+
 /**
  * 弹出错误信息
  * @param data 错误类型
@@ -165,8 +171,7 @@ function setCookie(c_name,value,expiredays)
 {
     var exdate=new Date()
     exdate.setDate(exdate.getDate()+expiredays)
-    document.cookie=c_name+ "=" +escape(value)+
-        ((expiredays==null) ? "" : ";expires="+exdate.toGMTString())
+    document.cookie=`${c_name}=${escape(value)}${(expiredays == null) ? "" : ";expires=" + exdate.toGMTString()}`
 }
 
 /**
@@ -188,6 +193,15 @@ function getCookie(c_name)
         }
     }
     return "0"
+}
+
+/**
+ * 删除cookie
+ * @param name
+ */
+function delCookie(name)
+{
+    setCookie(name,'','-1')
 }
 
 /**
@@ -220,7 +234,9 @@ function getLocalTime(time)
     return t.getFullYear() + "-" +((t.getMonth()+1)<10?"0":"")+(t.getMonth()+1)+"-"+(t.getDate()<10?"0":"")+ (t.getDate());
 }
 
-function getTime(now) {
+//时间戳转时间，转成年月日 时:分的形式
+function getTime(now)
+{
     var d=new Date(now*1000);
     var year=d.getFullYear();
     let month
@@ -258,7 +274,8 @@ function getTime(now) {
  * @param data 手机号码
  * @returns {boolean}
  */
-function isPhone(data) {
+function isPhone(data)
+{
     var phone = /^[1][3,4,5,7,8][0-9]{9}$/;
     if (!phone.test(data)) {
         return false;
@@ -307,3 +324,20 @@ function GetUrlParam(paraName) {
         return "";
     }
 }
+
+/**
+ * 退出登录
+ */
+function logout()
+{
+    window.localStorage.removeItem('adminMenu');
+    delCookie('admin')
+    window.location.href="logout.html";
+}
+
+//判断是不是数组，是返回true 否返回false
+function isArray(data)
+{
+    return $.isArray(data)
+}
+

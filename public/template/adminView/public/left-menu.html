@@ -27,7 +27,7 @@
                         <!--<li><a class="J_menuItem" href="mailbox.html">信箱</a>-->
                         <!--</li>-->
                         <li class="divider"></li>
-                        <li><a href="logout.html">安全退出</a>
+                        <li><a onclick="logout()">安全退出</a>
                         </li>
                     </ul>
                 </div>
@@ -45,20 +45,30 @@
         const admin = JSON.parse(getCookie('admin'));
         $("#adminSessionName").html(admin['m_name'])
         $("#adminSessionTitle").html(admin['ag_title'])
+
         $(function() {
-             $.ajax({
+            if(window.localStorage.adminMenu == undefined){
+                $.ajax({
                     type : 'post',
                     url : "menu.html",
                     async : false,
                     dataType : 'json',
                     success : function(e) {
-                        // console.log(e)
+                        // console.log(e.data)
                         if(e.code>0){
+                            window.localStorage.adminMenu = JSON.stringify(e.data);
                             menu(e.data)
                         }
                     }
                 })
+            }else{
+                let array = JSON.parse(window.localStorage.adminMenu)
+                menu(array)
+            }
+
         });
+
+        //展示菜单
         function menu(data) {
             var html = '';
             $.each(data,function (key,value) {
@@ -84,15 +94,8 @@
             $('#side-menu').append(html)
         }
 
-        //判断是不是数组，是返回true 否返回false
-        function isArray(data) {
-            return $.isArray(data)
-        }
 
-        //判断数值是否为空
-        function isUndefined(value){
-            return value==undefined || $.trim(value).length==0;
-        }
+
 
     </script>
 

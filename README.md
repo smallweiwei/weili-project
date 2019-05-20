@@ -8,7 +8,7 @@ This is a Purchase, Sale and Inventory Website
     
         状态码                   描述
     
-    登录
+    登录模块
     
         -1001                   非法登录
         -1002                   用户名密码不能为空
@@ -19,6 +19,11 @@ This is a Purchase, Sale and Inventory Website
   
   
   
+门店管理
+   
+    门店列表（完成）
+    门店员工列表
+    消费详情
+    结算列表
+    凭证列表
     
-    明天任务:创建门店和推拿门店管理角色表
-    登录时处理门店和推拿门店登录的权限展示

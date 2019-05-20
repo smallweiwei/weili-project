@@ -19,10 +19,16 @@ use think\Db;
  */
 class Login
 {
+    private $massage_personnel_name = '门店小儿推拿';
+    private $store_name = '乐婴岛门店';
+
     /**
      * 判断传过来的值是否为空
      * @param $data  表单提交的值
      * @return bool|string|Json  返回json或者true
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function login_logic($data)
     {
@@ -40,6 +46,9 @@ class Login
      * 判断是否是管理员表
      * @param $data 前台登录页面输入的值
      * @return array|mixed|PDOStatement|string|Model|Json|null
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     private function is_name($data)
     {
@@ -79,16 +88,19 @@ class Login
      * 判断是否是推拿门店员工,输入密码是否正确
      * @param $data 前台登录页面输入的值
      * @return array|mixed|PDOStatement|string|Model|Json|null
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     private function is_massage_personnel_name($data)
     {
         $massage_personnel = new MassagePersonnel();
-
         //Model查询出数据  第一个参数是查询条件,第二个参数是查询的字段,空的话查询全部字段
         $list = $massage_personnel->find(
             array('mp_name|mp_spell'=>$data['m_name'],'mp_delete'=>'1'),
             ['mp_id','mp_msId','mp_name','mp_password','mp_spell','mp_state','mp_delete']
         );
+        $massage = $this->massage_personnel_role();
         if(empty($list)){
             return $this->is_store_name($data);//门店推拿员工表v没有查询到结果从门店员工表查询
             exit;
@@ -101,7 +113,10 @@ class Login
                 return json('-1005','账号或者密码不正确');
                 exit;
             }
-            return $list;
+            $array['m_name'] = $list['mp_name'];
+            $array['ag_title'] = $massage['ag_title'];
+            $array['ag_rules'] = $massage['ag_rules'];
+            return $array;
         }
     }
 
@@ -109,6 +124,9 @@ class Login
      * 判断门店员工是否存在,密码是否正确
      * @param $data 前台登录页面输入的值
      * @return array|mixed|PDOStatement|string|Model|Json|null
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     private function is_store_name($data)
     {
@@ -118,6 +136,7 @@ class Login
             array('sp_name|sp_spell'=>$data['m_name'],'sp_delete'=>'1'),
             ['sp_id','sp_sId','sp_name','sp_password','sp_spell','sp_state','sp_delete']
         );
+        $store = $this->store_personnel_role();
         if(empty($list)){
             return json('-1003','管理员不存在');
             exit;
@@ -130,7 +149,40 @@ class Login
                 return json('-1005','账号或者密码不正确');
                 exit;
             }
-            return $list;
+            $array['m_name'] = $list['sp_name'];
+            $array['ag_title'] = $store['ag_title'];
+            $array['ag_rules'] = $store['ag_rules'];
+            return $array;
         }
+    }
+
+    /**
+     * 查询角色信息
+     * @return array|null|PDOStatement|string|Model
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    private function massage_personnel_role(){
+        $list = Db::name('auth_group')
+            ->where('ag_title',$this->massage_personnel_name)
+            ->field('ag_title,ag_rules')
+            ->find();
+        return $list;
+    }
+
+    /**
+     * 查询角色信息
+     * @return array|null|PDOStatement|string|Model
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    private function store_personnel_role(){
+        $list = Db::name('auth_group')
+            ->where('ag_title',$this->store_name)
+            ->field('ag_title,ag_rules')
+            ->find();
+        return $list;
     }
 }
