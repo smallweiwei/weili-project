@@ -28,7 +28,13 @@ class Store extends Basic
         return $this->fetch();
     }
 
-    //获取门店列表信息
+    /**
+     * 获取门店列表信息
+     * @return string|\think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function storeList()
     {
         $data = Request::instance()->post();
@@ -40,7 +46,7 @@ class Store extends Basic
         if(!empty($list)){
             return json('200','数据获取成功','',$list);
         }else{
-            return json('-9100','门店列表数据获取失败','','');
+            return json('-5100','门店列表数据获取失败','','');
         }
     }
 
@@ -64,7 +70,37 @@ class Store extends Basic
         if(!empty($list)){
             return json('200','添加成功','','');
         }else{
-            return json('-5100','门店添加失败','','');
+            return json('-5101','门店添加失败','','');
+        }
+    }
+
+    /**
+     * 显示修改门店信息页面
+     * @return mixed
+     */
+    public function storeSaveView()
+    {
+        return $this->fetch();
+    }
+
+    /**
+     * 修改门店信息
+     * @param $s_id  门店id
+     * @return string|\think\response\Json
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public function storeSave($s_id)
+    {
+        $where['ms_id'] = $s_id;
+        $data = Request::instance()->post();
+        $list = Db::name('store')
+            ->where($where)
+            ->update($data);
+        if(!empty($list)){
+            return json('200','添加成功','','');
+        }else{
+            return json('-5102','门店信息修改失败','','');
         }
     }
 }

@@ -10,7 +10,6 @@
     <!--<script type="text/javascript" src="__PUBLIC__/jq/jquery-3.3.1.min.js"></script>-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
-
 </head>
 
 <body>
@@ -55,6 +54,9 @@
     app.controller('myCompany', function($scope) {
         $scope.company = company;
     });
+
+    window.localStorage.removeItem('adminMenu');//删除
+
     let num = 0
     $('#addAjax').on('submit',function (ev) {
         if(getCookie('errorNum') >= 5){

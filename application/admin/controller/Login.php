@@ -59,6 +59,7 @@ class Login extends Controller
 
         $massage = new logic_login();
         $list = $massage->login_logic($data);//处理和判断前端传过来的值,返回false 或者 管理员信息
+
         if(!empty($list)){
             Session::set('adminSession',json_encode($list));
             Cookie::set('admin',json_encode($list));

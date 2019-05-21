@@ -66,6 +66,11 @@ Route::domain('admin.buymelots.com', function () {
     Route::rule('storeList','admin/store/storeList'); //获取门店列表
     Route::rule('storeAddView','admin/store/storeAddView'); //添加门店页面
     Route::rule('storeAdd','admin/store/storeAdd'); //添加门店信息方法
+    Route::rule('store_save_view','admin/store/storeSaveView'); //显示修改门店信息页面路由
+    Route::rule('store_save','admin/store/storeSave'); //修改门店信息方法
+
+
+
 //门店管理 end
 
 //推拿管理  start

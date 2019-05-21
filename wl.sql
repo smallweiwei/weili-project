@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2019-05-20 18:42:23
+Date: 2019-05-21 18:47:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -34,7 +34,7 @@ CREATE TABLE `wl_auth_group` (
 -- Records of wl_auth_group
 -- ----------------------------
 INSERT INTO `wl_auth_group` VALUES ('1', '超级管理员', '拥有全部权限', '1', '1,2,3,4,19,25,11,12,13,15,14,16,17,18,9,10,23,26,22,27,21,28,24,30,20,29,5,6', '2019-03-04 10:58:12', '1');
-INSERT INTO `wl_auth_group` VALUES ('2', '管理员', '拥有部分权限', '1', '1,2,3,4', '2019-01-26 11:13:07', '1');
+INSERT INTO `wl_auth_group` VALUES ('2', '管理员', '拥有部分权限', '1', '1,2', '2019-05-21 10:26:17', '1');
 INSERT INTO `wl_auth_group` VALUES ('3', '乐婴岛门店', '全部门店所属角色', '1', '11,12', '2019-05-20 11:26:10', '1');
 INSERT INTO `wl_auth_group` VALUES ('4', '门店小儿推拿', '门店小儿推拿角色', '1', '13,15,14,16,17,18', '2019-05-20 17:29:01', '1');
 INSERT INTO `wl_auth_group` VALUES ('5', '荔骏会', '', '1', '1,2,3,4', '2019-05-20 13:43:10', '1');
@@ -347,14 +347,16 @@ CREATE TABLE `wl_store` (
   `s_pic` varchar(255) DEFAULT NULL COMMENT '门店图片',
   `s_address` varchar(255) NOT NULL COMMENT '门店地址',
   `s_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '门店添加时间',
-  PRIMARY KEY (`s_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='门店信息表';
+  PRIMARY KEY (`s_id`),
+  UNIQUE KEY `store_id` (`s_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='门店信息表';
 
 -- ----------------------------
 -- Records of wl_store
 -- ----------------------------
 INSERT INTO `wl_store` VALUES ('1', '金沙店乐婴岛', '18927543087', './static/uploads/store/20190306\\f415ff7ce750cb5c01175db33222ec90.png', '广东省广州市海珠区金沙路16至20号首层商铺自编之十二', '2019-03-06 10:34:43');
 INSERT INTO `wl_store` VALUES ('2', '万达店乐婴岛', '17728026810', './static/uploads/store/20190306\\312193fdfcf570fa778aff40bae550ac.jpg', '桂城街道桂澜北路28号南海万达广场南7栋235号铺', '2019-03-06 10:37:28');
+INSERT INTO `wl_store` VALUES ('3', '测试', '', '', '测试', '2019-05-21 18:28:08');
 
 -- ----------------------------
 -- Table structure for wl_store_personnel

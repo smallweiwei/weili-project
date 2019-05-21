@@ -21,25 +21,17 @@ img{
         <div class="ibox-content">
             <div class="row row-lg">
                 <div class="col-sm-12">
-                    <!-- Example Events -->
                     <div class="example-wrap">
-                        <!--<h4 class="example-title">事件</h4>-->
                         <div class="example">
-                            <!-- <div class="alert alert-success" id="examplebtTableEventsResult" role="alert">
-                                事件结果
-                            </div> -->
                             <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
                                 <button type="button" class="btn btn-outline btn-default" onclick="store_add('添加门店','storeAddView.html','100%','100%')" >
                                     <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
                                     添加门店
                                 </button>
                             </div>
-                            <table id="exampleTableEvents" data-mobile-responsive="true">
-
-                            </table>
+                            <table id="exampleTableEvents" data-mobile-responsive="true"></table>
                         </div>
                     </div>
-                    <!-- End Example Events -->
                 </div>
             </div>
         </div>
@@ -54,14 +46,24 @@ img{
 <script src="__JS__/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
 <!--<script src="__JS__/demo/bootstrap-table-demo.min.js"></script>-->
 <script type="text/javascript">
-    $(function () {
+    /**
+     * 页面渲染结束调取数据
+     */
+    $(document).ready(function () {
         storeAjax()
+        imageEnlarge()
     })
 
+    /**
+     *  查询出门店信息展示出来
+     */
     function storeAjax() {
         $("#exampleTableEvents").bootstrapTable('destroy');//清除table
         $("#exampleTableEvents").bootstrapTable({
             url: "storeList.html",
+            ajaxOptions: {
+                async: false // 如果设置为异步，需要等请求成功后才会生成下面的tr和td，就无法在td中添加按钮
+            },
             method : 'post',
             search: !0,
             pagination: !0,
@@ -122,28 +124,20 @@ img{
                     align: 'center',
                     formatter: function (value, row) {
                         var html = '';
-                        // if(row.m_state == '2'){
-                        //     html += '<span style="margin-right: 5px"' +
-                        //         ' onclick="manager_state(\'启用\',\'1\',\''+value+'\',\''+row.m_name+'\',\''+row.ag_id+'\')">' +
-                        //         '<a href="javascript:;">启用</a></span>';
-                        // }else{
-                        //     html += '<span style="margin-right: 5px"' +
-                        //         ' onclick="manager_state(\'停用\',\'2\',\''+value+'\',\''+row.m_name+'\',\''+row.ag_id+'\')">' +
-                        //         '<a href="javascript:;" >停用</a></span>';
-                        // }
-                        // html += '<span style="margin-right: 5px" ' +
-                        //     'onclick="manager_save(\'修改管理员[ '+row.m_name+' ]\',\'managerSaveView.html\',800,500,'+JSON.stringify(row).replace(/"/g, '&quot;')+')">' +
-                        //     '<a href="javascript:;" >修改</a></span>';
+                        html += '<span style="margin-right: 5px" ' +
+                            'onclick="store_save(\'修改[ '+row.s_name+' ]\',\'store_save_view.html\',\'100%\',\'100%\','+JSON.stringify(row).replace(/"/g, '&quot;')+')">' +
+                            '<a href="javascript:;" >编辑</a></span>';
                         //
-                        // html += '<span style="margin-right: 5px" ' +
-                        //     'onclick="manager_del(this,\''+value+'\',\''+row.m_name+'\')">' +
-                        //     '<a href="javascript:;" >删除</a></span>';
+                        html += '<span style="margin-right: 5px" ' +
+                            'onclick="store_del(this,\''+value+'\',\''+row.s_name+'\')">' +
+                            '<a href="javascript:;" >删除</a></span>';
                         return  html
                     }
                 }
             ]
         });
     }
+
 
     /**
      * 显示添加门店页面
@@ -163,40 +157,6 @@ img{
         layer.full(index);
     }
 
-    /**
-     * 修改管理员状态
-     * @param title
-     * @param m_start
-     * @param m_id
-     * @param m_name
-     * @param ag_id
-     */
-    function manager_state(title,m_start,m_id,m_name,ag_id) {
-        layer.confirm('确认要'+title+'['+m_name+']吗?',function(){
-            $.ajax({
-                type : 'post',
-                url : "managerState.html?m_id="+m_id+"&ag_id="+ ag_id,
-                async : true,
-                dataType : 'json',
-                data:{
-                    'm_state':m_start,
-                },
-                success : function(e){
-                    if(e.code < 0){
-                        errorMsg(e.msg)
-                    }else{
-                        managerAjax()
-                    }
-                },error:function (xhr) {
-                    if(!errorAjax(xhr.status)){
-                        return false;
-                    }
-                }
-            })
-            layer.closeAll();//关闭确认弹框
-        })
-    }
-
     var array = [];
     /**
      * 显示修改管理员信息页面
@@ -205,9 +165,16 @@ img{
      * @param w 宽
      * @param h 高
      */
-    function manager_save(title,url,w,h,data) {
+    function store_save(title,url,w,h,data) {
         array = data
-        layerShow(title,url,w,h);
+        var index = layer.open({
+            title:title,
+            type: 2,
+            content: url,
+            area: [w, h],
+            maxmin: true,
+        });
+        layer.full(index);
     }
 
 
@@ -217,7 +184,7 @@ img{
      * @param m_id
      * @param m_name
      */
-    function manager_del(obj,m_id = '',m_name = '') {
+    function store_del(obj,m_id = '',m_name = '') {
         if(m_id == ''){
             errorMsg('删除失败')
         }else{
@@ -245,6 +212,16 @@ img{
                 layer.closeAll('dialog');
             })
         }
+    }
+
+    /**
+     * 给子页面传值
+     * @returns {Array}
+     */
+    function arrayData() {
+        var data = [];
+        data['data'] = array
+        return data
     }
 
 </script>

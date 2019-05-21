@@ -29,7 +29,6 @@ img{
                             </table>
                         </div>
                     </div>
-                    <!-- End Example Events -->
                 </div>
             </div>
         </div>
@@ -45,13 +44,18 @@ img{
 <script type="text/javascript">
     $(function () {
         storeMassageAjax()
+        imageEnlarge()
     })
+
     var array = [];
     //获取推拿门店列表
     function storeMassageAjax() {
         $("#exampleTableEvents").bootstrapTable('destroy');//清除table
         $("#exampleTableEvents").bootstrapTable({
             url: "store_massage_list.html",
+            ajaxOptions: {
+                async: false // 如果设置为异步，需要等请求成功后才会生成下面的tr和td，就无法在td中添加按钮
+            },
             method : 'post',
             search: !0,
             pagination: !0,
@@ -131,15 +135,6 @@ img{
                     align: 'center',
                     formatter: function (value, row) {
                         var html = '';
-                        // if(row.m_state == '2'){
-                        //     html += '<span style="margin-right: 5px"' +
-                        //         ' onclick="manager_state(\'启用\',\'1\',\''+value+'\',\''+row.m_name+'\',\''+row.ag_id+'\')">' +
-                        //         '<a href="javascript:;">启用</a></span>';
-                        // }else{
-                        //     html += '<span style="margin-right: 5px"' +
-                        //         ' onclick="manager_state(\'停用\',\'2\',\''+value+'\',\''+row.m_name+'\',\''+row.ag_id+'\')">' +
-                        //         '<a href="javascript:;" >停用</a></span>';
-                        // }
                         html += '<span style="margin-right: 5px" ' +
                             'onclick="manager_store_save(\'修改[ '+row.ms_name+' ]\',\'store_massage_save_view.html\',\'100%\',\'100%\','+JSON.stringify(row).replace(/"/g, '&quot;')+')">' +
                             '<a href="javascript:;" >编辑</a></span>';
