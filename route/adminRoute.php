@@ -68,6 +68,7 @@ Route::domain('admin.buymelots.com', function () {
     Route::rule('storeAdd','admin/store/storeAdd'); //添加门店信息方法
     Route::rule('store_save_view','admin/store/storeSaveView'); //显示修改门店信息页面路由
     Route::rule('store_save','admin/store/storeSave'); //修改门店信息方法
+    Route::rule('store_del','admin/store/storeDel'); //删除门店信息方法
 
 
 

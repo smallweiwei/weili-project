@@ -6,6 +6,9 @@ use app\admin\model\Manager;
 use app\admin\model\MassagePersonnel;
 use app\admin\model\StorePersonnel;
 use PDOStatement;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\ModelNotFoundException;
+use think\exception\DbException;
 use think\facade\Config;
 use think\Model;
 use think\response\Json;
@@ -26,9 +29,9 @@ class Login
      * 判断传过来的值是否为空
      * @param $data  表单提交的值
      * @return bool|string|Json  返回json或者true
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     public function login_logic($data)
     {
@@ -46,9 +49,9 @@ class Login
      * 判断是否是管理员表
      * @param $data 前台登录页面输入的值
      * @return array|mixed|PDOStatement|string|Model|Json|null
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     private function is_name($data)
     {
@@ -88,9 +91,9 @@ class Login
      * 判断是否是推拿门店员工,输入密码是否正确
      * @param $data 前台登录页面输入的值
      * @return array|mixed|PDOStatement|string|Model|Json|null
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     private function is_massage_personnel_name($data)
     {
@@ -124,9 +127,9 @@ class Login
      * 判断门店员工是否存在,密码是否正确
      * @param $data 前台登录页面输入的值
      * @return array|mixed|PDOStatement|string|Model|Json|null
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     private function is_store_name($data)
     {
@@ -159,9 +162,9 @@ class Login
     /**
      * 查询角色信息
      * @return array|null|PDOStatement|string|Model
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     private function massage_personnel_role(){
         $list = Db::name('auth_group')
@@ -174,9 +177,9 @@ class Login
     /**
      * 查询角色信息
      * @return array|null|PDOStatement|string|Model
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     private function store_personnel_role(){
         $list = Db::name('auth_group')

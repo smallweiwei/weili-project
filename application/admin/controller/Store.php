@@ -9,7 +9,15 @@
 
 namespace app\admin\controller;
 use think\Db;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\ModelNotFoundException;
+use think\Exception;
+use think\exception\DbException;
+use think\exception\PDOException;
 use think\facade\Request;
+use app\admin\logic\Store as storeLogic;
+use think\response\Json;
+
 /**
  * 门店管理控制器
  * Class store
@@ -30,10 +38,10 @@ class Store extends Basic
 
     /**
      * 获取门店列表信息
-     * @return string|\think\response\Json
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @return string|Json
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     public function storeList()
     {
@@ -61,16 +69,16 @@ class Store extends Basic
 
     /**
      * 添加门店信息 方法
-     * @return string|\think\response\Json
+     * @return string|Json
      */
     public function storeAdd(){
         $data = Request::instance()->post();
-        $list = Db::name('store')
-            ->insert($data);
+        $store = new storeLogic();
+        $list = $store->storeAdd($data);
+//        $list = Db::name('store')
+//            ->insert($data);
         if(!empty($list)){
             return json('200','添加成功','','');
-        }else{
-            return json('-5101','门店添加失败','','');
         }
     }
 
@@ -86,21 +94,28 @@ class Store extends Basic
     /**
      * 修改门店信息
      * @param $s_id  门店id
-     * @return string|\think\response\Json
-     * @throws \think\Exception
-     * @throws \think\exception\PDOException
+     * @return string|Json
+     * @throws Exception
+     * @throws PDOException
      */
     public function storeSave($s_id)
     {
-        $where['ms_id'] = $s_id;
+        $where['s_id'] = $s_id;
         $data = Request::instance()->post();
         $list = Db::name('store')
             ->where($where)
             ->update($data);
         if(!empty($list)){
-            return json('200','添加成功','','');
+            return json('200','修改成功','','');
         }else{
             return json('-5102','门店信息修改失败','','');
         }
+    }
+
+    public function storeDel($s_id)
+    {
+        $store = new storeLogic();
+        $list = $store->storeFind($s_id);
+        dump($list);
     }
 }

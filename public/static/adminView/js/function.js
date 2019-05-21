@@ -373,13 +373,14 @@ function imgShow(outerdiv, innerdiv, bigimg, _this){
     var src = _this.attr("src");//获取当前点击的pimg元素中的src属性
     $(bigimg).attr("src", src);//设置#bigimg元素的src属性
     /*获取当前点击图片的真实大小，并显示弹出层及大图*/
-        var windowW = $(window).width();//获取当前窗口宽度
-        var windowH = $(window).height();//获取当前窗口高度
-        var realWidth = _this[0].naturalWidth;//获取图片真实宽度
-        var realHeight = _this[0].naturalHeight;//获取图片真实高度
+        const windowW = $(window).width();//获取当前窗口宽度
+        const windowH = $(window).height();//获取当前窗口高度
+        const realWidth = _this[0].naturalWidth;//获取图片真实宽度
+        const realHeight = _this[0].naturalHeight;//获取图片真实高度
 
-        var imgWidth, imgHeight;
-        var scale = 0.8;//缩放尺寸，当图片真实宽度和高度大于窗口宽度和高度时进行缩放
+        let imgWidth, imgHeight;
+        const scale = 0.8;//缩放尺寸，当图片真实宽度和高度大于窗口宽度和高度时进行缩放
+
         if(realHeight>windowH*scale) {//判断图片高度
             imgHeight = windowH*scale;//如大于窗口高度，图片高度进行缩放
             imgWidth = imgHeight/realHeight*realWidth;//等比例缩放宽度
@@ -394,8 +395,8 @@ function imgShow(outerdiv, innerdiv, bigimg, _this){
             imgHeight = realHeight;
         }
         $(bigimg).css("width",imgWidth);//以最终的宽度对图片缩放
-        var w = (windowW-imgWidth)/2;//计算图片与窗口左边距
-        var h = (windowH-imgHeight)/2;//计算图片与窗口上边距
+        let w = (windowW-imgWidth)/2;//计算图片与窗口左边距
+        let h = (windowH-imgHeight)/2;//计算图片与窗口上边距
         $(innerdiv).css({"top":h, "left":w});//设置#innerdiv的top和left属性
         $(outerdiv).fadeIn("fast");//淡入显示#outerdiv及.pimg
 

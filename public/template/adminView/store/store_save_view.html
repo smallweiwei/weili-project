@@ -61,7 +61,7 @@
 
 {block name="js"}
 <script type="text/javascript">
-    var array = parent.arrayData() //父页面数据
+    const array = parent.arrayData() //父页面数据
     $('input[name="s_name"]').val(array.data.s_name);
     $('input[name="s_address"]').val(array.data.s_address);
     $('input[name="s_phone"]').val(array.data.s_phone);
@@ -79,9 +79,9 @@
                 if(e.code < 0){
                     errorMsg(e.msg)
                 }else{
-                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                    const index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                     parent.layer.close(index); //再执行关闭
-                    parent.storeMassageAjax(); //再执行关闭
+                    parent.storeAjax(); //再执行关闭
                 }
             },error:function (xhr) {
                 if(!errorAjax(xhr.status)){
@@ -97,36 +97,6 @@
         })
         event.preventDefault();
     })
-    // $('#addAjax').on('submit',function (event) {
-    //     $.ajax({
-    //         type : 'post',
-    //         url : "storeAdd.html",
-    //         async : true,
-    //         dataType : 'json',
-    //         data:formData(),
-    //         success : function(e){
-    //             console.log(e)
-    //             if(e.code < 0){
-    //                 errorMsg(e.msg)
-    //             }else{
-    //                 var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-    //                 parent.layer.close(index); //再执行关闭
-    //                 parent.storeAjax(); //再执行关闭
-    //             }
-    //         },error:function (xhr) {
-    //             if(!errorAjax(xhr.status)){
-    //                 return false;
-    //             }
-    //         },beforeSend:function(){
-    //             index = layer.msg('添加门店提交中', {
-    //                 icon: 16,
-    //                 shade: 0.4,
-    //                 time:false //取消自动关闭
-    //             });
-    //         },
-    //     })
-    //     event.preventDefault();
-    // })
     
     function clickUpload() {
         layer.open({
@@ -139,8 +109,8 @@
             area: ['820px', '400px'],
             content: 'upload_view.html',
             yes:function(index){
-                var iframeWin1 = window["layui-layer-iframe" + index];
-                var res = iframeWin1.callbackdata();
+                let iframeWin1 = window["layui-layer-iframe" + index];
+                let res = iframeWin1.callbackdata();
                 $('#s_pic').val(res)
                 layer.close(index);
             },
@@ -152,7 +122,7 @@
      * @returns {Array}  返回数组给子页面
      */
     function Subpage() {
-        var data = [];
+        const data = [];
         data['url'] = 'upload.html?name=store';
         data['name'] = 'store';
         data['num'] = '1';
