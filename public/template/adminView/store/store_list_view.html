@@ -24,7 +24,7 @@ img{
                     <div class="example-wrap">
                         <div class="example">
                             <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
-                                <button type="button" class="btn btn-outline btn-default" onclick="store_add('添加门店','storeAddView.html','100%','100%')" >
+                                <button type="button" class="btn btn-outline btn-default" onclick="store_add('添加门店','store_add_view.html','100%','100%')" >
                                     <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
                                     添加门店
                                 </button>
@@ -61,7 +61,7 @@ img{
     {
         $("#exampleTableEvents").bootstrapTable('destroy');//清除table
         $("#exampleTableEvents").bootstrapTable({
-            url: "storeList.html",
+            url: "store_list.html",
             ajaxOptions: {
                 async: false // 如果设置为异步，需要等请求成功后才会生成下面的tr和td，就无法在td中添加按钮
             },

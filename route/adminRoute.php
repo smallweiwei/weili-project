@@ -62,10 +62,10 @@ Route::domain('admin.buymelots.com', function () {
 //微信管理 end
 
 //门店管理 start
-    Route::rule('storeListView','admin/store/storeListView');//门店列表页面
-    Route::rule('storeList','admin/store/storeList'); //获取门店列表
-    Route::rule('storeAddView','admin/store/storeAddView'); //添加门店页面
-    Route::rule('storeAdd','admin/store/storeAdd'); //添加门店信息方法
+    Route::rule('store_list_view','admin/store/storeListView');//门店列表页面
+    Route::rule('store_list','admin/store/storeList'); //获取门店列表
+    Route::rule('store_add_view','admin/store/storeAddView'); //添加门店页面
+    Route::rule('store_add','admin/store/storeAdd'); //添加门店信息方法
     Route::rule('store_save_view','admin/store/storeSaveView'); //显示修改门店信息页面路由
     Route::rule('store_save','admin/store/storeSave'); //修改门店信息方法
     Route::rule('store_del','admin/store/storeDel'); //删除门店信息方法
