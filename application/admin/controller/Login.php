@@ -50,6 +50,7 @@ class Login extends Controller
      */
     public function login()
     {
+
         $data = Request::instance()->post();
 
         //判断是否通过表单提交
