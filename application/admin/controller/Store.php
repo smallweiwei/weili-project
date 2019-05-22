@@ -50,6 +50,7 @@ class Store extends Basic
         $list = Db::name('store')
             ->order($data['sort'],$data['order'])
             ->field('s_id,s_name,s_phone,s_address,s_pic,s_time')
+            ->where('s_delete','1')
             ->select();
         if(!empty($list)){
             return json('200','数据获取成功','',$list);
@@ -68,18 +69,15 @@ class Store extends Basic
     }
 
     /**
-     * 添加门店信息 方法
-     * @return string|Json
+     * * 添加门店信息 方法
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function storeAdd(){
         $data = Request::instance()->post();
         $store = new storeLogic();
-        $list = $store->storeAdd($data);
-//        $list = Db::name('store')
-//            ->insert($data);
-        if(!empty($list)){
-            return json('200','添加成功','','');
-        }
+        $store->storeAdd($data);
     }
 
     /**
@@ -100,22 +98,19 @@ class Store extends Basic
      */
     public function storeSave($s_id)
     {
-        $where['s_id'] = $s_id;
         $data = Request::instance()->post();
-        $list = Db::name('store')
-            ->where($where)
-            ->update($data);
-        if(!empty($list)){
-            return json('200','修改成功','','');
-        }else{
-            return json('-5102','门店信息修改失败','','');
-        }
+        $store = new storeLogic();
+        $store->storeSave($s_id,$data);
     }
 
+
+    /**
+     * 删除门店信息 (伪删除)
+     * @param $s_id 要删除的门店id
+     */
     public function storeDel($s_id)
     {
         $store = new storeLogic();
-        $list = $store->storeFind($s_id);
-        dump($list);
+        $store->storeDel($s_id);
     }
 }

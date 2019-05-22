@@ -203,7 +203,9 @@ img{
                         if(e.code < 0){
                             errorMsg(e.msg)
                         }else{
-                            managerAjax()
+                            layer.msg(e.msg,{time: 2000, icon:6},function(){
+                                storeAjax()
+                            });
                         }
                     },error:function (xhr) {
                         if(!errorAjax(xhr.status)){
