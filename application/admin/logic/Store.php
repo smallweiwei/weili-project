@@ -89,7 +89,6 @@ class Store
         }
     }
 
-
     /**
      * 删除门店信息(伪删除)
      * @param $s_id 门店id
@@ -109,4 +108,10 @@ class Store
         }
 
     }
+
+    //获取门店员工列表
+    public function storeStaffList($array = []){
+        dump($array);
+    }
+
 }

@@ -70,6 +70,13 @@ Route::domain('admin.buymelots.com', function () {
     Route::rule('store_save','admin/store/storeSave'); //修改门店信息方法
     Route::rule('store_del','admin/store/storeDel'); //删除门店信息方法
 
+    Route::rule('store_staff_list_view','admin/store/storeStaffListView'); //显示门店员工页面
+    Route::rule('store_staff_list','admin/store/storeStaffList'); //获取门店员工列表
+    Route::rule('store_staff_add_view','admin/store/storeStaffAddView'); //显示添加门店员工页面
+    Route::rule('store_staff_add','admin/store/storeStaffAdd'); //添加门店员工方法
+    Route::rule('store_staff_save_view','admin/store/storeStaffSaveView'); //显示修改门店员工页面
+    Route::rule('store_staff_save','admin/store/storeStaffSave'); //修改门店员工方法
+    Route::rule('store_staff_del','admin/store/storeStaffDel'); //删除门店员工方法
 
 
 //门店管理 end

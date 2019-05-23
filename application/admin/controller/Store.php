@@ -27,6 +27,7 @@ class Store extends Basic
 {
     protected $order = 'asc';
 
+//门店列表功能 start
     /**
      * 显示门店列表页面
      * @return mixed
@@ -46,7 +47,6 @@ class Store extends Basic
     public function storeList()
     {
         $data = Request::instance()->post();
-
         $list = Db::name('store')
             ->order($data['sort'],$data['order'])
             ->field('s_id,s_name,s_phone,s_address,s_pic,s_time')
@@ -103,7 +103,6 @@ class Store extends Basic
         $store->storeSave($s_id,$data);
     }
 
-
     /**
      * 删除门店信息 (伪删除)
      * @param $s_id 要删除的门店id
@@ -113,4 +112,25 @@ class Store extends Basic
         $store = new storeLogic();
         $store->storeDel($s_id);
     }
+
+//门店列表功能 end
+
+//员工列表功能 start
+
+    /**
+     * 显示门店员工列表
+     * @return mixed
+     */
+    public function storeStaffListView()
+    {
+        return $this->fetch();
+    }
+
+    public function storeStaffList(){
+        $data = Request::instance()->post();
+        $store = new storeLogic();
+        $store->storeStaffList($data);
+    }
+//员工列表功能 end
+
 }

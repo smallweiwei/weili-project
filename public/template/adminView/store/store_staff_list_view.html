@@ -1,0 +1,223 @@
+{extend name="public:head" /}
+{block name="title"}门店员工列表{/block}
+{block name="css"}
+<style type="text/css">
+    img{
+        width: 50px;
+    }
+</style>
+{/block}
+{block name="body"}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>门店员工列表</h5>
+            <div class="ibox-tools">
+                <a class="collapse-link">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-xs-12" style="text-align: center">
+                    <div class="col-xs-6">
+                        <label>所属门店</label>
+                        <select name="store" class="form-control">
+                            <option value="0">请选择</option>
+                            <option value="1">金沙店</option>
+                            <option value="2">万达店</option>
+                        </select>
+                    </div>
+                    <!--<div class="text-c" id="data_1">-->
+                        <!--日期选择：-->
+                        <!--<div class="input-group date">-->
+                            <!--<span class="input-group-addon"><i class="fa fa-calendar"></i></span>-->
+                            <!--<input type="text" class="form-control" value="2014-11-11">-->
+                        <!--</div>-->
+                        <!--<button id="queryBtn" class="btn btn-success" type="submit">-->
+                            <!--<i class="Hui-iconfont Hui-iconfont-search2"></i> 搜索-->
+                        <!--</button>-->
+                    <!--</div>-->
+                </div>
+                <div class="col-sm-12">
+                    <div class="example-wrap">
+                        <div class="example">
+                            <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
+                                <button type="button" class="btn btn-outline btn-default"
+                                        onclick="massage_personnel_add('添加门店员工','store_staff_add.html','850','550')" >
+                                    <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+                                    添加门店员工
+                                </button>
+                            </div>
+                            <table id="exampleTableEvents" data-mobile-responsive="true">
+
+                            </table>
+                        </div>
+                    </div>
+                    <!-- End Example Events -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block name="js"}
+
+<script type="text/javascript">
+    let operation = ''
+    let array = [];
+
+    $(document).ready(function () {
+        //调用函数，初始化表格
+        storeStaffAjax();
+        //当点击查询按钮的时候执行,bootstrap-table前端分页是不能使用搜索功能，所以可以提取出来自定义搜索。后台代码，在后面给出
+        $("#queryBtn").bind("click", storeStaffAjax);
+    });
+
+
+
+    //更新推拿员工列表
+    function storeStaffAjax() {
+        $("#exampleTableEvents").bootstrapTable('destroy');//清除table
+        $("#exampleTableEvents").bootstrapTable({
+            url: "store_staff_list.html",
+            method : 'post',
+            search: !0,
+            pagination: !0,
+            showRefresh: !0,
+            showColumns: !0,
+            iconSize: "outline",
+            sortable: !0,
+            toolbar: "#exampleTableEventsToolbar",
+            pageSize: 25,//每页显示多少条数据
+            sidePagination: "server",
+            queryParamsType : "limit",//设置为 ‘limit’ 则会发送符合 RESTFul 格式的参数.
+            queryParams: function (params) {
+                return {
+                    order:params.order,
+                    offset: params.offset,//从数据库第几条记录开始
+                    limit: params.limit,//找多少条
+                    memberId: $("#searchString_id").val() //这个就是搜索框中的内容，可以自动传到后台，搜索实现在xml中体现
+                };
+            },
+            responseHandler: function (res) {
+                //如果后台返回的json格式不是{rows:[{...},{...}],total:100},可以在这块处理成这样的格式
+                return res;
+            },
+            pageList: [20, 25, 50, 100],
+            sortName : 'sp_id',
+            sortOrder : 'asc',
+            icons: {
+                refresh: "glyphicon-repeat",
+                toggle: "glyphicon-list-alt",
+                columns: "glyphicon-list"
+            },
+            columns: [
+                {
+                    field: 'sp_id',
+                    align: 'center',
+                    title: '编号',
+                },
+                {
+                    field: 'sp_name',
+                    title: '员工名称',
+                    align: 'center',
+                },
+                {
+                    field: 'sp_spell',
+                    title: '员工名称拼音',
+                    align: 'center',
+                },
+                {
+                    field: 's_name',
+                    title: '所属门店',
+                    align: 'center',
+                },
+                {
+                    field: 'mp_time',
+                    title: '添加时间',
+                    align: 'center',
+                },
+                {
+                    field: 'mp_id',
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row) {
+                        var html = '';
+                        html += '<span style="margin-right: 5px" ' +
+                            'onclick="massage_personnel_save(\'修改推拿员工[ '+row.mp_name+' ]\',\'massage_personnel_add_view.html\',800,500,'+JSON.stringify(row).replace(/"/g, '&quot;')+')">' +
+                            '<a href="javascript:;" >修改</a></span>';
+
+                        html += '<span style="margin-right: 5px" ' +
+                            'onclick="massage_personnel_del(this,\''+value+'\',\''+row.mp_name+'\')">' +
+                            '<a href="javascript:;" >删除</a></span>';
+                        return  html
+                    }
+                }
+            ]
+        });
+    }
+
+    /**
+     * 显示推拿门店员工页面
+     * @param title 标题
+     * @param url 添加地址
+     * @param w 宽度
+     * @param h  高度
+     */
+    function massage_personnel_add(title,url,w,h) {
+        operation = 'add'
+        array = []
+        layerShow(title,url,w,h);
+    }
+
+    /**
+     * 显示推拿员工页面
+     * @param title
+     * @param url
+     * @param w
+     * @param h
+     * @param data
+     */
+    function massage_personnel_save(title,url,w,h,data) {
+        operation = 'save'
+        array = data
+        layerShow(title,url,w,h);
+    }
+
+    function massage_personnel_del(obj,id,mp_name) {
+        layer.confirm('确认要删除['+mp_name+']员工吗？',function(){
+            $.ajax({
+                type: "get",
+                url: "massage_personnel_del.html?mp_id="+id,
+                dataType: "json",
+                crossDomain: true,
+                success: function (data) {
+                    if(data.code < 0){
+                        errorMsg(data.msg)
+                    }else{
+                        storeStaffAjax()
+                    }
+                }
+            })
+            layer.closeAll('dialog');
+        })
+    }
+
+    /**
+     * 给子页面传值
+     * @returns {Array}  返回数组给子页面
+     */
+    function parentData() {
+        var data = [];
+        data['operation'] = operation
+        data['data'] = array
+        return data
+    }
+
+
+</script>
+{/block}
