@@ -3,6 +3,7 @@
 
 namespace app\admin\logic;
 use app\admin\model\Store as storeModel;
+use app\admin\model\StorePersonnel as spModel;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
 use think\Exception;
@@ -111,7 +112,16 @@ class Store
 
     //获取门店员工列表
     public function storeStaffList($array = []){
-        dump($array);
+        $list = spModel::where('sp_delete','1')
+            ->limit($array['offset'],$array['limit'])
+            ->order($array['sort'],$array['order'])
+            ->field('sp_id,sp_name,sp_spell,sp_state,sp_time')
+            ->select();
+        if(!empty($list)){
+            return json('200','数据获取成功','',$list);
+        }else{
+            return json('-5200','门店员工数据获取失败','','');
+        }
     }
 
 }

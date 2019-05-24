@@ -20,25 +20,16 @@
         </div>
         <div class="ibox-content">
             <div class="row row-lg">
-                <div class="col-xs-12" style="text-align: center">
-                    <div class="col-xs-6">
-                        <label>所属门店</label>
-                        <select name="store" class="form-control">
-                            <option value="0">请选择</option>
+                <div style="text-align: center">
+                    <label class="control-label">
+                        所属门店:&nbsp;&nbsp;
+                    </label>
+                    <div style="display: inline-block;">
+                        <select class="form-control m-b" name="ag_id" id="store">
+                            <option value="0" selected="selected">请选择门店</option>
                             <option value="1">金沙店</option>
-                            <option value="2">万达店</option>
                         </select>
                     </div>
-                    <!--<div class="text-c" id="data_1">-->
-                        <!--日期选择：-->
-                        <!--<div class="input-group date">-->
-                            <!--<span class="input-group-addon"><i class="fa fa-calendar"></i></span>-->
-                            <!--<input type="text" class="form-control" value="2014-11-11">-->
-                        <!--</div>-->
-                        <!--<button id="queryBtn" class="btn btn-success" type="submit">-->
-                            <!--<i class="Hui-iconfont Hui-iconfont-search2"></i> 搜索-->
-                        <!--</button>-->
-                    <!--</div>-->
                 </div>
                 <div class="col-sm-12">
                     <div class="example-wrap">
@@ -50,9 +41,7 @@
                                     添加门店员工
                                 </button>
                             </div>
-                            <table id="exampleTableEvents" data-mobile-responsive="true">
-
-                            </table>
+                            <table id="exampleTableEvents" data-mobile-responsive="true"></table>
                         </div>
                     </div>
                     <!-- End Example Events -->
@@ -73,6 +62,17 @@
     $(document).ready(function () {
         //调用函数，初始化表格
         storeStaffAjax();
+
+        var selectId = document.getElementById("store");//获取ID
+        selectId.onchange = function()//触发事件
+        {
+            // var options=$("#store option:selected").val();
+            // console.log(options)
+            storeStaffAjax()
+            // var result = selectId.options[selectId.selectedIndex].innerHTML;//获取选中文本
+            // alert(result);
+        }
+
         //当点击查询按钮的时候执行,bootstrap-table前端分页是不能使用搜索功能，所以可以提取出来自定义搜索。后台代码，在后面给出
         $("#queryBtn").bind("click", storeStaffAjax);
     });
@@ -97,13 +97,15 @@
             queryParamsType : "limit",//设置为 ‘limit’ 则会发送符合 RESTFul 格式的参数.
             queryParams: function (params) {
                 return {
+                    sort:params.sort,
                     order:params.order,
                     offset: params.offset,//从数据库第几条记录开始
                     limit: params.limit,//找多少条
-                    memberId: $("#searchString_id").val() //这个就是搜索框中的内容，可以自动传到后台，搜索实现在xml中体现
+                    sp_sId:$("#store option:selected").val(),
                 };
             },
             responseHandler: function (res) {
+                console.log(res)
                 //如果后台返回的json格式不是{rows:[{...},{...}],total:100},可以在这块处理成这样的格式
                 return res;
             },

@@ -20,6 +20,16 @@
         </div>
         <div class="ibox-content">
             <div class="row row-lg">
+                <div style="text-align: center">
+                    <label class="control-label">
+                        所属推拿门店:&nbsp;&nbsp;
+                    </label>
+                    <div style="display: inline-block;">
+                        <select class="form-control m-b" name="ag_id" id="storeMassage">
+                            <option value="0" selected="selected">请选择推拿门店</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="col-sm-12">
                     <div class="example-wrap">
                         <div class="example">
@@ -51,25 +61,26 @@
 <script type="text/javascript">
     let operation = ''
     let array = [];
-
-    $(function () {
+    $(document).ready(function () {
+        console.log('123')
         storeMassageAjax()
     })
 
     //更新推拿员工列表
     function storeMassageAjax() {
+        console.log('asd')
         $("#exampleTableEvents").bootstrapTable('destroy');//清除table
         $("#exampleTableEvents").bootstrapTable({
             url: "staff_list.html",
             method : 'post',
             search: !0,
             pagination: !0,
-            showRefresh: !0,
-            showColumns: !0,
+            showRefresh: !1,//显示刷新按钮 !0  显示  !1 不显示
+            showColumns: !1, //显示字段 !0  显示  !1 不显示
             iconSize: "outline",
             sortable: !0,
             toolbar: "#exampleTableEventsToolbar",
-            pageSize: 20,//每页显示多少条数据
+            pageSize: 1,//每页显示多少条数据
             sidePagination: "client",
             pageList: [20, 25, 50, 100],
             sortName : 'mp_id',
