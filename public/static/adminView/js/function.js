@@ -405,3 +405,29 @@ function imgShow(outerdiv, innerdiv, bigimg, _this){
         });
 }
 
+//数据存储在SessionStorag
+function setSessionStorage(key,value)
+{
+    if(!window.sessionStorage){
+        alert('您的浏览器不支持H5缓存数据特性！');
+    }else {
+        let session = window.sessionStorage;
+        // 存储
+        session.setItem(key , value);
+        console.log(session);
+        //取数据  ==> 因为是已字符串的方式存储的 所以要使用 JSON.parse的方法将字符串转格式
+        // JSON.parse() => 字符串转数组或对象的方法
+        // JSON.stringify() => 数组或对象转字符串的方法
+        console.log(session.getItem(key))
+    }
+}
+
+function getSessionStorage(key)
+{
+    if(!window.sessionStorage){
+        errorMsg('您的浏览器不支持H5缓存数据特性');
+    }else {
+        let session = window.sessionStorage;
+        return session.getItem(key)
+    }
+}

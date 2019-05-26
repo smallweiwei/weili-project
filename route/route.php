@@ -16,9 +16,14 @@ Route::domain('www.buymelots.com', function () {
 //api路由
 Route::domain('api.buymelots.com', function () {
     Route::rule('/', 'api/index/index');
-    Route::rule('login', 'api/login/login');//登录页面路由
-    Route::rule('manager', 'api/manager/managerList');
-    Route::rule('managerState','api/manager/managerState','GET|POST');
+    Route::rule('store_massage_list', 'api/StoreMassage/StoreMassageList','GET');//获取全部推拿门店列表
+    Route::rule('store_massage_list_page', 'api/StoreMassage/StoreMassageListPage','POST');//分页获取推拿门店列表
+    Route::rule('massage_personnel_list', 'api/StoreMassage/massagePersonnelList','GET');//获取全部推拿员工列表
+    Route::rule('massage_personnel_list_page', 'api/StoreMassage/massagePersonnelListPage','POST');//分页获取推拿员工列表
+
+    Route::rule('store_list', 'api/Store/StoreList','GET');//获取全部门店列表
+
+
 });
 
 return [

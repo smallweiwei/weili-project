@@ -27,7 +27,6 @@
                     <div style="display: inline-block;">
                         <select class="form-control m-b" name="ag_id" id="store">
                             <option value="0" selected="selected">请选择门店</option>
-                            <option value="1">金沙店</option>
                         </select>
                     </div>
                 </div>
@@ -60,10 +59,11 @@
     let array = [];
 
     $(document).ready(function () {
+        store_list();
         //调用函数，初始化表格
         storeStaffAjax();
 
-        var selectId = document.getElementById("store");//获取ID
+        let selectId = document.getElementById("store");//获取ID
         selectId.onchange = function()//触发事件
         {
             // var options=$("#store option:selected").val();
@@ -101,13 +101,17 @@
                     order:params.order,
                     offset: params.offset,//从数据库第几条记录开始
                     limit: params.limit,//找多少条
+                    search:params.search,
                     sp_sId:$("#store option:selected").val(),
                 };
             },
             responseHandler: function (res) {
-                console.log(res)
-                //如果后台返回的json格式不是{rows:[{...},{...}],total:100},可以在这块处理成这样的格式
-                return res;
+                if(res.code > 0){
+                    const array = {rows:res.data,total:res.count}
+                    return array;
+                }else{
+                    return {rows:[],total:0};
+                }
             },
             pageList: [20, 25, 50, 100],
             sortName : 'sp_id',
@@ -219,7 +223,40 @@
         data['data'] = array
         return data
     }
-
+    
+    function store_list()
+    {
+        if(getSessionStorage('store_list') == null){
+            $.ajax({
+                type : 'get',
+                url : api_url+"store_list.html",
+                async : true,
+                dataType : 'json',
+                success : function(e){
+                    if(e.code < 0){
+                        errorMsg(e.msg)
+                    }else{
+                        setSessionStorage('store_list',JSON.stringify(e.data))
+                        exhibition_store(e.data)
+                    }
+                },error:function (xhr) {
+                    if(!errorAjax(xhr.status)){
+                        return false;
+                    }
+                }
+            })
+        }else{
+            exhibition_store(JSON.parse(getSessionStorage('store_list')))
+        }
+    }
+    
+    function exhibition_store(data) {
+        let html = ''
+        $.each(data,function (key,value) {
+            html += '<option value="'+value.s_id+'">'+value.s_name+'</option>'
+        })
+        $("#store").append(html)
+    }
 
 </script>
 {/block}

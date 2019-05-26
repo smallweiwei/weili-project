@@ -177,13 +177,33 @@ class StoreMassage extends Basic
      */
     public function staffList(){
         $data = Request::instance()->post();
+        $where = [];
+        if($data['mp_msId'] != 0){
+            $where['mp.mp_msId'] = $data['mp_msId'];
+        }
+
+        if(isset($data['search'])){
+            $where[] = ['mp.mp_name|mp.mp_spell|ms.ms_name
+            ','LIKE',"%".$data['search']."%"];
+        }
+
+        $count =  Db::name('massage_personnel')
+            ->alias('mp')
+            ->join('massage_store ms','mp.mp_msId = ms.ms_id')
+            ->order($data['sort'],$data['order'])
+            ->where($where)
+            ->field('mp.mp_id,mp.mp_name,mp.mp_workShift,mp.mp_time,mp.mp_spell,ms.ms_name,ms.ms_id')
+            ->count();
         $list = Db::name('massage_personnel')
             ->alias('mp')
             ->join('massage_store ms','mp.mp_msId = ms.ms_id')
             ->order($data['sort'],$data['order'])
+            ->limit($data['offset'],$data['limit'])
+            ->where($where)
             ->field('mp.mp_id,mp.mp_name,mp.mp_workShift,mp.mp_time,mp.mp_spell,ms.ms_name,ms.ms_id')
             ->select();
-        return !empty($list) ? json('200', '数据获取成功', '', $list) : json('-9100', '推拿门店员工获取失败', '', '');
+
+        return !empty($list) ? json('200', '数据获取成功', $count, $list) : json('-9100', '推拿门店员工获取失败', '', '');
     }
 
     /**

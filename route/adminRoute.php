@@ -9,9 +9,12 @@
 Route::domain('admin.buymelots.com', function () {
     Route::rule('/', 'admin/index/index');//后台首页路由
     Route::rule('menu','admin/Basic/menu');//左边菜单路由
+
     Route::rule('login', 'admin/login/index');//登录页面路由
     Route::rule('/index', 'admin/index/Welcome');//显示主页路由
+
     Route::rule('api_login', 'admin/login/login');//登录验证路由
+
     Route::rule('logout', 'admin/login/logout');//退出登录路由
     Route::rule('api_admin_id', 'admin/Basic/adminId');//获取登录管理员id
     Route::rule('upload','admin/Basic/upload','GET|POST');//上传图片

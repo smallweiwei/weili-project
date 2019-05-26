@@ -45,7 +45,6 @@
                             </table>
                         </div>
                     </div>
-                    <!-- End Example Events -->
                 </div>
             </div>
         </div>
@@ -55,34 +54,58 @@
 {/block}
 
 {block name="js"}
-<script src="__JS__/plugins/bootstrap-table/bootstrap-table.min.js"></script>
-<script src="__JS__/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
-<script src="__JS__/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
 <script type="text/javascript">
     let operation = ''
     let array = [];
+
     $(document).ready(function () {
-        console.log('123')
+        massage_store_list()
         storeMassageAjax()
+        let selectId = document.getElementById("storeMassage");//获取ID
+        selectId.onchange = function()//触发事件
+        {
+            storeMassageAjax()
+        }
     })
 
     //更新推拿员工列表
     function storeMassageAjax() {
-        console.log('asd')
         $("#exampleTableEvents").bootstrapTable('destroy');//清除table
         $("#exampleTableEvents").bootstrapTable({
             url: "staff_list.html",
             method : 'post',
+            dataType: "json",
             search: !0,
+            striped: true,
             pagination: !0,
             showRefresh: !1,//显示刷新按钮 !0  显示  !1 不显示
             showColumns: !1, //显示字段 !0  显示  !1 不显示
             iconSize: "outline",
             sortable: !0,
             toolbar: "#exampleTableEventsToolbar",
-            pageSize: 1,//每页显示多少条数据
-            sidePagination: "client",
-            pageList: [20, 25, 50, 100],
+            pageSize: 20,//每页显示多少条数据
+            sidePagination: "server",
+            queryParamsType : "limit",//设置为 ‘limit’ 则会发送符合 RESTFul 格式的参数.
+            queryParams: function (params) {
+                return {
+                    sort:params.sort,
+                    order:params.order,
+                    offset: params.offset,//从数据库第几条记录开始
+                    limit: params.limit,//找多少条
+                    search:params.search,
+                    mp_msId:$("#storeMassage option:selected").val(),
+                };
+            },
+            responseHandler: function (res) {
+                if(res.code > 0){
+                    const array = {rows:res.data,total:res.count}
+                    return array;
+                }else{
+                    return {rows:[],total:0};
+                }
+            },
+            pageList: [20,25,50,100],
+            smartDisplay:!0,
             sortName : 'mp_id',
             sortOrder : 'asc',
             icons: {
@@ -177,6 +200,12 @@
         layerShow(title,url,w,h);
     }
 
+    /**
+     * 删除推拿员工
+     * @param obj
+     * @param id
+     * @param mp_name
+     */
     function massage_personnel_del(obj,id,mp_name) {
         layer.confirm('确认要删除['+mp_name+']员工吗？',function(){
             $.ajax({
@@ -201,12 +230,55 @@
      * @returns {Array}  返回数组给子页面
      */
     function parentData() {
-        var data = [];
+        const data = [];
         data['operation'] = operation
         data['data'] = array
         return data
     }
 
+    /**
+     * 判断缓存有没有推拿门店谢谢,有的话直接给函数exhibition_massage遍历
+     */
+    function massage_store_list()
+    {
+        if(getSessionStorage('store_massage_list') == null){
+            $.ajax({
+                type : 'get',
+                url : api_url+"store_massage_list.html",
+                async : true,
+                dataType : 'json',
+                success : function(e){
+                    // console.log(e)
+                    if(e.code < 0){
+                        errorMsg(e.msg)
+                    }else{
+                        setSessionStorage('store_massage_list',JSON.stringify(e.data))
+                        exhibition_massage(e.data)
+                    }
+                },error:function (xhr) {
+                    if(!errorAjax(xhr.status)){
+                        return false;
+                    }
+                }
+            })
+        }else{
+            exhibition_massage(JSON.parse(getSessionStorage('store_massage_list')))
+        }
+
+    }
+
+    /**
+     * 遍历推拿门店显示到html中
+     * @param data  推拿门店数组
+     */
+    function exhibition_massage(data)
+    {
+        let html = ''
+        $.each(data,function (key,value) {
+            html += '<option value="'+value.ms_id+'">'+value.ms_name+'</option>'
+        })
+        $("#storeMassage").append(html)
+    }
 
 </script>
 {/block}

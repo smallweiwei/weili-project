@@ -128,8 +128,32 @@ class Store extends Basic
 
     public function storeStaffList(){
         $data = Request::instance()->post();
-        $store = new storeLogic();
-        $store->storeStaffList($data);
+        $where = [];
+        if($data['sp_sId'] != 0){
+            $where['sp.sp_sId'] = $data['sp_sId'];
+        }
+        if(isset($data['search'])) {
+            $where[] = ['sp_name|sp_spell|s_name
+            ', 'LIKE', "%" . $data['search'] . "%"];
+        }
+        $where['sp_delete'] = '1';
+
+        $count =  Db::name('store_personnel')
+            ->alias('sp')
+            ->join('store s','sp.sp_sId  = s.s_id')
+            ->order($data['sort'],$data['order'])
+            ->where($where)
+            ->field('sp.sp_name,sp.sp_spell,sp.sp_state,sp_time,sp.sp_id,s.s_name')
+            ->count();
+        $list =  Db::name('store_personnel')
+            ->alias('sp')
+            ->join('store s','sp.sp_sId  = s.s_id')
+            ->order($data['sort'],$data['order'])
+            ->where($where)
+            ->field('sp.sp_name,sp.sp_spell,sp.sp_state,sp_time,sp.sp_id,s.s_name')
+            ->select();
+        return !empty($list) ? json('200', '数据获取成功', $count, $list) : json('-5200', '门店员工获取失败', '', '');
+
     }
 //员工列表功能 end
 
