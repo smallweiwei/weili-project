@@ -35,7 +35,7 @@
                         <div class="example">
                             <div class="btn-group hidden-xs" id="exampleTableEventsToolbar" role="group">
                                 <button type="button" class="btn btn-outline btn-default"
-                                        onclick="massage_personnel_add('添加门店员工','store_staff_add.html','850','550')" >
+                                        onclick="massage_personnel_add('添加门店员工','store_staff_add_view.html','850','550')" >
                                     <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
                                     添加门店员工
                                 </button>
@@ -143,7 +143,7 @@
                     align: 'center',
                 },
                 {
-                    field: 'mp_time',
+                    field: 'sp_time',
                     title: '添加时间',
                     align: 'center',
                 },
@@ -154,7 +154,7 @@
                     formatter: function (value, row) {
                         var html = '';
                         html += '<span style="margin-right: 5px" ' +
-                            'onclick="massage_personnel_save(\'修改推拿员工[ '+row.mp_name+' ]\',\'massage_personnel_add_view.html\',800,500,'+JSON.stringify(row).replace(/"/g, '&quot;')+')">' +
+                            'onclick="massage_personnel_save(\'修改员工[ '+row.mp_name+' ]\',\'store_staff_save_view.html\',800,500,'+JSON.stringify(row).replace(/"/g, '&quot;')+')">' +
                             '<a href="javascript:;" >修改</a></span>';
 
                         html += '<span style="margin-right: 5px" ' +

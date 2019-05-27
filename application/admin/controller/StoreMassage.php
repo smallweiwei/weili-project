@@ -175,7 +175,8 @@ class StoreMassage extends Basic
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function staffList(){
+    public function staffList()
+    {
         $data = Request::instance()->post();
         $where = [];
         if($data['mp_msId'] != 0){

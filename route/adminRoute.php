@@ -19,7 +19,7 @@ Route::domain('admin.buymelots.com', function () {
     Route::rule('api_admin_id', 'admin/Basic/adminId');//获取登录管理员id
     Route::rule('upload','admin/Basic/upload','GET|POST');//上传图片
     Route::rule('upload_view','admin/Basic/uploadView');//上传图片页面
-    Route::rule('conversion','admin/Basic/toPinyin');//上传图片页面
+    Route::rule('conversion','admin/Basic/toPinyin');//中文转拼音
 
 
 //管理员管理-管理员列表操作路由  start

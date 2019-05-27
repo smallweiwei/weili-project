@@ -1,0 +1,242 @@
+{extend name="public:head" /}
+{block name="title"}添加门店员工信息{/block}
+{block name="css"}
+
+{/block}
+{block name="body"}
+<div class="col-sm-12" style="padding: 0">
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <form method="post" class="form-horizontal addAjax" id="addAjax" enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        <span class="essential">*</span>
+                        &nbsp;&nbsp;员工名称</label>
+                    <div class="col-sm-10">
+                        <input type="text" placeholder="请输入员工名称" required="required" class="form-control"
+                               name="sp_name" autocomplete="off" onblur="toPinyin(this.value)">
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">员工登录名称</label>
+                    <div class="col-sm-10">
+                        <input type="text" id="sp_spell" placeholder="自动填写拼音" class="form-control" name="sp_spell"
+                               autocomplete="off" readonly>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div id="isHide" style="display: none;">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">员工登录密码</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="sp_password" placeholder="默认密码为：123456qwerty" class="form-control" name="sp_password"
+                                   autocomplete="off" value="">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        <span class="essential">*</span>
+                        &nbsp;&nbsp;所属门店
+                    </label>
+                    <div class="col-sm-10">
+                        <select class="form-control m-b" name="sp_sId" id="mp_msId">
+                            <option value="0" selected>请选择门店</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <button class="btn btn-primary" type="submit">保存内容</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script type="text/javascript">
+    MassageStore()
+    /**
+     * 获取推拿门店列表
+     * @constructor
+     */
+    function MassageStore() {
+        let html = ''
+        if(getSessionStorage('store_list') != null){
+            const array = JSON.parse(getSessionStorage('store_list'));
+            $.each(array,function (key,value) {
+                html += '<option value="'+value.s_id+'">'+value.s_name+'</option>'
+            })
+            $("#mp_msId").append(html)
+        }else{
+            $.ajax({
+                type : 'get',
+                url : api_url+"store_list.html",
+                async : true,
+                dataType : 'json',
+                success : function(e){
+                    if(e.code < 0){
+                        errorMsg(e.msg)
+                    }else{
+                        setSessionStorage('store_list',JSON.stringify(e.data))
+                        $.each(e.data,function (key,value) {
+                            html += '<option value="'+value.s_id+'">'+value.s_name+'</option>'
+                        })
+                        $("#mp_msId").append(html)
+                        // exhibition_store(e.data)
+                    }
+                },error:function (xhr) {
+                    if(!errorAjax(xhr.status)){
+                        return false;
+                    }
+                }
+            })
+        }
+    }
+
+    var array = parent.parentData()//父页面数据
+    console.log(array)
+    $('#addAjax').on('submit',function (event) {
+        console.log(event)
+    })
+    if(array.operation === 'add'){
+        $("#isHide").css('display','block');
+        $('#addAjax').on('submit',function (event) {
+            var options = $("#mp_msId option:selected").val();
+            if(options == 0){
+                errorMsg('请选择所属门店')
+                return false
+            }
+            $.ajax({
+                type : 'post',
+                url : "store_staff_add.html",
+                async : true,
+                dataType : 'json',
+                data:formData(),
+                success : function(e){
+                    if(e.code < 0){
+                        errorMsg(e.msg)
+                    }else{
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                        parent.storeStaffAjax(); //再执行关闭
+                    }
+                },error:function (xhr) {
+                    if(!errorAjax(xhr.status)){
+                        return false;
+                    }
+                },beforeSend:function(){
+                    index = layer.msg('添加门店员工提交中', {
+                        icon: 16,
+                        shade: 0.4,
+                        time:false //取消自动关闭
+                    });
+                }
+            })
+            event.preventDefault();
+        })
+    }else{
+        //
+        //
+        //     $("#isHide").html('');
+        //     $('.addAjax').attr('id','saveAjax');
+        //
+        //     $('input[name="mp_name"]').val(array.data.mp_name);
+        //     $('input[name="mp_spell"]').val(array.data.mp_spell);
+        //
+        //     $("select option[value='"+array.data.ms_id+"']").attr("selected","selected");
+        //
+        //     if(array.data.mp_workShift == 1){
+        //         $("input[name=mp_workShift]:eq(0)").attr("checked",'checked');
+        //     }else if(array.data.mp_workShift == 2){
+        //         $("input[name=mp_workShift]:eq(1)").attr("checked",'checked');
+        //     }else{
+        //         $("input[name=mp_workShift]:eq(2)").attr("checked",'checked');
+        //     }
+        //
+        //     $('#saveAjax').on('submit',function (event) {
+        //         var options = $("#mp_msId option:selected").val();
+        //         if(options == 0){
+        //             errorMsg('请选择所属推拿门店')
+        //             return false
+        //         }
+        //         $.ajax({
+        //             type : 'post',
+        //             url : "massage_personnel_save.html?mp_id="+array.data.mp_id,
+        //             async : true,
+        //             dataType : 'json',
+        //             data:formData(),
+        //             success : function(e){
+        //                 if(e.code < 0){
+        //                     errorMsg(e.msg)
+        //                 }else{
+        //                     var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        //                     parent.layer.close(index); //再执行关闭
+        //                     parent.storeMassageAjax(); //再执行关闭
+        //                 }
+        //
+        //             },error:function (xhr) {
+        //                 if(!errorAjax(xhr.status)){
+        //                     return false;
+        //                 }
+        //             },beforeSend:function(){
+        //                 index = layer.msg('推拿门店员工修改提交中', {
+        //                     icon: 16,
+        //                     shade: 0.4,
+        //                     time:false //取消自动关闭
+        //                 });
+        //             }
+        //         })
+        //         event.preventDefault();
+        //     })
+    }
+
+    /**
+     * 根据员工名称转成拼音
+     * @param sting
+     */
+    function toPinyin(sting) {
+        if(sting === ''){
+            $('#mp_spell').val('')
+            layer.msg('员工名称不能为空',{time: 5000, icon:5});
+        }else{
+            $.ajax({
+                type : 'get',
+                url : "conversion.html",
+                async : false,
+                dataType : 'json',
+                data:{
+                    'name':strReplace(sting),
+                },
+                success : function(e){
+                    if(e.code < 0){
+                        layer.msg(e.msg,{time: 5000, icon:5});
+                    }else{
+                        $("#sp_spell").val(e.data)
+                    }
+                },error:function (xhr) {
+                    if(!errorAjax(xhr.status)){
+                        return false;
+                    }
+                }
+            })
+        }
+    }
+
+
+
+</script>
+
+{/block}

@@ -126,7 +126,15 @@ class Store extends Basic
         return $this->fetch();
     }
 
-    public function storeStaffList(){
+    /**
+     * 获取门店员工列表
+     * @return string|Json
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
+    public function storeStaffList()
+    {
         $data = Request::instance()->post();
         $where = [];
         if($data['sp_sId'] != 0){
@@ -155,6 +163,57 @@ class Store extends Basic
         return !empty($list) ? json('200', '数据获取成功', $count, $list) : json('-5200', '门店员工获取失败', '', '');
 
     }
+
+    /**
+     * 显示添加门店员工页面
+     * @return mixed
+     */
+    public function storeStaffAddView()
+    {
+        return $this->fetch();
+    }
+
+    /**
+     * 添加门店员工方法
+     * @return string|Json
+     */
+    public function storeStaffAdd()
+    {
+        $data = Request::instance()->post();
+        if($data['sp_password'] === ''){
+            $data['sp_password'] = parent::passworHash('123456qwerty');
+        }else{
+            $data['sp_password'] = parent::passworHash($data['sp_password']);
+        }
+
+        $list = Db::name('store_personnel')
+            ->insertGetId($data);
+        if(!empty($list)){
+            Db::name('store_personnel_access')
+                ->insert(array('sp_id'=>$list,'group_id'=>'3'));
+            return json('200','添加成功','','');
+        }else{
+            return json('-9101','员工添加失败','','');
+        }
+    }
+
+    /**
+     * 修改门店员工页面
+     * @return mixed
+     */
+    public function storeStaffSaveView()
+    {
+        return $this->fetch();
+    }
+
+    //修改门店员工信息
+    public function storeStaffSave($sp_id)
+    {
+        $data = Request::instance()->post();
+        dump($sp_id);
+        dump($data);
+    }
+
 //员工列表功能 end
 
 }

@@ -1,9 +1,5 @@
 <?php
-
-
 namespace app\api\controller;
-
-
 use think\Db;
 
 class Store
@@ -12,6 +8,7 @@ class Store
     {
         $list = Db::name('store')
             ->field('s_id,s_name,s_phone,s_address,s_pic,s_time,s_delete')
+            ->where('s_delete','1')
             ->select();
         if(!empty($list)){
             return json('200','数据获取成功','',$list);
