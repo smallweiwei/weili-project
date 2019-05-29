@@ -151,14 +151,14 @@ class Store extends Basic
             ->join('store s','sp.sp_sId  = s.s_id')
             ->order($data['sort'],$data['order'])
             ->where($where)
-            ->field('sp.sp_name,sp.sp_spell,sp.sp_state,sp_time,sp.sp_id,s.s_name')
+            ->field('sp.sp_name,sp.sp_spell,sp.sp_state,sp_time,sp.sp_id,s.s_name,s.s_id')
             ->count();
         $list =  Db::name('store_personnel')
             ->alias('sp')
             ->join('store s','sp.sp_sId  = s.s_id')
             ->order($data['sort'],$data['order'])
             ->where($where)
-            ->field('sp.sp_name,sp.sp_spell,sp.sp_state,sp_time,sp.sp_id,s.s_name')
+            ->field('sp.sp_name,sp.sp_spell,sp.sp_state,sp_time,sp.sp_id,s.s_name,s.s_id')
             ->select();
         return !empty($list) ? json('200', '数据获取成功', $count, $list) : json('-5200', '门店员工获取失败', '', '');
 
@@ -210,8 +210,14 @@ class Store extends Basic
     public function storeStaffSave($sp_id)
     {
         $data = Request::instance()->post();
-        dump($sp_id);
-        dump($data);
+        $store = new storeLogic();
+        return $store->isModifyStoreStaff($sp_id,$data);
+    }
+
+    public function storeStaffDel($sp_id)
+    {
+        $store = new storeLogic();
+        return $store->storeStaffSave($sp_id,array('sp_delete'=>'2'));
     }
 
 //员工列表功能 end

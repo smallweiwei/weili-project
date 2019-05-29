@@ -30,4 +30,16 @@ class StorePersonnel extends Model
         }
         return $this->where($where)->field($field)->find();
     }
+
+    //根据条件查询数据，无分页
+    public function select($where,$array = [])
+    {
+        if(empty($array)){
+            $field = $this->field;
+        }else{
+            $field = $array;
+        }
+
+        return $this->where($where)->field($field)->select();
+    }
 }

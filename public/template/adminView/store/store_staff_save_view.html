@@ -7,7 +7,7 @@
 <div class="col-sm-12" style="padding: 0">
     <div class="ibox float-e-margins">
         <div class="ibox-content">
-            <form method="post" class="form-horizontal addAjax" id="addAjax" enctype="multipart/form-data">
+            <form method="post" class="form-horizontal addAjax" id="saveAjax" enctype="multipart/form-data">
 
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
@@ -107,13 +107,13 @@
     }
 
     var array = parent.parentData()//父页面数据
-    console.log(array)
-    $('#addAjax').on('submit',function (event) {
-        console.log(event)
-    })
-    if(array.operation === 'add'){
-        $("#isHide").css('display','block');
-        $('#addAjax').on('submit',function (event) {
+    if(array.operation === 'save'){
+        $('input[name="sp_name"]').val(array.data.sp_name);
+        $('input[name="sp_spell"]').val(array.data.sp_spell);
+        $("select option[value='"+array.data.s_id+"']").attr("selected","selected");
+        // $("#isHide").css('display','block');
+        $("#isHide").html('');
+        $('#saveAjax').on('submit',function (event) {
             var options = $("#mp_msId option:selected").val();
             if(options == 0){
                 errorMsg('请选择所属门店')
@@ -121,7 +121,7 @@
             }
             $.ajax({
                 type : 'post',
-                url : "store_staff_add.html",
+                url : "store_staff_save.html?sp_id="+array.data.sp_id,
                 async : true,
                 dataType : 'json',
                 data:formData(),
@@ -134,16 +134,17 @@
                         parent.storeStaffAjax(); //再执行关闭
                     }
                 },error:function (xhr) {
-                    if(!errorAjax(xhr.status)){
+                    if (!errorAjax(xhr.status)) {
                         return false;
                     }
-                },beforeSend:function(){
-                    index = layer.msg('添加门店员工提交中', {
-                        icon: 16,
-                        shade: 0.4,
-                        time:false //取消自动关闭
-                    });
                 }
+                // },beforeSend:function(){
+                //     index = layer.msg('添加门店员工提交中', {
+                //         icon: 16,
+                //         shade: 0.4,
+                //         time:false //取消自动关闭
+                //     });
+                // }
             })
             event.preventDefault();
         })

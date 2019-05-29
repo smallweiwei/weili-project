@@ -81,6 +81,9 @@ Route::domain('admin.buymelots.com', function () {
     Route::rule('store_staff_save','admin/store/storeStaffSave'); //修改门店员工方法
     Route::rule('store_staff_del','admin/store/storeStaffDel'); //删除门店员工方法
 
+    Route::rule('consumption_type_view  ','admin/store/consumptionTypeView'); //显示门店员工页面
+
+
 
 //门店管理 end
 
@@ -101,7 +104,7 @@ Route::domain('admin.buymelots.com', function () {
     Route::rule('massage_personnel_add_view','admin/StoreMassage/staffAddView');//显示推拿门店 员工列表
     Route::rule('massage_personnel_add','admin/StoreMassage/staffAdd');//显示推拿门店 员工列表
     Route::rule('massage_personnel_save','admin/StoreMassage/staffSave');//显示推拿门店 员工列表
-    Route::rule('massage_personnel_del','admin/StoreMassage/staffDel');//显示推拿门店 员工列表
+    Route::rule('massage_personnel_del','admin/StoreMassage/staffDel');//删除推拿门店员工
 
     Route::rule('massage_store_list','admin/StoreMassage/massageStoreList');//获取推拿门店员工
 

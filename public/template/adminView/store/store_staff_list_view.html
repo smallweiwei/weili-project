@@ -83,12 +83,14 @@
     function storeStaffAjax() {
         $("#exampleTableEvents").bootstrapTable('destroy');//清除table
         $("#exampleTableEvents").bootstrapTable({
-            url: "store_staff_list.html",
+            url: api_url+"store_staff_list.html",
             method : 'post',
+            dataType: 'json',
+            contentType: "application/x-www-form-urlencoded",
             search: !0,
             pagination: !0,
-            showRefresh: !0,
-            showColumns: !0,
+            showRefresh: !1,
+            showColumns: !1,
             iconSize: "outline",
             sortable: !0,
             toolbar: "#exampleTableEventsToolbar",
@@ -148,17 +150,17 @@
                     align: 'center',
                 },
                 {
-                    field: 'mp_id',
+                    field: 'sp_id',
                     title: '操作',
                     align: 'center',
                     formatter: function (value, row) {
                         var html = '';
                         html += '<span style="margin-right: 5px" ' +
-                            'onclick="massage_personnel_save(\'修改员工[ '+row.mp_name+' ]\',\'store_staff_save_view.html\',800,500,'+JSON.stringify(row).replace(/"/g, '&quot;')+')">' +
+                            'onclick="massage_personnel_save(\'修改员工[ '+row.sp_name+' ]\',\'store_staff_save_view.html\',800,500,'+JSON.stringify(row).replace(/"/g, '&quot;')+')">' +
                             '<a href="javascript:;" >修改</a></span>';
 
                         html += '<span style="margin-right: 5px" ' +
-                            'onclick="massage_personnel_del(this,\''+value+'\',\''+row.mp_name+'\')">' +
+                            'onclick="massage_personnel_del(this,\''+value+'\',\''+row.sp_name+'\')">' +
                             '<a href="javascript:;" >删除</a></span>';
                         return  html
                     }
@@ -198,7 +200,7 @@
         layer.confirm('确认要删除['+mp_name+']员工吗？',function(){
             $.ajax({
                 type: "get",
-                url: "massage_personnel_del.html?mp_id="+id,
+                url: "store_staff_del.html?sp_id="+id,
                 dataType: "json",
                 crossDomain: true,
                 success: function (data) {

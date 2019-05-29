@@ -119,11 +119,7 @@ function array_accord_string($array=array(),$array_key='',$string='',$division='
  */
 function array_check_data($array,$data)
 {
-    if(!is_judge_array($array)){
-        $newArray = $array[0];
-    }else{
-        $newArray = $array;
-    }
+    $newArray = $array[0];
     $start = true;
     foreach ($data as $key=>$val){
         if($newArray[$key] != $val){
@@ -133,6 +129,7 @@ function array_check_data($array,$data)
     return $start;
 }
 
+
 /**
  * 判断数组是一维数组还是多维数组
  * @param $array 数组
@@ -140,7 +137,7 @@ function array_check_data($array,$data)
  */
 function is_judge_array($array)
 {
-    if(count($array) == count($array,1)){
+    if(count($array,COUNT_RECURSIVE) == count($array,1)){
         return true;
     }else{
         return false;

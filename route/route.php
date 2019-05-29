@@ -23,7 +23,7 @@ Route::domain('api.buymelots.com', function () {
 
     Route::rule('store_list', 'api/Store/StoreList','GET');//获取全部门店列表
 
-
+    Route::rule('store_staff_list','api/Store/storeStaffListPage');
 });
 
 return [
