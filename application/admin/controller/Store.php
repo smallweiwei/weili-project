@@ -206,7 +206,16 @@ class Store extends Basic
         return $this->fetch();
     }
 
-    //修改门店员工信息
+    /**
+     * 修改门店员工信息
+     * @param $sp_id 门店员工id
+     * @return string|Json
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws Exception
+     * @throws ModelNotFoundException
+     * @throws PDOException
+     */
     public function storeStaffSave($sp_id)
     {
         $data = Request::instance()->post();
@@ -214,12 +223,36 @@ class Store extends Basic
         return $store->isModifyStoreStaff($sp_id,$data);
     }
 
+    /**
+     * 根据id删除门店员工信息
+     * @param $sp_id 门店员工id
+     * @return string|Json
+     * @throws Exception
+     * @throws PDOException
+     */
     public function storeStaffDel($sp_id)
     {
         $store = new storeLogic();
-        return $store->storeStaffSave($sp_id,array('sp_delete'=>'2'));
+        return $store->storeStaffSave($sp_id,array('sp_delete'=>'-1'));
     }
 
 //员工列表功能 end
+
+//消费类型 start
+
+    /**
+     * 显示消费类型
+     * @return mixed
+     */
+    public function consumptionTypeView()
+    {
+        return $this->fetch();
+    }
+
+    public function consumptionTypeList()
+    {
+
+    }
+//消费类型 end
 
 }

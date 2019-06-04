@@ -81,7 +81,7 @@ Route::domain('admin.buymelots.com', function () {
     Route::rule('store_staff_save','admin/store/storeStaffSave'); //修改门店员工方法
     Route::rule('store_staff_del','admin/store/storeStaffDel'); //删除门店员工方法
 
-    Route::rule('consumption_type_view  ','admin/store/consumptionTypeView'); //显示门店员工页面
+    Route::rule('consumption_type_view','admin/Store/consumptionTypeView'); //显示消费类型页面
 
 
 

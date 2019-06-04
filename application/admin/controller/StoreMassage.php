@@ -180,14 +180,13 @@ class StoreMassage extends Basic
         $data = Request::instance()->post();
         $where = [];
         if($data['mp_msId'] != 0){
-            $where['mp.mp_msId'] = $data['mp_msId'];
+            $where[] = ['mp.mp_msId','eq',$data['mp_msId']];
         }
 
-        if(isset($data['search'])){
-            $where[] = ['mp.mp_name|mp.mp_spell|ms.ms_name
-            ','LIKE',"%".$data['search']."%"];
+        if(isset($data['search']) && !empty($data['search'])){
+            $where[] = ['mp.mp_name|mp.mp_spell|ms.ms_name','like',"%".$data['search']."%"];
         }
-
+        $where[] = ['mp.mp_delete','eq','1'];
         $count =  Db::name('massage_personnel')
             ->alias('mp')
             ->join('massage_store ms','mp.mp_msId = ms.ms_id')
@@ -203,7 +202,6 @@ class StoreMassage extends Basic
             ->where($where)
             ->field('mp.mp_id,mp.mp_name,mp.mp_workShift,mp.mp_time,mp.mp_spell,ms.ms_name,ms.ms_id')
             ->select();
-
         return !empty($list) ? json('200', '数据获取成功', $count, $list) : json('-9100', '推拿门店员工获取失败', '', '');
     }
 

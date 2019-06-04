@@ -29,14 +29,14 @@ class Store
         $data = Request::instance()->post();
         $where = [];
         if($data['sp_sId'] != 0){
-            $where['sp.sp_sId'] = $data['sp_sId'];
+            $where[] = ['sp.sp_sId','eq',$data['sp_sId']];
         }
         if(isset($data['search'])) {
-            $where[] = ['sp_name|sp_spell|s_name
+            $where[] = ['sp.sp_name|sp.sp_spell|s.s_name
             ', 'LIKE', "%" . $data['search'] . "%"];
         }
-        $where['sp_delete'] = '1';
-
+        $where[] =['sp.sp_delete','eq','1'];
+        
         $count =  Db::name('store_personnel')
             ->alias('sp')
             ->join('store s','sp.sp_sId  = s.s_id')
@@ -51,6 +51,7 @@ class Store
             ->where($where)
             ->field('sp.sp_name,sp.sp_spell,sp.sp_state,sp_time,sp.sp_id,s.s_name,s.s_id')
             ->select();
+
         return !empty($list) ? json('200', '数据获取成功', $count, $list) : json('-5200', '门店员工获取失败', '', '');
 
     }
